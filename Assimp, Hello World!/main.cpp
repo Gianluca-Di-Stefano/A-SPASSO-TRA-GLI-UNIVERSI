@@ -86,10 +86,11 @@ int main()
 
     // load models
     // -----------
-    Model planetExpress("resources/objects/futurama/spaceship/planetexpress.obj");
+    Model spaceShuttle("resources/objects/universo/spaceship/rocket.obj");
     std::vector<glm::vec3> objectPositions;
     objectPositions.push_back(glm::vec3(-3.0, -0.5, -3.0));
-    Model omicron("resources/objects/futurama/planets/omicron/omicron.obj");
+    Model sole("resources/objects/universo/planets/sole/sole.obj");
+    Model terra("resources/objects/universo/planets/terra/terra.obj");
 
 
     // configure g-buffer framebuffer
@@ -135,16 +136,16 @@ int main()
 
     // lighting info
     // -------------
-    const unsigned int NR_LIGHTS = 50;
+    const unsigned int NR_LIGHTS = 100;
     std::vector<glm::vec3> lightPositions;
     std::vector<glm::vec3> lightColors;
-    srand(13);
+    srand(10);
     for (unsigned int i = 0; i < NR_LIGHTS; i++)
     {
         // calculate slightly random offsets
-        float xPos = ((rand() % 100) / 100.0) * 6.0 - 3.0;
-        float yPos = ((rand() % 100) / 100.0) * 6.0 - 4.0;
-        float zPos = ((rand() % 100) / 100.0) * 6.0 - 3.0;
+        float xPos = ((rand() % 100) / 100.0);
+        float yPos = ((rand() % 100) / 100.0);
+        float zPos = ((rand() % 100) / 100.0);
         lightPositions.push_back(glm::vec3(xPos, yPos, zPos));
         // also calculate random color
         float rColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
@@ -187,20 +188,26 @@ int main()
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
         
-        glm::mat4 modelPlanetExpress = glm::mat4(1.0f);
+        glm::mat4 modelSpaceShuttle = glm::mat4(1.0f);
         shaderGeometryPass.use();
         shaderGeometryPass.setMat4("projection", projection);
         shaderGeometryPass.setMat4("view", view);
-        modelPlanetExpress = glm::mat4(1.0f);
-        modelPlanetExpress = glm::scale(modelPlanetExpress, glm::vec3(0.001f));
-        shaderGeometryPass.setMat4("model", modelPlanetExpress);
-        planetExpress.Draw(shaderGeometryPass);
+        modelSpaceShuttle = glm::mat4(1.0f);
+        modelSpaceShuttle = glm::translate(modelSpaceShuttle, glm::vec3(2.0f));
+        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.001f));
+        shaderGeometryPass.setMat4("model", modelSpaceShuttle);
+        spaceShuttle.Draw(shaderGeometryPass);
 
-        glm::mat4 modelOmicron = glm::mat4(1.0f);
-        modelOmicron = glm::translate(modelOmicron, glm::vec3(1.0f));
-        modelOmicron = glm::scale(modelOmicron, glm::vec3(0.01f));
-        shaderGeometryPass.setMat4("model", modelOmicron);
-        omicron.Draw(shaderGeometryPass);
+        glm::mat4 modelSole = glm::mat4(1.0f);
+        modelSole = glm::scale(modelSole, glm::vec3(0.01f));
+        shaderGeometryPass.setMat4("model", modelSole);
+        sole.Draw(shaderGeometryPass);
+
+        glm::mat4 modelTerra = glm::mat4(1.0f);
+        modelTerra = glm::translate(modelTerra, glm::vec3(10.0f));
+        modelTerra = glm::scale(modelTerra, glm::vec3(0.01f));
+        shaderGeometryPass.setMat4("model", modelTerra);
+        terra.Draw(shaderGeometryPass);
 
 
 
