@@ -11,6 +11,4 @@ Tr 1.000000
 illum 2
 Ns 0.000000
 map_Kd diffuse.png
-map_Bump normal.png
-map_Ks specular.png
 

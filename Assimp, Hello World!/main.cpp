@@ -86,7 +86,7 @@ int main()
 
     // load models
     // -----------
-    Model planetExpress("resources/objects/futurama/spaceship/ship.obj");
+    Model planetExpress("resources/objects/futurama/spaceship/planetexpress.obj");
     std::vector<glm::vec3> objectPositions;
     objectPositions.push_back(glm::vec3(-3.0, -0.5, -3.0));
     Model omicron("resources/objects/futurama/planets/omicron/omicron.obj");
@@ -192,7 +192,7 @@ int main()
         shaderGeometryPass.setMat4("projection", projection);
         shaderGeometryPass.setMat4("view", view);
         modelPlanetExpress = glm::mat4(1.0f);
-        modelPlanetExpress = glm::scale(modelPlanetExpress, glm::vec3(0.01f));
+        modelPlanetExpress = glm::scale(modelPlanetExpress, glm::vec3(0.001f));
         shaderGeometryPass.setMat4("model", modelPlanetExpress);
         planetExpress.Draw(shaderGeometryPass);
 
