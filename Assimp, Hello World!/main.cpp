@@ -72,7 +72,7 @@ int main()
     }
 
     // tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
-    stbi_set_flip_vertically_on_load(true);
+    //stbi_set_flip_vertically_on_load(true);
 
     // configure global opengl state
     // -----------------------------
@@ -89,7 +89,10 @@ int main()
     Model spaceShuttle("resources/objects/universo/spaceship/rocket.obj");
     std::vector<glm::vec3> objectPositions;
     objectPositions.push_back(glm::vec3(-3.0, -0.5, -3.0));
-    Model sole("resources/objects/universo/planets/sole/sole.obj");
+    //COMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO(SOSTITUSCE IL SOLE)
+    //Model sole("resources/objects/universo/planets/sole/sole.obj");
+    //DECOMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO (SOSTITUSCE IL SOLE)
+    Model sole("resources/objects/futurama/planets/wormulon/wormulon.obj");
     Model terra("resources/objects/universo/planets/terra/terra.obj");
 
 
@@ -143,9 +146,9 @@ int main()
     for (unsigned int i = 0; i < NR_LIGHTS; i++)
     {
         // calculate slightly random offsets
-        float xPos = ((rand() % 100) / 100.0);
-        float yPos = ((rand() % 100) / 100.0);
-        float zPos = ((rand() % 100) / 100.0);
+        float xPos = ((rand() % 100) / 100.0) * 6.0 - 3.0;
+        float yPos = ((rand() % 100) / 100.0) * 6.0 - 4.0;
+        float zPos = ((rand() % 100) / 100.0) * 6.0 - 3.0;
         lightPositions.push_back(glm::vec3(xPos, yPos, zPos));
         // also calculate random color
         float rColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
@@ -193,7 +196,7 @@ int main()
         shaderGeometryPass.setMat4("projection", projection);
         shaderGeometryPass.setMat4("view", view);
         modelSpaceShuttle = glm::mat4(1.0f);
-        modelSpaceShuttle = glm::translate(modelSpaceShuttle, glm::vec3(2.0f));
+        modelSpaceShuttle = glm::translate(modelSpaceShuttle, glm::vec3(1.0f));
         modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.001f));
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
         spaceShuttle.Draw(shaderGeometryPass);
@@ -255,7 +258,7 @@ int main()
         glBlitFramebuffer(0, 0, SCR_WIDTH, SCR_HEIGHT, 0, 0, SCR_WIDTH, SCR_HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-        // 3. render lights on top of scene
+        // 3. render lights on top of scene eliminare questa parte per togliere i cubi luminosi e lasciare solo la luce
         // --------------------------------
         shaderLightBox.use();
         shaderLightBox.setMat4("projection", projection);
