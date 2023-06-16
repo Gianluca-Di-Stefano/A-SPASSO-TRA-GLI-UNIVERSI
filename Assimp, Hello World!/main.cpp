@@ -92,7 +92,7 @@ int main()
     //COMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO(SOSTITUSCE IL SOLE)
     //Model sole("resources/objects/universo/planets/sole/sole.obj");
     //DECOMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO (SOSTITUSCE IL SOLE)
-    Model sole("resources/objects/futurama/planets/neardeath/neardeath.obj");
+    Model sole("resources/objects/futurama/planets/bender_god/bender_god.obj");
     Model terra("resources/objects/universo/planets/terra/terra.obj");
 
 
