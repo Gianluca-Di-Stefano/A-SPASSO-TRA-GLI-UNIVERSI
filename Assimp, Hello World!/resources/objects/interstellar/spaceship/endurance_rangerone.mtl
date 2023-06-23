@@ -1,0 +1,185 @@
+# Blender 3.5.0 MTL File: 'endurance.blend'
+# www.blender.org
+
+newmtl Material.002
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd DefaultMaterial_Base_Color(2).png
+
+newmtl Material.003
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd DefaultMaterial_Base_Color(5).png
+map_Ns DefaultMaterial_Roughness(5).png
+map_refl DefaultMaterial_Metallic(5).png
+
+newmtl Material.004
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd DefaultMaterial_Base_Color(1).png
+
+newmtl Материал
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd DefaultMaterial_Base_Color(5).png
+map_Ns DefaultMaterial_Roughness(5).png
+map_refl DefaultMaterial_Metallic(5).png
+
+newmtl Материал.001
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd DefaultMaterial_Base_Color(4).png
+
+newmtl Материал.002
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd DefaultMaterial_Base_Color(2).png
+map_Ns DefaultMaterial_Roughness(2).png
+map_refl DefaultMaterial_Metallic(2).png
+
+newmtl Материал.003
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd DefaultMaterial_Base_Color.png
+map_Ns DefaultMaterial_Roughness.png
+map_refl DefaultMaterial_Metallic.png
+
+newmtl Материал.004
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd DefaultMaterial_Base_Color(3).png
+map_Ns DefaultMaterial_Roughness(3).png
+map_refl DefaultMaterial_Metallic(3).png
+
+newmtl Материал.005
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd DefaultMaterial_Base_Color(5).png
+map_Ns DefaultMaterial_Roughness(5).png
+map_refl DefaultMaterial_Metallic(5).png
+
+newmtl Материал.006
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd DefaultMaterial_Base_Color(1).png
+map_Ns DefaultMaterial_Roughness(1).png
+map_refl DefaultMaterial_Metallic(1).png
+
+newmtl Материал.007
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd DefaultMaterial_Base_Color(3).png
+map_Ns DefaultMaterial_Roughness(3).png
+map_refl DefaultMaterial_Metallic(3).png
+
+newmtl Материал.008
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd DefaultMaterial_Base_Color(4).png
+
+newmtl Материал.009
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd DefaultMaterial_Base_Color.png
+map_Ns DefaultMaterial_Roughness.png
+map_refl DefaultMaterial_Metallic.png
+
+newmtl Материал.010
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd DefaultMaterial_Base_Color(5).png
+map_Ns DefaultMaterial_Roughness(5).png
+map_refl DefaultMaterial_Metallic(5).png
+
+newmtl Материал.011
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd DefaultMaterial_Base_Color(1).png
+map_Ns DefaultMaterial_Roughness(1).png
+map_refl DefaultMaterial_Metallic(1).png
+
+newmtl Материал.012
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd DefaultMaterial_Base_Color(5).png
+map_Ns DefaultMaterial_Roughness(5).png
+map_refl DefaultMaterial_Metallic(5).png
+
+newmtl Материал.013
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd DefaultMaterial_Base_Color(2).png
+map_Ns DefaultMaterial_Roughness(2).png
+map_refl DefaultMaterial_Metallic(2).png
