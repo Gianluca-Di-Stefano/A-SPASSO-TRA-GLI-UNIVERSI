@@ -12,13 +12,13 @@ illum 1
 map_Kd black.jpg
 
 newmtl Blackhole_ring2
-Ns 20.000006
 Ka 1.000000 1.000000 1.000000
 Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 illum 1
-map_Kd ring_diff_B.jpg
-map_Ke C:/Users/lucar/Downloads/blackhole(1)/textures/ring_clouds_A.jpg
+map_Kd diffuse.jpg
+map_Ns roughness.jpg
 map_d ring_opa.jpg
 
 newmtl Blackhole_skin

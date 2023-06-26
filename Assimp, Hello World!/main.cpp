@@ -86,7 +86,7 @@ int main()
 
     // load models
     // -----------
-    Model spaceShuttle("resources/objects/interstellar/spaceship/endurance_rangerone.obj");
+    Model spaceShuttle("resources/objects/universo/spaceship/rocket.obj");
     std::vector<glm::vec3> objectPositions;
     objectPositions.push_back(glm::vec3(-3.0, -0.5, -3.0));
     //COMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO(SOSTITUSCE IL SOLE)
@@ -197,18 +197,18 @@ int main()
         shaderGeometryPass.setMat4("view", view);
         modelSpaceShuttle = glm::mat4(1.0f);
         modelSpaceShuttle = glm::translate(modelSpaceShuttle, glm::vec3(1.0f));
-        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.1f));
+        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.01f));
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
         spaceShuttle.Draw(shaderGeometryPass);
 
         glm::mat4 modelSole = glm::mat4(1.0f);
-        modelSole = glm::scale(modelSole, glm::vec3(0.1f));
+        modelSole = glm::scale(modelSole, glm::vec3(10.1f));
         shaderGeometryPass.setMat4("model", modelSole);
         sole.Draw(shaderGeometryPass);
 
         glm::mat4 modelTerra = glm::mat4(1.0f);
-        modelTerra = glm::translate(modelTerra, glm::vec3(10.0f));
-        modelTerra = glm::scale(modelTerra, glm::vec3(0.01f));
+        modelTerra = glm::translate(modelTerra, glm::vec3(2.0f));
+        modelTerra = glm::scale(modelTerra, glm::vec3(0.001f));
         shaderGeometryPass.setMat4("model", modelTerra);
         terra.Draw(shaderGeometryPass);
 
