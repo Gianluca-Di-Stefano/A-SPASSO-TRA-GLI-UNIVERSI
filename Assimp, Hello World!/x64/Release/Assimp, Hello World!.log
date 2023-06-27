@@ -18,9 +18,9 @@ C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\m
 C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(435,13): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
 C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(444,31): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
   Generazione codice in corso...
-  2 of 845 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+  1 of 845 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    14 functions had inline decision re-evaluated but remain unchanged
+    8 functions had inline decision re-evaluated but remain unchanged
   Generazione codice terminata
   Assimp, Hello World!.vcxproj -> C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Release\Deferred Shading Volumes.exe
           1 file copiati.

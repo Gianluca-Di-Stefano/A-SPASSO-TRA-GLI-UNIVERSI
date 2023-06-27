@@ -92,7 +92,7 @@ int main()
     //COMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO(SOSTITUSCE IL SOLE)
     //Model sole("resources/objects/universo/planets/sole/sole.obj");
     //DECOMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO (SOSTITUSCE IL SOLE)
-    Model sole("resources/objects/interstellar/planets/gargantua/gargantua.obj");
+    Model sole("resources/objects/interstellar/planets/tesseract/scene.gltf");
     Model terra("resources/objects/universo/planets/terra/terra.obj");
 
 
@@ -202,7 +202,7 @@ int main()
         spaceShuttle.Draw(shaderGeometryPass);
 
         glm::mat4 modelSole = glm::mat4(1.0f);
-        modelSole = glm::scale(modelSole, glm::vec3(10.1f));
+        modelSole = glm::scale(modelSole, glm::vec3(0.1f));
         shaderGeometryPass.setMat4("model", modelSole);
         sole.Draw(shaderGeometryPass);
 
