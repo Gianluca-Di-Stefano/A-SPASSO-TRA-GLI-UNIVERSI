@@ -92,7 +92,7 @@ int main()
     //COMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO(SOSTITUSCE IL SOLE)
     //Model sole("resources/objects/universo/planets/sole/sole.obj");
     //DECOMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO (SOSTITUSCE IL SOLE)
-    Model sole("resources/objects/interstellar/planets/tesseract/scene.gltf");
+    Model sole("resources/objects/interstellar/planets/gargantua/gargantua.obj");
     Model terra("resources/objects/universo/planets/terra/terra.obj");
 
 
@@ -139,10 +139,10 @@ int main()
 
     // lighting info
     // -------------
-    const unsigned int NR_LIGHTS = 100;
+    const unsigned int NR_LIGHTS = 600;
     std::vector<glm::vec3> lightPositions;
     std::vector<glm::vec3> lightColors;
-    srand(10);
+    srand(100);
     for (unsigned int i = 0; i < NR_LIGHTS; i++)
     {
         // calculate slightly random offsets
@@ -154,7 +154,7 @@ int main()
         float rColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
         float gColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
         float bColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
-        lightColors.push_back(glm::vec3(rColor, gColor, bColor));
+        lightColors.push_back(glm::vec3(1, 1, 1));
     }
 
     // shader configuration
@@ -202,7 +202,7 @@ int main()
         spaceShuttle.Draw(shaderGeometryPass);
 
         glm::mat4 modelSole = glm::mat4(1.0f);
-        modelSole = glm::scale(modelSole, glm::vec3(0.1f));
+        modelSole = glm::scale(modelSole, glm::vec3(0.01f));
         shaderGeometryPass.setMat4("model", modelSole);
         sole.Draw(shaderGeometryPass);
 
