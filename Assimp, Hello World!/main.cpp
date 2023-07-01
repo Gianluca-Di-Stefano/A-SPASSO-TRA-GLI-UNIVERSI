@@ -81,19 +81,19 @@ int main()
     // build and compile shaders
     // -------------------------
     Shader shaderGeometryPass("g_buffer.vs", "g_buffer.fs");
-    Shader shaderLightingPass("deferred_shading.vs", "deferred_shading.fs");
+    Shader shaderLightingPass("deferred_shading_toon.vs", "deferred_shading_toon.fs");
     Shader shaderLightBox("deferred_light_box.vs", "deferred_light_box.fs");
 
     // load models
     // -----------
-    Model spaceShuttle("resources/objects/universo/spaceship/rocket.obj");
+    Model spaceShuttle("resources/objects/futurama/spaceship/planetexpress.obj");
     std::vector<glm::vec3> objectPositions;
     objectPositions.push_back(glm::vec3(-3.0, -0.5, -3.0));
     //COMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO(SOSTITUSCE IL SOLE)
     //Model sole("resources/objects/universo/planets/sole/sole.obj");
     //DECOMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO (SOSTITUSCE IL SOLE)
-    Model sole("resources/objects/interstellar/planets/gargantua/gargantua.obj");
-    Model terra("resources/objects/universo/planets/terra/terra.obj");
+    Model sole("resources/objects/futurama/planets/neardeath/neardeath.obj");
+    Model terra("resources/objects/futurama/planets/wormulon/wormulon.obj");
 
 
     // configure g-buffer framebuffer
@@ -197,7 +197,7 @@ int main()
         shaderGeometryPass.setMat4("view", view);
         modelSpaceShuttle = glm::mat4(1.0f);
         modelSpaceShuttle = glm::translate(modelSpaceShuttle, glm::vec3(1.0f));
-        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.01f));
+        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.001f));
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
         spaceShuttle.Draw(shaderGeometryPass);
 
@@ -208,7 +208,7 @@ int main()
 
         glm::mat4 modelTerra = glm::mat4(1.0f);
         modelTerra = glm::translate(modelTerra, glm::vec3(2.0f));
-        modelTerra = glm::scale(modelTerra, glm::vec3(0.001f));
+        modelTerra = glm::scale(modelTerra, glm::vec3(0.01f));
         shaderGeometryPass.setMat4("model", modelTerra);
         terra.Draw(shaderGeometryPass);
 
@@ -257,7 +257,7 @@ int main()
         // depth buffer in another shader stage (or somehow see to match the default framebuffer's internal format with the FBO's internal format).
         glBlitFramebuffer(0, 0, SCR_WIDTH, SCR_HEIGHT, 0, 0, SCR_WIDTH, SCR_HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
+        /*
         // 3. render lights on top of scene eliminare questa parte per togliere i cubi luminosi e lasciare solo la luce
         // --------------------------------
         shaderLightBox.use();
@@ -272,7 +272,7 @@ int main()
             shaderLightBox.setVec3("lightColor", lightColors[i]);
             renderCube();
         }
-
+        */
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------

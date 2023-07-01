@@ -164,6 +164,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="deferred_shading_toon.fs" />
+    <None Include="deferred_shading_toon.vs" />
     <None Include="g_buffer.fs" />
     <None Include="g_buffer.vs" />
     <None Include="deferred_shading.vs" />
