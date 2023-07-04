@@ -191,13 +191,16 @@ int main()
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
         
+
+
         glm::mat4 modelSpaceShuttle = glm::mat4(1.0f);
         shaderGeometryPass.use();
         shaderGeometryPass.setMat4("projection", projection);
         shaderGeometryPass.setMat4("view", view);
         modelSpaceShuttle = glm::mat4(1.0f);
-        modelSpaceShuttle = glm::translate(modelSpaceShuttle, glm::vec3(1.0f));
-        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.001f));
+        modelSpaceShuttle = glm::translate(modelSpaceShuttle, camera.Position + 2.0f * camera.Front);
+        modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.0005f));
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
         spaceShuttle.Draw(shaderGeometryPass);
 
