@@ -28,17 +28,19 @@ void main()
     float Specular = texture(gAlbedoSpec, TexCoords).a;
     
     // then calculate lighting as usual
-    vec3 lighting  = Diffuse * 0.1; // hard-coded ambient component
+    vec3 lighting  = Diffuse * 0.2; // hard-coded ambient component messo a 0.2 anizhce 0.1 per illuminare l'ambiente
     vec3 viewDir  = normalize(viewPos - FragPos);
+    float scale = 5.0; //scala della sfera per aumentare l intensità
+    float radius = 0.08;
     for(int i = 0; i < NR_LIGHTS; ++i)
     {
         // calculate distance between light source and current fragment
-        float distance = length(lights[i].Position - FragPos);
+        float distance = length(lights[i].Position - FragPos)/ lights[i].Radius * radius;
         if(distance < lights[i].Radius)
         {
             // diffuse
             vec3 lightDir = normalize(lights[i].Position - FragPos);
-            vec3 diffuse = max(dot(Normal, lightDir), 0.0) * Diffuse * lights[i].Color;
+            vec3 diffuse = max(dot(Normal, lightDir), 0.0) * Diffuse * lights[i].Color * scale;
             // specular
             vec3 halfwayDir = normalize(lightDir + viewDir);  
             float spec = pow(max(dot(Normal, halfwayDir), 0.0), 16.0);

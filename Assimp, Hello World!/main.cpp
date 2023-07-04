@@ -33,6 +33,76 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
+void renderSphere()
+{
+    static unsigned int sphereVAO = 0;
+    static unsigned int indexCount = 0;
+
+    if (sphereVAO == 0)
+    {
+        glGenVertexArrays(1, &sphereVAO);
+
+        unsigned int vbo, ebo;
+        glGenBuffers(1, &vbo);
+        glGenBuffers(1, &ebo);
+
+        std::vector<glm::vec3> positions;
+        std::vector<unsigned int> indices;
+
+        const unsigned int X_SEGMENTS = 64;
+        const unsigned int Y_SEGMENTS = 64;
+        const float PI = 3.14159265359;
+
+        for (unsigned int y = 0; y <= Y_SEGMENTS; ++y)
+        {
+            for (unsigned int x = 0; x <= X_SEGMENTS; ++x)
+            {
+                float xSegment = (float)x / (float)X_SEGMENTS;
+                float ySegment = (float)y / (float)Y_SEGMENTS;
+                float xPos = std::cos(xSegment * 2.0f * PI) * std::sin(ySegment * PI);
+                float yPos = std::cos(ySegment * PI);
+                float zPos = std::sin(xSegment * 2.0f * PI) * std::sin(ySegment * PI);
+
+                positions.push_back(glm::vec3(xPos, yPos, zPos));
+            }
+        }
+
+        bool oddRow = false;
+        for (unsigned int y = 0; y < Y_SEGMENTS; ++y)
+        {
+            if (!oddRow) // even rows: y == 0, y == 2; and so on
+            {
+                for (unsigned int x = 0; x <= X_SEGMENTS; ++x)
+                {
+                    indices.push_back(y * (X_SEGMENTS + 1) + x);
+                    indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
+                }
+            }
+            else
+            {
+                for (int x = X_SEGMENTS; x >= 0; --x)
+                {
+                    indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
+                    indices.push_back(y * (X_SEGMENTS + 1) + x);
+                }
+            }
+            oddRow = !oddRow;
+        }
+        indexCount = indices.size();
+
+        glBindVertexArray(sphereVAO);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(glm::vec3), &positions[0], GL_STATIC_DRAW);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    }
+
+    glBindVertexArray(sphereVAO);
+    glDrawElements(GL_TRIANGLE_STRIP, indexCount, GL_UNSIGNED_INT, 0);
+}
+
 int main()
 {
     // glfw: initialize and configure
@@ -81,12 +151,12 @@ int main()
     // build and compile shaders
     // -------------------------
     Shader shaderGeometryPass("g_buffer.vs", "g_buffer.fs");
-    Shader shaderLightingPass("deferred_shading_toon.vs", "deferred_shading_toon.fs");
+    Shader shaderLightingPass("deferred_shading.vs", "deferred_shading.fs");
     Shader shaderLightBox("deferred_light_box.vs", "deferred_light_box.fs");
 
     // load models
     // -----------
-    Model spaceShuttle("resources/objects/futurama/spaceship/planetexpress.obj");
+    Model spaceShuttle("resources/objects/futurama/spaceship/rocket.obj");
     std::vector<glm::vec3> objectPositions;
     objectPositions.push_back(glm::vec3(-3.0, -0.5, -3.0));
     //COMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO(SOSTITUSCE IL SOLE)
@@ -139,7 +209,7 @@ int main()
 
     // lighting info
     // -------------
-    const unsigned int NR_LIGHTS = 600;
+    const unsigned int NR_LIGHTS = 1;
     std::vector<glm::vec3> lightPositions;
     std::vector<glm::vec3> lightColors;
     srand(100);
@@ -149,12 +219,12 @@ int main()
         float xPos = ((rand() % 100) / 100.0) * 6.0 - 3.0;
         float yPos = ((rand() % 100) / 100.0) * 6.0 - 4.0;
         float zPos = ((rand() % 100) / 100.0) * 6.0 - 3.0;
-        lightPositions.push_back(glm::vec3(xPos, yPos, zPos));
+        lightPositions.push_back(glm::vec3(80, 80, 20)); //prova posizione sole 
         // also calculate random color
         float rColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
         float gColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
         float bColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
-        lightColors.push_back(glm::vec3(1, 1, 1));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 0.0));
     }
 
     // shader configuration
@@ -180,7 +250,7 @@ int main()
 
         // render
         // ------
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // 1. geometry pass: render scene's geometry/color data into gbuffer
@@ -200,18 +270,18 @@ int main()
         modelSpaceShuttle = glm::mat4(1.0f);
         modelSpaceShuttle = glm::translate(modelSpaceShuttle, camera.Position + 2.0f * camera.Front);
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
-        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.0005f));
+        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.01f));
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
         spaceShuttle.Draw(shaderGeometryPass);
 
         glm::mat4 modelSole = glm::mat4(1.0f);
-        modelSole = glm::scale(modelSole, glm::vec3(0.01f));
+        modelSole = glm::scale(modelSole, glm::vec3(0.1f));
         shaderGeometryPass.setMat4("model", modelSole);
         sole.Draw(shaderGeometryPass);
 
         glm::mat4 modelTerra = glm::mat4(1.0f);
-        modelTerra = glm::translate(modelTerra, glm::vec3(2.0f));
-        modelTerra = glm::scale(modelTerra, glm::vec3(0.01f));
+        modelTerra = glm::translate(modelTerra, glm::vec3(50.0f));
+        modelTerra = glm::scale(modelTerra, glm::vec3(0.1f));
         shaderGeometryPass.setMat4("model", modelTerra);
         terra.Draw(shaderGeometryPass);
 
@@ -260,7 +330,8 @@ int main()
         // depth buffer in another shader stage (or somehow see to match the default framebuffer's internal format with the FBO's internal format).
         glBlitFramebuffer(0, 0, SCR_WIDTH, SCR_HEIGHT, 0, 0, SCR_WIDTH, SCR_HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        /*
+        
+        
         // 3. render lights on top of scene eliminare questa parte per togliere i cubi luminosi e lasciare solo la luce
         // --------------------------------
         shaderLightBox.use();
@@ -270,12 +341,13 @@ int main()
         {
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, lightPositions[i]);
-            model = glm::scale(model, glm::vec3(0.125f));
+            model = glm::scale(model, glm::vec3(10.125f));
             shaderLightBox.setMat4("model", model);
             shaderLightBox.setVec3("lightColor", lightColors[i]);
-            renderCube();
+            //renderCube();
+            renderSphere();
         }
-        */
+        
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
