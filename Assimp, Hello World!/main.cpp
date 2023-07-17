@@ -103,71 +103,32 @@ void renderSphere()
     glDrawElements(GL_TRIANGLE_STRIP, indexCount, GL_UNSIGNED_INT, 0);
 }
 
-int main()
-{
-    // glfw: initialize and configure
-    // ------------------------------
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-#ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-
-    // glfw window creation
-    // --------------------
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Deferred Shading Volumes", NULL, NULL);
-    if (window == NULL)
-    {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetScrollCallback(window, scroll_callback);
-
-    // tell GLFW to capture our mouse
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-    // glad: load all OpenGL function pointers
-    // ---------------------------------------
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cout << "Failed to initialize GLAD" << std::endl;
-        return -1;
-    }
-
-    // tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
-    //stbi_set_flip_vertically_on_load(true);
-
-    // configure global opengl state
-    // -----------------------------
-    glEnable(GL_DEPTH_TEST);
-
+void carica_universo(GLFWwindow* window) {
     // build and compile shaders
-    // -------------------------
     Shader shaderGeometryPass("g_buffer.vs", "g_buffer.fs");
     Shader shaderLightingPass("deferred_shading.vs", "deferred_shading.fs");
     Shader shaderLightBox("deferred_light_box.vs", "deferred_light_box.fs");
 
     // load models
-    // -----------
-    Model spaceShuttle("resources/objects/futurama/spaceship/rocket.obj");
+    Model spaceShuttle("resources/objects/universo/spaceship/rocket.obj");
     std::vector<glm::vec3> objectPositions;
     objectPositions.push_back(glm::vec3(-3.0, -0.5, -3.0));
     //COMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO(SOSTITUSCE IL SOLE)
     //Model sole("resources/objects/universo/planets/sole/sole.obj");
     //DECOMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO (SOSTITUSCE IL SOLE)
-    Model sole("resources/objects/futurama/planets/neardeath/neardeath.obj");
-    Model terra("resources/objects/futurama/planets/wormulon/wormulon.obj");
-
+    Model sole("resources/objects/universo/planets/sole/sole.obj");
+    Model terra("resources/objects/universo/planets/terra/terra.obj");
+    Model giove("resources/objects/universo/planets/giove/giove.obj");
+    Model luna("resources/objects/universo/planets/luna/luna.obj");
+    Model marte("resources/objects/universo/planets/marte/marte.obj");
+    Model mercurio("resources/objects/universo/planets/mercurio/mercurio.obj");
+    Model nettuno("resources/objects/universo/planets/nettuno/nettuno.obj");
+    Model saturno("resources/objects/universo/planets/saturno/saturno.obj");
+    Model urano("resources/objects/universo/planets/urano/urano.obj");
+    Model venere("resources/objects/universo/planets/venere/venere.obj");
 
     // configure g-buffer framebuffer
-    // ------------------------------
+// ------------------------------
     unsigned int gBuffer;
     glGenFramebuffers(1, &gBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
@@ -219,7 +180,7 @@ int main()
         float xPos = ((rand() % 100) / 100.0) * 6.0 - 3.0;
         float yPos = ((rand() % 100) / 100.0) * 6.0 - 4.0;
         float zPos = ((rand() % 100) / 100.0) * 6.0 - 3.0;
-        lightPositions.push_back(glm::vec3(80, 80, 20)); //prova posizione sole 
+        lightPositions.push_back(glm::vec3(0, 0, 0)); //prova posizione sole 
         // also calculate random color
         float rColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
         float gColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
@@ -260,9 +221,9 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
-        
 
 
+        //draw space shuttle
         glm::mat4 modelSpaceShuttle = glm::mat4(1.0f);
         shaderGeometryPass.use();
         shaderGeometryPass.setMat4("projection", projection);
@@ -274,10 +235,24 @@ int main()
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
         spaceShuttle.Draw(shaderGeometryPass);
 
+        // draw solar system
+
         glm::mat4 modelSole = glm::mat4(1.0f);
         modelSole = glm::scale(modelSole, glm::vec3(0.1f));
         shaderGeometryPass.setMat4("model", modelSole);
         sole.Draw(shaderGeometryPass);
+
+        glm::mat4 modelMercurio = glm::mat4(1.0f);
+        modelMercurio = glm::translate(modelMercurio, glm::vec3(10.0f));
+        modelMercurio = glm::scale(modelMercurio, glm::vec3(0.1f));
+        shaderGeometryPass.setMat4("model", modelMercurio);
+        mercurio.Draw(shaderGeometryPass);
+
+        glm::mat4 modelVenere = glm::mat4(1.0f);
+        modelVenere = glm::translate(modelVenere, glm::vec3(30.0f));
+        modelVenere = glm::scale(modelVenere, glm::vec3(0.1f));
+        shaderGeometryPass.setMat4("model", modelVenere);
+        venere.Draw(shaderGeometryPass);
 
         glm::mat4 modelTerra = glm::mat4(1.0f);
         modelTerra = glm::translate(modelTerra, glm::vec3(50.0f));
@@ -285,10 +260,16 @@ int main()
         shaderGeometryPass.setMat4("model", modelTerra);
         terra.Draw(shaderGeometryPass);
 
+        glm::mat4 modelLuna = glm::mat4(1.0f);
+        modelLuna = glm::translate(modelLuna, glm::vec3(60.0f));
+        modelLuna = glm::scale(modelLuna, glm::vec3(0.01f));
+        shaderGeometryPass.setMat4("model", modelLuna);
+        luna.Draw(shaderGeometryPass);
 
 
 
-    
+
+
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         // 2. lighting pass: calculate lighting by iterating over a screen filled quad pixel-by-pixel using the gbuffer's content.
@@ -330,11 +311,11 @@ int main()
         // depth buffer in another shader stage (or somehow see to match the default framebuffer's internal format with the FBO's internal format).
         glBlitFramebuffer(0, 0, SCR_WIDTH, SCR_HEIGHT, 0, 0, SCR_WIDTH, SCR_HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        
-        
+
+
         // 3. render lights on top of scene eliminare questa parte per togliere i cubi luminosi e lasciare solo la luce
         // --------------------------------
-        shaderLightBox.use();
+        /*shaderLightBox.use();
         shaderLightBox.setMat4("projection", projection);
         shaderLightBox.setMat4("view", view);
         for (unsigned int i = 0; i < lightPositions.size(); i++)
@@ -347,7 +328,7 @@ int main()
             //renderCube();
             renderSphere();
         }
-        
+        */
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -356,6 +337,55 @@ int main()
     }
 
     glfwTerminate();
+
+}
+
+int main()
+{
+    // glfw: initialize and configure
+    // ------------------------------
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
+    // glfw window creation
+    // --------------------
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Deferred Shading Volumes", NULL, NULL);
+    if (window == NULL)
+    {
+        std::cout << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
+    glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback);
+
+    // tell GLFW to capture our mouse
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+    // glad: load all OpenGL function pointers
+    // ---------------------------------------
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
+
+    // tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
+    //stbi_set_flip_vertically_on_load(true);
+
+    // configure global opengl state
+    // -----------------------------
+    glEnable(GL_DEPTH_TEST);
+
+    carica_universo(window);
     return 0;
 }
 
