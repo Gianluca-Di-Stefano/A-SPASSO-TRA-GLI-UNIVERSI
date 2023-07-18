@@ -31,7 +31,7 @@ void main()
     vec3 lighting  = Diffuse * 0.2; // hard-coded ambient component messo a 0.2 anizhce 0.1 per illuminare l'ambiente
     vec3 viewDir  = normalize(viewPos - FragPos);
     float scale = 5.0; //scala della sfera per aumentare l intensità
-    float radius = 0.08;
+    float radius = 0.05;
     for(int i = 0; i < NR_LIGHTS; ++i)
     {
         // calculate distance between light source and current fragment

@@ -173,6 +173,8 @@
     <None Include="packages.config" />
     <None Include="deferred_light_box.vs" />
     <None Include="deferred_light_box.fs" />
+    <None Include="skybox.fs" />
+    <None Include="skybox.vs" />
     <None Include="text.fs" />
     <None Include="text.vs" />
   </ItemGroup>
