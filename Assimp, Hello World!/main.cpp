@@ -309,14 +309,14 @@ void carica_universo(GLFWwindow* window) {
         float rColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
         float gColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
         float bColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
-        lightColors.push_back(glm::vec3(1.0, 1.0, 0.0));
-        lightColors.push_back(glm::vec3(1.0, 1.0, 0.0));
-        lightColors.push_back(glm::vec3(1.0, 1.0, 0.0));
-        lightColors.push_back(glm::vec3(1.0, 1.0, 0.0));
-        lightColors.push_back(glm::vec3(1.0, 1.0, 0.0));
-        lightColors.push_back(glm::vec3(1.0, 1.0, 0.0));
-        lightColors.push_back(glm::vec3(1.0, 1.0, 0.0));
-        lightColors.push_back(glm::vec3(1.0, 1.0, 0.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
     }
 
     // shader configuration
@@ -622,15 +622,17 @@ void carica_futurama(GLFWwindow* window) {
     //Model sole("resources/objects/universo/planets/sole/sole.obj");
     //DECOMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO (SOSTITUSCE IL SOLE)
     Model sole("resources/objects/universo/planets/sole/sole.obj");
-    Model terra("resources/objects/universo/planets/terra/terra.obj");
-    Model giove("resources/objects/universo/planets/giove/giove.obj");
-    Model luna("resources/objects/universo/planets/luna/luna.obj");
-    Model marte("resources/objects/universo/planets/marte/marte.obj");
-    Model mercurio("resources/objects/universo/planets/mercurio/mercurio.obj");
-    Model nettuno("resources/objects/universo/planets/nettuno/nettuno.obj");
-    Model saturno("resources/objects/universo/planets/saturno/saturno.obj");
-    Model urano("resources/objects/universo/planets/urano/urano.obj");
-    Model venere("resources/objects/universo/planets/venere/venere.obj");
+    Model terra("resources/objects/futurama/planets/terra/terra.obj");
+    Model luna("resources/objects/futurama/planets/luna/luna.obj");
+    Model marte("resources/objects/futurama/planets/marte/marte.obj");
+    Model bendergod("resources/objects/futurama/planets/bender_god/bender_god.obj");
+    Model decapod("resources/objects/futurama/planets/decapod/decapod.obj");
+    Model neardeath("resources/objects/futurama/planets/neardeath/neardeath.obj");
+    Model omicron("resources/objects/futurama/planets/omicron/omicron.obj");
+    Model simian("resources/objects/futurama/planets/simian/simian.obj");
+    Model thunban("resources/objects/futurama/planets/thunban/thunban.obj");
+    Model tornadus("resources/objects/futurama/planets/tornadus/tornadus.obj");
+    Model wormulon("resources/objects/futurama/planets/wormulon/wormulon.obj");
 
     // configure g-buffer framebuffer
 // ------------------------------
@@ -697,14 +699,14 @@ void carica_futurama(GLFWwindow* window) {
         float rColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
         float gColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
         float bColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
-        lightColors.push_back(glm::vec3(1.0, 1.0, 0.0));
-        lightColors.push_back(glm::vec3(1.0, 1.0, 0.0));
-        lightColors.push_back(glm::vec3(1.0, 1.0, 0.0));
-        lightColors.push_back(glm::vec3(1.0, 1.0, 0.0));
-        lightColors.push_back(glm::vec3(1.0, 1.0, 0.0));
-        lightColors.push_back(glm::vec3(1.0, 1.0, 0.0));
-        lightColors.push_back(glm::vec3(1.0, 1.0, 0.0));
-        lightColors.push_back(glm::vec3(1.0, 1.0, 0.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
     }
 
     // shader configuration
@@ -738,7 +740,7 @@ void carica_futurama(GLFWwindow* window) {
         // -----------------------------------------------------------------
         glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100000.0f);
         glm::mat4 view = camera.GetViewMatrix();
 
 
@@ -761,17 +763,18 @@ void carica_futurama(GLFWwindow* window) {
         shaderGeometryPass.setMat4("model", modelSole);
         sole.Draw(shaderGeometryPass);
 
-        glm::mat4 modelMercurio = glm::mat4(1.0f);
-        modelMercurio = glm::translate(modelMercurio, glm::vec3(300.0f, 0.0f, 0.0f));
-        modelMercurio = glm::scale(modelMercurio, glm::vec3(3.4f / 1000.0f));
-        shaderGeometryPass.setMat4("model", modelMercurio);
-        mercurio.Draw(shaderGeometryPass);
+        glm::mat4 modelBenderGod = glm::mat4(1.0f);
+        modelBenderGod = glm::translate(modelBenderGod, glm::vec3(0.0f, 0.0f, 300.0f));
+        modelBenderGod = glm::rotate(modelBenderGod, 180.0f, glm::vec3(0.0f, -1.0f, 0.0f));
+        modelBenderGod = glm::scale(modelBenderGod, glm::vec3(1.0f / 10.0f));
+        shaderGeometryPass.setMat4("model", modelBenderGod);
+        bendergod.Draw(shaderGeometryPass);
 
-        glm::mat4 modelVenere = glm::mat4(1.0f);
-        modelVenere = glm::translate(modelVenere, glm::vec3(0.0f, 0.0f, 400.0f));
-        modelVenere = glm::scale(modelVenere, glm::vec3(8.6f / 1000.0f));
-        shaderGeometryPass.setMat4("model", modelVenere);
-        venere.Draw(shaderGeometryPass);
+        glm::mat4 modelDecapod = glm::mat4(1.0f);
+        modelDecapod = glm::translate(modelDecapod, glm::vec3(0.0f, 0.0f, 400.0f));
+        modelDecapod = glm::scale(modelDecapod, glm::vec3(8.6f / 1000.0f));
+        shaderGeometryPass.setMat4("model", modelDecapod);
+        decapod.Draw(shaderGeometryPass);
 
         glm::mat4 modelTerra = glm::mat4(1.0f);
         modelTerra = glm::translate(modelTerra, glm::vec3(-500.0f, 0.0f, 0.0f));
@@ -785,29 +788,49 @@ void carica_futurama(GLFWwindow* window) {
         shaderGeometryPass.setMat4("model", modelLuna);
         luna.Draw(shaderGeometryPass);
 
-        glm::mat4 modelGiove = glm::mat4(1.0f);
-        modelGiove = glm::translate(modelGiove, glm::vec3(700.0f, 0.0f, 0.0f));
-        modelGiove = glm::scale(modelGiove, glm::vec3(102.7f / 1000));
-        shaderGeometryPass.setMat4("model", modelGiove);
-        giove.Draw(shaderGeometryPass);
+        glm::mat4 modelMarte = glm::mat4(1.0f);
+        modelMarte = glm::translate(modelMarte, glm::vec3(0.0f, 0.0f, -600.0f));
+        modelMarte = glm::scale(modelMarte, glm::vec3(2.0f / 1000));
+        shaderGeometryPass.setMat4("model", modelMarte);
+        marte.Draw(shaderGeometryPass);
 
-        glm::mat4 modelSaturno = glm::mat4(1.0f);
-        modelSaturno = glm::translate(modelSaturno, glm::vec3(0.0f, 0.0f, 800.0f));
-        modelSaturno = glm::scale(modelSaturno, glm::vec3(83.7f / 1000));
-        shaderGeometryPass.setMat4("model", modelSaturno);
-        saturno.Draw(shaderGeometryPass);
+        glm::mat4 modelWormulon = glm::mat4(1.0f);
+        modelWormulon = glm::translate(modelWormulon, glm::vec3(0.0f, 0.0f, -400.0f));
+        modelWormulon = glm::scale(modelWormulon, glm::vec3(10.0f / 1000));
+        marteSphere = { glm::vec3(0.0f, 0.0f, -400.0f), 7.6f };
+        shaderGeometryPass.setMat4("model", modelWormulon);
+        wormulon.Draw(shaderGeometryPass);
 
-        glm::mat4 modelUrano = glm::mat4(1.0f);
-        modelUrano = glm::translate(modelUrano, glm::vec3(-900.0f, 0.0f, 0.0f));
-        modelUrano = glm::scale(modelUrano, glm::vec3(33.7f / 1000));
-        shaderGeometryPass.setMat4("model", modelUrano);
-        urano.Draw(shaderGeometryPass);
+        glm::mat4 modelNeardeath = glm::mat4(1.0f);
+        modelNeardeath = glm::translate(modelNeardeath, glm::vec3(700.0f, 0.0f, 0.0f));
+        modelNeardeath = glm::scale(modelNeardeath, glm::vec3(102.7f / 1000));
+        shaderGeometryPass.setMat4("model", modelNeardeath);
+        neardeath.Draw(shaderGeometryPass);
 
-        glm::mat4 modelNettuno = glm::mat4(1.0f);
-        modelNettuno = glm::translate(modelNettuno, glm::vec3(-950.0f, 0.0f, 0.0f));
-        modelNettuno = glm::scale(modelNettuno, glm::vec3(32.7f / 1000));
-        shaderGeometryPass.setMat4("model", modelNettuno);
-        nettuno.Draw(shaderGeometryPass);
+        glm::mat4 modelOmicron = glm::mat4(1.0f);
+        modelOmicron = glm::translate(modelOmicron, glm::vec3(0.0f, 0.0f, 800.0f));
+        modelOmicron = glm::scale(modelOmicron, glm::vec3(83.7f / 1000));
+        shaderGeometryPass.setMat4("model", modelOmicron);
+        omicron.Draw(shaderGeometryPass);
+
+        glm::mat4 modelSimian = glm::mat4(1.0f);
+        modelSimian = glm::translate(modelSimian, glm::vec3(-900.0f, 0.0f, 0.0f));
+        modelSimian = glm::scale(modelSimian, glm::vec3(33.7f / 1000));
+        shaderGeometryPass.setMat4("model", modelSimian);
+        simian.Draw(shaderGeometryPass);
+
+        glm::mat4 modelThunban = glm::mat4(1.0f);
+        modelThunban = glm::translate(modelThunban, glm::vec3(-950.0f, 0.0f, 0.0f));
+        modelThunban = glm::scale(modelThunban, glm::vec3(32.7f / 1000));
+        shaderGeometryPass.setMat4("model", modelThunban);
+        thunban.Draw(shaderGeometryPass);
+
+        glm::mat4 modelTornadus = glm::mat4(1.0f);
+        modelTornadus = glm::translate(modelTornadus, glm::vec3(-950.0f, 0.0f, 0.0f));
+        modelTornadus = glm::scale(modelTornadus, glm::vec3(32.7f / 1000));
+        shaderGeometryPass.setMat4("model", modelTornadus);
+        tornadus.Draw(shaderGeometryPass);
+
 
 
 
@@ -935,7 +958,7 @@ int main()
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
 
-    carica_universo(window);
+    carica_futurama(window);
 
     return 0;
 }

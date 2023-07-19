@@ -34,32 +34,22 @@ void main()
     // then calculate lighting as usual
     vec3 lighting = Diffuse * 0.1; // hard-coded ambient component
     vec3 viewDir = normalize(viewPos - FragPos);
+    float scale = 1.0; //scala della sfera per aumentare l intensità
+    float radius = 0.05;
     for(int i = 0; i < NR_LIGHTS; ++i)
     {
         // calculate distance between light source and current fragment
-        float distance = length(lights[i].Position - FragPos);
+        float distance = length(lights[i].Position - FragPos)/ lights[i].Radius * radius;
         if(distance < lights[i].Radius)
         {
             // diffuse
             vec3 lightDir = normalize(lights[i].Position - FragPos);
 
-            float diffuseLevel = max(dot(Normal, lightDir), 0.0);
-            if (diffuseLevel > 0.8)
-                diffuseLevel = 1.0;
-            else if (diffuseLevel > 0.6)
-                diffuseLevel = 0.8;
-            else if (diffuseLevel > 0.4)
-                diffuseLevel = 0.6;
-            else if (diffuseLevel > 0.2)
-                diffuseLevel = 0.4;
-            else
-                diffuseLevel = 0.2;
-
-            vec3 toonDiffuse = diffuseLevel * Diffuse * lights[i].Color;
+            vec3 toonDiffuse = max(dot(Normal, lightDir), 0.0) * Diffuse * lights[i].Color * scale;
 
             // specular
             vec3 halfwayDir = normalize(lightDir + viewDir);
-            float spec = pow(max(dot(Normal, halfwayDir), 0.0), 20.0);
+            float spec = pow(max(dot(Normal, halfwayDir), 0.0), 16.0);
             float specularLevel = spec; // puoi quantizzare il valore speculare come desideri
             vec3 toonSpecular = specularLevel * Specular * lights[i].Color;
 

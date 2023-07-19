@@ -28,9 +28,9 @@ void main()
     float Specular = texture(gAlbedoSpec, TexCoords).a;
     
     // then calculate lighting as usual
-    vec3 lighting  = Diffuse * 0.2; // hard-coded ambient component messo a 0.2 anizhce 0.1 per illuminare l'ambiente
+    vec3 lighting  = Diffuse * 0.1; // hard-coded ambient component messo a 0.2 anizhce 0.1 per illuminare l'ambiente
     vec3 viewDir  = normalize(viewPos - FragPos);
-    float scale = 5.0; //scala della sfera per aumentare l intensità
+    float scale = 1.0; //scala della sfera per aumentare l intensità
     float radius = 0.05;
     for(int i = 0; i < NR_LIGHTS; ++i)
     {
