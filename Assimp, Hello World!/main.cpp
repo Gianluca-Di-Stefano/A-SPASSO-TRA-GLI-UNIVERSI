@@ -19,6 +19,12 @@ void processInput(GLFWwindow* window);
 unsigned int loadTexture(const char* path, bool gammaCorrection);
 void renderQuad();
 void renderCube();
+void carica_universo(GLFWwindow* window);
+void carica_futurama(GLFWwindow* window);
+void carica_interstellar(GLFWwindow* window);
+
+bool futurama_caricato = false;
+bool interstellar_caricato = false;
 
 unsigned int loadTexture(char const* path)
 {
@@ -215,7 +221,7 @@ void renderSphere()
     glDrawElements(GL_TRIANGLE_STRIP, indexCount, GL_UNSIGNED_INT, 0);
 }
 
-void carica_interstellar(GLFWwindow* window) {
+void carica_universo(GLFWwindow* window) {
     // build and compile shaders
     Shader shaderGeometryPass("g_buffer.vs", "g_buffer.fs");
     Shader shaderLightingPass("deferred_shading.vs", "deferred_shading.fs");
@@ -223,7 +229,7 @@ void carica_interstellar(GLFWwindow* window) {
     Shader skyboxShader("skybox.vs", "skybox.fs");
 
     // load models
-    Model spaceShuttle("resources/objects/interstellar/spaceship/rocket.obj");
+    Model spaceShuttle("resources/objects/universo/spaceship/rocket.obj");
     std::vector<glm::vec3> objectPositions;
     objectPositions.push_back(glm::vec3(-3.0, -0.5, -3.0));
     //COMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO(SOSTITUSCE IL SOLE)
@@ -240,7 +246,7 @@ void carica_interstellar(GLFWwindow* window) {
     Model urano("resources/objects/universo/planets/urano/urano.obj");
     Model venere("resources/objects/universo/planets/venere/venere.obj");
     Model portalFuturama("resources/objects/portal/portal.obj");
-    Model portalUniverso("resources/objects/portal/portal.obj");
+    Model portalInterstellar("resources/objects/portal/portal.obj");
 
 
     // cube VAO
@@ -344,8 +350,8 @@ void carica_interstellar(GLFWwindow* window) {
     // -----------
     while (!glfwWindowShouldClose(window))
     {
-        std::cout << "Contatore portale: " << contatorePortali << std::endl;
 
+        std::cout << "Contatore portale: " << contatorePortali << std::endl;
 
         // per-frame time logic
         // --------------------
@@ -457,17 +463,17 @@ void carica_interstellar(GLFWwindow* window) {
         modelPortalFuturama = glm::translate(modelPortalFuturama, glm::vec3(200.0f, 0.0f, 0.0f));
         modelPortalFuturama = glm::rotate(modelPortalFuturama, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
         modelPortalFuturama = glm::scale(modelPortalFuturama, glm::vec3(15.7f));
-        portalInterstellarSphere = { glm::vec3(200.0f, 0.0f, 0.0f), 30.0f };
+        portalFuturamaSphere = { glm::vec3(200.0f, 0.0f, 0.0f), 10.0f };
         shaderGeometryPass.setMat4("model", modelPortalFuturama);
         portalFuturama.Draw(shaderGeometryPass);
 
-        glm::mat4 modelPortalUniverso = glm::mat4(1.0f);
-        modelPortalUniverso = glm::translate(modelPortalUniverso, glm::vec3(-200.0f, 0.0f, 0.0f));
-        modelPortalUniverso = glm::rotate(modelPortalUniverso, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-        modelPortalUniverso = glm::scale(modelPortalUniverso, glm::vec3(15.7f));
-        portalUniversoSphere = { glm::vec3(-200.0f, 0.0f, 0.0f), 30.0f };
-        shaderGeometryPass.setMat4("model", modelPortalUniverso);
-        portalUniverso.Draw(shaderGeometryPass);
+        glm::mat4 modelPortalInterstellar = glm::mat4(1.0f);
+        modelPortalInterstellar = glm::translate(modelPortalInterstellar, glm::vec3(-200.0f, 0.0f, 0.0f));
+        modelPortalInterstellar = glm::rotate(modelPortalInterstellar, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+        modelPortalInterstellar = glm::scale(modelPortalInterstellar, glm::vec3(15.7f));
+        portalInterstellarSphere = { glm::vec3(-200.0f, 0.0f, 0.0f), 30.0f };
+        shaderGeometryPass.setMat4("model", modelPortalInterstellar);
+        portalInterstellar.Draw(shaderGeometryPass);
 
         //collisioni
         cameraCollided = false;
@@ -546,15 +552,17 @@ void carica_interstellar(GLFWwindow* window) {
         bool collisionePortalFuturama = collisionTest(spaceshipSphere, portalFuturamaSphere);
         if (collisionePortalFuturama == true) {
             std::string Title = "TELETRANSPORT TO FUTURAMA";
-            RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
             contatorePortali = 1;
+            carica_futurama(window);
+            RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
         }
 
         bool collisionePortalInterstellar = collisionTest(spaceshipSphere, portalInterstellarSphere);
         if (collisionePortalInterstellar == true) {
             std::string Title = "TELETRANSPORT TO INTERSTELLAR";
-            RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
             contatorePortali = 2;
+            carica_interstellar(window);
+            RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
         }
 
         // draw skybox cube
@@ -886,29 +894,36 @@ void carica_futurama(GLFWwindow* window) {
 
         //draw portal
         glm::mat4 modelPortalUniverso = glm::mat4(1.0f);
-        modelPortalUniverso = glm::translate(modelPortalUniverso, glm::vec3(200.0f, 0.0f, 0.0f));
+        modelPortalUniverso = glm::translate(modelPortalUniverso, glm::vec3(300.0f, 0.0f, 0.0f));
         modelPortalUniverso = glm::rotate(modelPortalUniverso, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
         modelPortalUniverso = glm::scale(modelPortalUniverso, glm::vec3(15.7f));
-        portalUniversoSphere = { glm::vec3(200.0f, 0.0f, 0.0f), 30.0f };
+        portalUniversoSphere = { glm::vec3(300.0f, 0.0f, 0.0f), 30.0f };
         shaderGeometryPass.setMat4("model", modelPortalUniverso);
         portalUniverso.Draw(shaderGeometryPass);
 
         glm::mat4 modelPortalInterstellar = glm::mat4(1.0f);
-        modelPortalInterstellar = glm::translate(modelPortalInterstellar, glm::vec3(-200.0f, 0.0f, 0.0f));
+        modelPortalInterstellar = glm::translate(modelPortalInterstellar, glm::vec3(-300.0f, 0.0f, 0.0f));
         modelPortalInterstellar = glm::rotate(modelPortalInterstellar, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
         modelPortalInterstellar = glm::scale(modelPortalInterstellar, glm::vec3(15.7f));
-        portalInterstellarSphere = { glm::vec3(-200.0f, 0.0f, 0.0f), 30.0f };
+        portalInterstellarSphere = { glm::vec3(-300.0f, 0.0f, 0.0f), 30.0f };
         shaderGeometryPass.setMat4("model", modelPortalInterstellar);
         portalInterstellar.Draw(shaderGeometryPass);
 
+        bool collisionePortalUniverso = collisionTest(spaceshipSphere, portalUniversoSphere);
+        if (collisionePortalUniverso == true) {
+            std::string Title = "TELETRANSPORT TO UNIVERSE";
+            RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            carica_universo(window);
+            contatorePortali = 0;
+        }
 
-
-
-
-
-
-
-
+        bool collisionePortalInterstellar = collisionTest(spaceshipSphere, portalInterstellarSphere);
+        if (collisionePortalInterstellar == true) {
+            std::string Title = "TELETRANSPORT TO INTERSTELLAR";
+            RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            carica_interstellar(window);
+            contatorePortali = 2;
+        }
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -981,15 +996,15 @@ void carica_futurama(GLFWwindow* window) {
 
 }
 
-void carica_universo(GLFWwindow* window) {
+void carica_interstellar(GLFWwindow* window) {
     // build and compile shaders
     Shader shaderGeometryPass("g_buffer.vs", "g_buffer.fs");
     Shader shaderLightingPass("deferred_shading.vs", "deferred_shading.fs");
     Shader shaderLightBox("deferred_light_box.vs", "deferred_light_box.fs");
     Shader skyboxShader("skybox.vs", "skybox.fs");
-    
+
     // load models
-    Model spaceShuttle("resources/objects/universo/spaceship/rocket.obj");
+    Model spaceShuttle("resources/objects/interstellar/spaceship/rocket.obj");
     std::vector<glm::vec3> objectPositions;
     objectPositions.push_back(glm::vec3(-3.0, -0.5, -3.0));
     //COMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO(SOSTITUSCE IL SOLE)
@@ -1006,7 +1021,7 @@ void carica_universo(GLFWwindow* window) {
     Model urano("resources/objects/universo/planets/urano/urano.obj");
     Model venere("resources/objects/universo/planets/venere/venere.obj");
     Model portalFuturama("resources/objects/portal/portal.obj");
-    Model portalInterstellar("resources/objects/portal/portal.obj");
+    Model portalUniverso("resources/objects/portal/portal.obj");
 
 
     // cube VAO
@@ -1110,8 +1125,8 @@ void carica_universo(GLFWwindow* window) {
     // -----------
     while (!glfwWindowShouldClose(window))
     {
-
         std::cout << "Contatore portale: " << contatorePortali << std::endl;
+
 
         // per-frame time logic
         // --------------------
@@ -1158,28 +1173,28 @@ void carica_universo(GLFWwindow* window) {
 
         glm::mat4 modelMercurio = glm::mat4(1.0f);
         modelMercurio = glm::translate(modelMercurio, glm::vec3(300.0f, 0.0f, 0.0f));
-        modelMercurio = glm::scale(modelMercurio, glm::vec3(3.4f/1000.0f));
+        modelMercurio = glm::scale(modelMercurio, glm::vec3(3.4f / 1000.0f));
         mercurioSphere = { glm::vec3(300.0f, 0.0f, 0.0f), 5.0f };
         shaderGeometryPass.setMat4("model", modelMercurio);
         mercurio.Draw(shaderGeometryPass);
 
         glm::mat4 modelVenere = glm::mat4(1.0f);
         modelVenere = glm::translate(modelVenere, glm::vec3(0.0f, 0.0f, 400.0f));
-        modelVenere = glm::scale(modelVenere, glm::vec3(8.6f/1000.0f));
+        modelVenere = glm::scale(modelVenere, glm::vec3(8.6f / 1000.0f));
         venereSphere = { glm::vec3(0.0f, 0.0f, 400.0f), 10.0f };
         shaderGeometryPass.setMat4("model", modelVenere);
         venere.Draw(shaderGeometryPass);
 
         glm::mat4 modelTerra = glm::mat4(1.0f);
         modelTerra = glm::translate(modelTerra, glm::vec3(-500.0f, 0.0f, 0.0f));
-        modelTerra = glm::scale(modelTerra, glm::vec3(9.1f/1000));
+        modelTerra = glm::scale(modelTerra, glm::vec3(9.1f / 1000));
         terraSphere = { glm::vec3(-500.0f, 0.0f, 0.0f), 10.0f };
         shaderGeometryPass.setMat4("model", modelTerra);
         terra.Draw(shaderGeometryPass);
 
         glm::mat4 modelLuna = glm::mat4(1.0f);
         modelLuna = glm::translate(modelLuna, glm::vec3(-510.0f, 0.0f, 0.0f));
-        modelLuna = glm::scale(modelLuna, glm::vec3(2.0f/1000));
+        modelLuna = glm::scale(modelLuna, glm::vec3(2.0f / 1000));
         shaderGeometryPass.setMat4("model", modelLuna);
         luna.Draw(shaderGeometryPass);
 
@@ -1220,20 +1235,20 @@ void carica_universo(GLFWwindow* window) {
 
         //draw portal
         glm::mat4 modelPortalFuturama = glm::mat4(1.0f);
-        modelPortalFuturama = glm::translate(modelPortalFuturama, glm::vec3(200.0f, 0.0f, 0.0f));
+        modelPortalFuturama = glm::translate(modelPortalFuturama, glm::vec3(200.0f, 0.0f, 100.0f));
         modelPortalFuturama = glm::rotate(modelPortalFuturama, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
         modelPortalFuturama = glm::scale(modelPortalFuturama, glm::vec3(15.7f));
-        portalFuturamaSphere = { glm::vec3(200.0f, 0.0f, 0.0f), 10.0f };
+        portalFuturamaSphere = { glm::vec3(200.0f, 0.0f, 100.0f), 30.0f };
         shaderGeometryPass.setMat4("model", modelPortalFuturama);
         portalFuturama.Draw(shaderGeometryPass);
 
-        glm::mat4 modelPortalInterstellar = glm::mat4(1.0f);
-        modelPortalInterstellar = glm::translate(modelPortalInterstellar, glm::vec3(-200.0f, 0.0f, 0.0f));
-        modelPortalInterstellar = glm::rotate(modelPortalInterstellar, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-        modelPortalInterstellar = glm::scale(modelPortalInterstellar, glm::vec3(15.7f));
-        portalInterstellarSphere = { glm::vec3(-200.0f, 0.0f, 0.0f), 30.0f };
-        shaderGeometryPass.setMat4("model", modelPortalInterstellar);
-        portalInterstellar.Draw(shaderGeometryPass);
+        glm::mat4 modelPortalUniverso = glm::mat4(1.0f);
+        modelPortalUniverso = glm::translate(modelPortalUniverso, glm::vec3(-200.0f, 0.0f, 100.0f));
+        modelPortalUniverso = glm::rotate(modelPortalUniverso, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+        modelPortalUniverso = glm::scale(modelPortalUniverso, glm::vec3(15.7f));
+        portalUniversoSphere = { glm::vec3(-200.0f, 0.0f, 100.0f), 30.0f };
+        shaderGeometryPass.setMat4("model", modelPortalUniverso);
+        portalUniverso.Draw(shaderGeometryPass);
 
         //collisioni
         cameraCollided = false;
@@ -1312,17 +1327,19 @@ void carica_universo(GLFWwindow* window) {
         bool collisionePortalFuturama = collisionTest(spaceshipSphere, portalFuturamaSphere);
         if (collisionePortalFuturama == true) {
             std::string Title = "TELETRANSPORT TO FUTURAMA";
-            contatorePortali = 1;
-            carica_futurama(window);
             RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            carica_futurama(window);
+            contatorePortali = 1;
         }
 
-        bool collisionePortalInterstellar = collisionTest(spaceshipSphere, portalInterstellarSphere);
-        if (collisionePortalInterstellar == true) {
-            std::string Title = "TELETRANSPORT TO INTERSTELLAR";
+        bool collisionePortalUniverso = collisionTest(spaceshipSphere, portalUniversoSphere);
+        if (collisionePortalUniverso == true) {
+            std::string Title = "TELETRANSPORT TO UNIVERSE";
             RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            carica_universo(window);
             contatorePortali = 2;
         }
+
 
         // draw skybox cube
         skyboxShader.use();
@@ -1419,9 +1436,6 @@ void carica_universo(GLFWwindow* window) {
     glfwTerminate();
 
 }
-
-
-
 
 
 int main()
