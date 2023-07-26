@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <irrklang/irrKlang.h>
 
 #include "shader_m.h"
 #include "camera.h"
@@ -12,6 +13,8 @@
 
 #include <iostream>
 
+#pragma comment(lib, "irrKlang.lib") 
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -19,6 +22,15 @@ void processInput(GLFWwindow* window);
 unsigned int loadTexture(const char* path, bool gammaCorrection);
 void renderQuad();
 void renderCube();
+
+//SOUNDTRACK
+
+using namespace irrklang;
+ISoundEngine* SoundEngine = createIrrKlangDevice();
+ISoundSource* universoTheme = SoundEngine->addSoundSourceFromFile("resources/music/universo.mp3");
+ISoundSource* futuramaTheme = SoundEngine->addSoundSourceFromFile("resources/music/futurama.mp3");
+ISoundSource* interstellarTheme = SoundEngine->addSoundSourceFromFile("resources/music/interstellar.mp3");
+
 void carica_universo(GLFWwindow* window);
 void carica_futurama(GLFWwindow* window);
 void carica_interstellar(GLFWwindow* window);
@@ -83,8 +95,8 @@ bool collisionTest(SphereCollision& sfera1, const SphereCollision& sfera2) {
 }
 
 // settings
-const unsigned int SCR_WIDTH = 1400;
-const unsigned int SCR_HEIGHT = 1200;
+int SCR_WIDTH = 1900;
+int SCR_HEIGHT = 1200;
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 5.0f));
@@ -248,6 +260,9 @@ void carica_universo(GLFWwindow* window) {
     Model portalFuturama("resources/objects/portal/portal.obj");
     Model portalInterstellar("resources/objects/portal/portal.obj");
 
+    SoundEngine->stopAllSounds();
+    ISound* ambientSound = SoundEngine->play2D(universoTheme, true);
+
 
     // cube VAO
     unsigned int cubeVAO, cubeVBO;
@@ -350,6 +365,8 @@ void carica_universo(GLFWwindow* window) {
     // -----------
     while (!glfwWindowShouldClose(window))
     {
+        std::string Velocity = "speed:" + std::to_string((int)camera.MovementSpeed * 1000) + " km/h";
+        RenderText(Velocity.c_str(), 15.0f, (float)SCR_HEIGHT / 10.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
         // per-frame time logic
         // --------------------
         float currentFrame = glfwGetTime();
@@ -682,6 +699,9 @@ void carica_futurama(GLFWwindow* window) {
     Model portalUniverso("resources/objects/portal/portal.obj");
     Model portalInterstellar("resources/objects/portal/portal.obj");
 
+
+     SoundEngine->stopAllSounds();
+     ISound* ambientSound = SoundEngine->play2D(futuramaTheme, true);
     // cube VAO
     unsigned int cubeVAO, cubeVBO;
     glGenVertexArrays(1, &cubeVAO);
@@ -783,7 +803,8 @@ void carica_futurama(GLFWwindow* window) {
     while (!glfwWindowShouldClose(window))
     {
 
-        std::cout << "Contatore portale: " << contatorePortali << std::endl;
+        std::string Velocity = "speed:" + std::to_string((int)camera.MovementSpeed * 1000) + " km/h";
+        RenderText(Velocity.c_str(), 15.0f, (float)SCR_HEIGHT / 10.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 
         // per-frame time logic
         // --------------------
@@ -1047,6 +1068,9 @@ void carica_interstellar(GLFWwindow* window) {
     Model portalFuturama("resources/objects/portal/portal.obj");
     Model portalUniverso("resources/objects/portal/portal.obj");
 
+    SoundEngine->stopAllSounds();
+    ISound* ambientSound = SoundEngine->play2D(interstellarTheme, true);
+    
 
     // cube VAO
     unsigned int cubeVAO, cubeVBO;
@@ -1149,7 +1173,8 @@ void carica_interstellar(GLFWwindow* window) {
     // -----------
     while (!glfwWindowShouldClose(window))
     {
-        std::cout << "Contatore portale: " << contatorePortali << std::endl;
+        std::string Velocity = "speed:" + std::to_string((int)camera.MovementSpeed * 1000) + " km/h";
+        RenderText(Velocity.c_str(), 15.0f, (float)SCR_HEIGHT / 10.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 
 
         // per-frame time logic
@@ -1475,15 +1500,27 @@ int main()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
+    // settings
+// Ottenere il monitor primario
+    GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
+
+    // Ottenere la modalità video corrente del monitor primario
+    const GLFWvidmode* videoMode = glfwGetVideoMode(primaryMonitor);
+
+    SCR_WIDTH = videoMode->width;
+    SCR_HEIGHT = videoMode->height;
+
     // glfw window creation
     // --------------------
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Deferred Shading Volumes", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "A SPASSO TRA GLI UNIVERSI", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return -1;
     }
+    // Impostare la finestra in modalità schermo intero
+    glfwSetWindowMonitor(window, glfwGetPrimaryMonitor(), 0, 0, videoMode->width, videoMode->height, videoMode->refreshRate);
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
@@ -1658,17 +1695,22 @@ void processInput(GLFWwindow* window)
         camera.ProcessKeyboard(FORWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
         camera.ProcessKeyboard(BACKWARD, deltaTime);
+
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
         camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
-    // Cambio manuale di universo premendo il tasto 1 o 2
-    if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
-        contatorePortali = 1;
+
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+        camera.MovementSpeed += 1.0f; // incrementa la velocità della camera
+    if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
+        camera.MovementSpeed -= 1.0f;
+
+    if (camera.MovementSpeed <= 0.0f) {
+        camera.MovementSpeed = 10.0f;
     }
-    if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
-        contatorePortali = 2;
-    }
+   
+
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
