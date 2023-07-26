@@ -350,9 +350,6 @@ void carica_universo(GLFWwindow* window) {
     // -----------
     while (!glfwWindowShouldClose(window))
     {
-
-        std::cout << "Contatore portale: " << contatorePortali << std::endl;
-
         // per-frame time logic
         // --------------------
         float currentFrame = glfwGetTime();
@@ -471,7 +468,7 @@ void carica_universo(GLFWwindow* window) {
         modelPortalInterstellar = glm::translate(modelPortalInterstellar, glm::vec3(-200.0f, 0.0f, 0.0f));
         modelPortalInterstellar = glm::rotate(modelPortalInterstellar, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
         modelPortalInterstellar = glm::scale(modelPortalInterstellar, glm::vec3(15.7f));
-        portalInterstellarSphere = { glm::vec3(-200.0f, 0.0f, 0.0f), 30.0f };
+        portalInterstellarSphere = { glm::vec3(-200.0f, 0.0f, 0.0f), 10.0f };
         shaderGeometryPass.setMat4("model", modelPortalInterstellar);
         portalInterstellar.Draw(shaderGeometryPass);
 
@@ -585,11 +582,6 @@ void carica_universo(GLFWwindow* window) {
         glDrawArrays(GL_TRIANGLES, 0, 36);
         glBindVertexArray(0);
 
-
-
-
-
-
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         // 2. lighting pass: calculate lighting by iterating over a screen filled quad pixel-by-pixel using the gbuffer's content.
@@ -689,6 +681,20 @@ void carica_futurama(GLFWwindow* window) {
     Model wormulon("resources/objects/futurama/planets/wormulon/wormulon.obj");
     Model portalUniverso("resources/objects/portal/portal.obj");
     Model portalInterstellar("resources/objects/portal/portal.obj");
+
+    // cube VAO
+    unsigned int cubeVAO, cubeVBO;
+    glGenVertexArrays(1, &cubeVAO);
+    glGenBuffers(1, &cubeVBO);
+    glBindVertexArray(cubeVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+
+    unsigned int cubeTexture = loadTexture("resources/objects/universo/skybox/back.jpg");
 
     // configure g-buffer framebuffer
 // ------------------------------
@@ -802,9 +808,6 @@ void carica_futurama(GLFWwindow* window) {
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100000.0f);
         glm::mat4 view = camera.GetViewMatrix();
 
-        if (currentUniverse == Universe::FUTURAMA) {
-        }
-
         //draw space shuttle
         glm::mat4 modelSpaceShuttle = glm::mat4(1.0f);
         shaderGeometryPass.use();
@@ -814,6 +817,7 @@ void carica_futurama(GLFWwindow* window) {
         modelSpaceShuttle = glm::translate(modelSpaceShuttle, camera.Position + 0.2f * camera.Front);
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
         modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.001f));
+        spaceshipSphere = { camera.Position + 2.0f * camera.Front, 5.0f };
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
         spaceShuttle.Draw(shaderGeometryPass);
 
@@ -897,7 +901,7 @@ void carica_futurama(GLFWwindow* window) {
         modelPortalUniverso = glm::translate(modelPortalUniverso, glm::vec3(300.0f, 0.0f, 0.0f));
         modelPortalUniverso = glm::rotate(modelPortalUniverso, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
         modelPortalUniverso = glm::scale(modelPortalUniverso, glm::vec3(15.7f));
-        portalUniversoSphere = { glm::vec3(300.0f, 0.0f, 0.0f), 30.0f };
+        portalUniversoSphere = { glm::vec3(300.0f, 0.0f, 0.0f), 10.0f };
         shaderGeometryPass.setMat4("model", modelPortalUniverso);
         portalUniverso.Draw(shaderGeometryPass);
 
@@ -905,7 +909,7 @@ void carica_futurama(GLFWwindow* window) {
         modelPortalInterstellar = glm::translate(modelPortalInterstellar, glm::vec3(-300.0f, 0.0f, 0.0f));
         modelPortalInterstellar = glm::rotate(modelPortalInterstellar, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
         modelPortalInterstellar = glm::scale(modelPortalInterstellar, glm::vec3(15.7f));
-        portalInterstellarSphere = { glm::vec3(-300.0f, 0.0f, 0.0f), 30.0f };
+        portalInterstellarSphere = { glm::vec3(-300.0f, 0.0f, 0.0f), 10.0f };
         shaderGeometryPass.setMat4("model", modelPortalInterstellar);
         portalInterstellar.Draw(shaderGeometryPass);
 
@@ -924,6 +928,26 @@ void carica_futurama(GLFWwindow* window) {
             carica_interstellar(window);
             contatorePortali = 2;
         }
+
+        // draw skybox cube
+        skyboxShader.use();
+        glm::mat4 modelCube = glm::mat4(1.0f);
+        modelCube = glm::scale(modelCube, glm::vec3(2000.0f, 2000.0f, 2000.0f));
+        glm::mat4 projectionCube = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 10000000.0f);
+        skyboxShader.setMat4("model", modelCube);
+        skyboxShader.setMat4("view", view);
+        skyboxShader.setMat4("projection", projectionCube);
+        glBindVertexArray(cubeVAO);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, cubeTexture);
+        // Abilita il mipmapping
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        // Genera i mipmap
+        glGenerateMipmap(GL_TEXTURE_2D);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glBindVertexArray(0);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -1238,7 +1262,7 @@ void carica_interstellar(GLFWwindow* window) {
         modelPortalFuturama = glm::translate(modelPortalFuturama, glm::vec3(200.0f, 0.0f, 100.0f));
         modelPortalFuturama = glm::rotate(modelPortalFuturama, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
         modelPortalFuturama = glm::scale(modelPortalFuturama, glm::vec3(15.7f));
-        portalFuturamaSphere = { glm::vec3(200.0f, 0.0f, 100.0f), 30.0f };
+        portalFuturamaSphere = { glm::vec3(200.0f, 0.0f, 100.0f), 10.0f };
         shaderGeometryPass.setMat4("model", modelPortalFuturama);
         portalFuturama.Draw(shaderGeometryPass);
 
@@ -1246,7 +1270,7 @@ void carica_interstellar(GLFWwindow* window) {
         modelPortalUniverso = glm::translate(modelPortalUniverso, glm::vec3(-200.0f, 0.0f, 100.0f));
         modelPortalUniverso = glm::rotate(modelPortalUniverso, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
         modelPortalUniverso = glm::scale(modelPortalUniverso, glm::vec3(15.7f));
-        portalUniversoSphere = { glm::vec3(-200.0f, 0.0f, 100.0f), 30.0f };
+        portalUniversoSphere = { glm::vec3(-200.0f, 0.0f, 100.0f), 10.0f };
         shaderGeometryPass.setMat4("model", modelPortalUniverso);
         portalUniverso.Draw(shaderGeometryPass);
 
