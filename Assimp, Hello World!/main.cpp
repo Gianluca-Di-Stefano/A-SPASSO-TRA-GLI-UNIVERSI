@@ -80,7 +80,7 @@ struct SphereCollision
     glm::vec3      centre;
     float          radius;
 }spaceshipSphere, soleSphere, mercurioSphere, venereSphere, terraSphere, 
-marteSphere, gioveSphere, saturnoSphere, uranoSphere, nettunoSphere, 
+marteSphere, gioveSphere, saturnoSphere, uranoSphere, nettunoSphere, gargantuaSphere,mannSphere,millerSphere,
 portalUniversoSphere, portalFuturamaSphere, portalInterstellarSphere;
 
 bool collisionTest(SphereCollision& sfera1, const SphereCollision& sfera2) {
@@ -387,7 +387,7 @@ void carica_universo(GLFWwindow* window) {
         // -----------------------------------------------------------------
         glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 2000000000.0f);
         glm::mat4 view = camera.GetViewMatrix();
 
         //draw space shuttle
@@ -582,8 +582,8 @@ void carica_universo(GLFWwindow* window) {
         // draw skybox cube
         skyboxShader.use();
         glm::mat4 modelCube = glm::mat4(1.0f);
-        modelCube = glm::scale(modelCube, glm::vec3(2000.0f, 2000.0f, 2000.0f));
-        glm::mat4 projectionCube = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 10000000.0f);
+        modelCube = glm::scale(modelCube, glm::vec3(2000000.0f, 2000000.0f, 2000000.0f));
+        glm::mat4 projectionCube = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 20000000.0f);
         skyboxShader.setMat4("model", modelCube);
         skyboxShader.setMat4("view", view);
         skyboxShader.setMat4("projection", projectionCube);
@@ -826,7 +826,7 @@ void carica_futurama(GLFWwindow* window) {
         // -----------------------------------------------------------------
         glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100000.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 2000000000.0f);
         glm::mat4 view = camera.GetViewMatrix();
 
         //draw space shuttle
@@ -953,8 +953,8 @@ void carica_futurama(GLFWwindow* window) {
         // draw skybox cube
         skyboxShader.use();
         glm::mat4 modelCube = glm::mat4(1.0f);
-        modelCube = glm::scale(modelCube, glm::vec3(2000.0f, 2000.0f, 2000.0f));
-        glm::mat4 projectionCube = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 10000000.0f);
+        modelCube = glm::scale(modelCube, glm::vec3(20000000.0f, 20000000.0f, 20000000.0f));
+        glm::mat4 projectionCube = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 2000000000.0f);
         skyboxShader.setMat4("model", modelCube);
         skyboxShader.setMat4("view", view);
         skyboxShader.setMat4("projection", projectionCube);
@@ -1055,16 +1055,10 @@ void carica_interstellar(GLFWwindow* window) {
     //COMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO(SOSTITUSCE IL SOLE)
     //Model sole("resources/objects/universo/planets/sole/sole.obj");
     //DECOMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO (SOSTITUSCE IL SOLE)
-    Model sole("resources/objects/universo/planets/sole/sole.obj");
-    Model terra("resources/objects/universo/planets/terra/terra.obj");
-    Model giove("resources/objects/universo/planets/giove/giove.obj");
-    Model luna("resources/objects/universo/planets/luna/luna.obj");
-    Model marte("resources/objects/universo/planets/marte/marte.obj");
-    Model mercurio("resources/objects/universo/planets/mercurio/mercurio.obj");
-    Model nettuno("resources/objects/universo/planets/nettuno/nettuno.obj");
+    Model gargantua("resources/objects/interstellar/planets/gargantua/gargantua.obj");
+    Model miller("resources/objects/interstellar/planets/miller/miller.obj");
+    Model mann("resources/objects/interstellar/planets/mann/mann.obj");
     Model saturno("resources/objects/universo/planets/saturno/saturno.obj");
-    Model urano("resources/objects/universo/planets/urano/urano.obj");
-    Model venere("resources/objects/universo/planets/venere/venere.obj");
     Model portalFuturama("resources/objects/portal/portal.obj");
     Model portalUniverso("resources/objects/portal/portal.obj");
 
@@ -1197,7 +1191,7 @@ void carica_interstellar(GLFWwindow* window) {
         // -----------------------------------------------------------------
         glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100000.0f);
         glm::mat4 view = camera.GetViewMatrix();
 
         //draw space shuttle
@@ -1214,52 +1208,25 @@ void carica_interstellar(GLFWwindow* window) {
         spaceShuttle.Draw(shaderGeometryPass);
 
         // draw solar system
-        glm::mat4 modelSole = glm::mat4(1.0f);
-        modelSole = glm::scale(modelSole, glm::vec3(1.0f));
-        soleSphere = { glm::vec3(0.0f, 0.0f, 0.0f), 250.0f };
-        shaderGeometryPass.setMat4("model", modelSole);
-        sole.Draw(shaderGeometryPass);
+        glm::mat4 modelGargantua = glm::mat4(1.0f);
+        modelGargantua = glm::scale(modelGargantua, glm::vec3(5.0f));
+        gargantuaSphere = { glm::vec3(0.0f, 0.0f, 0.0f), 100.0f };
+        shaderGeometryPass.setMat4("model", modelGargantua);
+        gargantua.Draw(shaderGeometryPass);
 
-        glm::mat4 modelMercurio = glm::mat4(1.0f);
-        modelMercurio = glm::translate(modelMercurio, glm::vec3(300.0f, 0.0f, 0.0f));
-        modelMercurio = glm::scale(modelMercurio, glm::vec3(3.4f / 1000.0f));
-        mercurioSphere = { glm::vec3(300.0f, 0.0f, 0.0f), 5.0f };
-        shaderGeometryPass.setMat4("model", modelMercurio);
-        mercurio.Draw(shaderGeometryPass);
+        glm::mat4 modelMann = glm::mat4(1.0f);
+        modelMann = glm::translate(modelMann, glm::vec3(0.0f, 20.0f, 200.0f));
+        modelMann = glm::scale(modelMann, glm::vec3(9.4f / 500.0f));
+        mannSphere = { glm::vec3(0.0f, 20.0f, 200.0f), 5.0f };
+        shaderGeometryPass.setMat4("model", modelMann);
+        mann.Draw(shaderGeometryPass);
 
-        glm::mat4 modelVenere = glm::mat4(1.0f);
-        modelVenere = glm::translate(modelVenere, glm::vec3(0.0f, 0.0f, 400.0f));
-        modelVenere = glm::scale(modelVenere, glm::vec3(8.6f / 1000.0f));
-        venereSphere = { glm::vec3(0.0f, 0.0f, 400.0f), 10.0f };
-        shaderGeometryPass.setMat4("model", modelVenere);
-        venere.Draw(shaderGeometryPass);
-
-        glm::mat4 modelTerra = glm::mat4(1.0f);
-        modelTerra = glm::translate(modelTerra, glm::vec3(-500.0f, 0.0f, 0.0f));
-        modelTerra = glm::scale(modelTerra, glm::vec3(9.1f / 1000));
-        terraSphere = { glm::vec3(-500.0f, 0.0f, 0.0f), 10.0f };
-        shaderGeometryPass.setMat4("model", modelTerra);
-        terra.Draw(shaderGeometryPass);
-
-        glm::mat4 modelLuna = glm::mat4(1.0f);
-        modelLuna = glm::translate(modelLuna, glm::vec3(-510.0f, 0.0f, 0.0f));
-        modelLuna = glm::scale(modelLuna, glm::vec3(2.0f / 1000));
-        shaderGeometryPass.setMat4("model", modelLuna);
-        luna.Draw(shaderGeometryPass);
-
-        glm::mat4 modelMarte = glm::mat4(1.0f);
-        modelMarte = glm::translate(modelMarte, glm::vec3(0.0f, 0.0f, -600.0f));
-        modelMarte = glm::scale(modelMarte, glm::vec3(2.0f / 1000));
-        marteSphere = { glm::vec3(0.0f, 0.0f, -600.0f), 7.6f };
-        shaderGeometryPass.setMat4("model", modelMarte);
-        marte.Draw(shaderGeometryPass);
-
-        glm::mat4 modelGiove = glm::mat4(1.0f);
-        modelGiove = glm::translate(modelGiove, glm::vec3(700.0f, 0.0f, 0.0f));
-        modelGiove = glm::scale(modelGiove, glm::vec3(102.7f / 1000));
-        gioveSphere = { glm::vec3(700.0f, 0.0f, 0.0f), 100.0f };
-        shaderGeometryPass.setMat4("model", modelGiove);
-        giove.Draw(shaderGeometryPass);
+        glm::mat4 modelMiller = glm::mat4(1.0f);
+        modelMiller = glm::translate(modelMiller, glm::vec3(0.0f, 20.0f, 250.0f));
+        modelMiller = glm::scale(modelMiller, glm::vec3(8.6f / 5000.0f));
+        millerSphere = { glm::vec3(0.0f, 20.0f, 250.0f), 5.0f };
+        shaderGeometryPass.setMat4("model", modelMiller);
+        miller.Draw(shaderGeometryPass);
 
         glm::mat4 modelSaturno = glm::mat4(1.0f);
         modelSaturno = glm::translate(modelSaturno, glm::vec3(0.0f, 0.0f, 800.0f));
@@ -1267,20 +1234,6 @@ void carica_interstellar(GLFWwindow* window) {
         saturnoSphere = { glm::vec3(0.0f, 0.0f, 800.0f), 83.6f };
         shaderGeometryPass.setMat4("model", modelSaturno);
         saturno.Draw(shaderGeometryPass);
-
-        glm::mat4 modelUrano = glm::mat4(1.0f);
-        modelUrano = glm::translate(modelUrano, glm::vec3(-900.0f, 0.0f, 0.0f));
-        modelUrano = glm::scale(modelUrano, glm::vec3(33.7f / 1000));
-        uranoSphere = { glm::vec3(-900.0f, 0.0f, 0.0f), 30.0f };
-        shaderGeometryPass.setMat4("model", modelUrano);
-        urano.Draw(shaderGeometryPass);
-
-        glm::mat4 modelNettuno = glm::mat4(1.0f);
-        modelNettuno = glm::translate(modelNettuno, glm::vec3(-950.0f, 0.0f, 0.0f));
-        modelNettuno = glm::scale(modelNettuno, glm::vec3(32.7f / 1000));
-        nettunoSphere = { glm::vec3(-950.0f, 0.0f, 0.0f), 30.0f };
-        shaderGeometryPass.setMat4("model", modelNettuno);
-        nettuno.Draw(shaderGeometryPass);
 
         //draw portal
         glm::mat4 modelPortalFuturama = glm::mat4(1.0f);
@@ -1302,49 +1255,25 @@ void carica_interstellar(GLFWwindow* window) {
         //collisioni
         cameraCollided = false;
 
-        bool collisioneSun = collisionTest(spaceshipSphere, soleSphere);
-        if (collisioneSun == true) {
+        bool collisioneGargantua = collisionTest(spaceshipSphere, gargantuaSphere);
+        if (collisioneGargantua == true) {
             cameraCollided = true;
-            std::string Title = "Sole";
+            std::string Title = "Gargantua";
             RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
         }
 
-        bool collisioneMercury = collisionTest(spaceshipSphere, mercurioSphere);
-        if (collisioneMercury == true) {
+        bool collisioneMann = collisionTest(spaceshipSphere, mannSphere);
+        if (collisioneMann == true) {
             cameraCollided = true;
-            std::string Title = "Mercurio";
+            std::string Title = "Pianeta di Mann";
             //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
             RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
         }
 
-        bool collisioneVenus = collisionTest(spaceshipSphere, venereSphere);
-        if (collisioneVenus == true) {
+        bool collisioneMiller = collisionTest(spaceshipSphere, millerSphere);
+        if (collisioneMiller == true) {
             cameraCollided = true;
-            std::string Title = "Venere";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-        }
-
-        bool collisioneEarth = collisionTest(spaceshipSphere, terraSphere);
-        if (collisioneEarth == true) {
-            cameraCollided = true;
-            std::string Title = "Terra e Luna";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-        }
-
-        bool collisioneMars = collisionTest(spaceshipSphere, marteSphere);
-        if (collisioneMars == true) {
-            cameraCollided = true;
-            std::string Title = "Marte";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-        }
-
-        bool collisioneJupiter = collisionTest(spaceshipSphere, gioveSphere);
-        if (collisioneJupiter == true) {
-            cameraCollided = true;
-            std::string Title = "Giove";
+            std::string Title = "Pianeta di Miller";
             //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
             RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
         }
@@ -1353,22 +1282,6 @@ void carica_interstellar(GLFWwindow* window) {
         if (collisioneSaturn == true) {
             cameraCollided = true;
             std::string Title = "Saturno";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-        }
-
-        bool collisioneUranus = collisionTest(spaceshipSphere, uranoSphere);
-        if (collisioneUranus == true) {
-            cameraCollided = true;
-            std::string Title = "Urano";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-        }
-
-        bool collisioneNeptune = collisionTest(spaceshipSphere, nettunoSphere);
-        if (collisioneNeptune == true) {
-            cameraCollided = true;
-            std::string Title = "Nettuno";
             //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
             RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
         }
@@ -1393,8 +1306,8 @@ void carica_interstellar(GLFWwindow* window) {
         // draw skybox cube
         skyboxShader.use();
         glm::mat4 modelCube = glm::mat4(1.0f);
-        modelCube = glm::scale(modelCube, glm::vec3(2000.0f, 2000.0f, 2000.0f));
-        glm::mat4 projectionCube = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 10000000.0f);
+        modelCube = glm::scale(modelCube, glm::vec3(2000000.0f, 2000000.0f, 2000000.0f));
+        glm::mat4 projectionCube = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 2000000.0f);
         skyboxShader.setMat4("model", modelCube);
         skyboxShader.setMat4("view", view);
         skyboxShader.setMat4("projection", projectionCube);
