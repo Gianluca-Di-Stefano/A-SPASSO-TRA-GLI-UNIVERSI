@@ -583,8 +583,8 @@ void carica_universo(GLFWwindow* window) {
         // draw skybox cube
         skyboxShader.use();
         glm::mat4 modelCube = glm::mat4(1.0f);
-        modelCube = glm::scale(modelCube, glm::vec3(2000000.0f, 2000000.0f, 2000000.0f));
-        glm::mat4 projectionCube = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 20000000.0f);
+        modelCube = glm::scale(modelCube, glm::vec3(20000.0f, 20000.0f, 20000.0f));
+        glm::mat4 projectionCube = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 20000.0f);
         skyboxShader.setMat4("model", modelCube);
         skyboxShader.setMat4("view", view);
         skyboxShader.setMat4("projection", projectionCube);
@@ -954,8 +954,8 @@ void carica_futurama(GLFWwindow* window) {
         // draw skybox cube
         skyboxShader.use();
         glm::mat4 modelCube = glm::mat4(1.0f);
-        modelCube = glm::scale(modelCube, glm::vec3(20000000.0f, 20000000.0f, 20000000.0f));
-        glm::mat4 projectionCube = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 2000000000.0f);
+        modelCube = glm::scale(modelCube, glm::vec3(20000.0f, 20000.0f, 20000.0f));
+        glm::mat4 projectionCube = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 20000.0f);
         skyboxShader.setMat4("model", modelCube);
         skyboxShader.setMat4("view", view);
         skyboxShader.setMat4("projection", projectionCube);
@@ -1216,21 +1216,21 @@ void carica_interstellar(GLFWwindow* window) {
         gargantua.Draw(shaderGeometryPass);
 
         glm::mat4 modelMann = glm::mat4(1.0f);
-        modelMann = glm::translate(modelMann, glm::vec3(0.0f, 20.0f, 200.0f));
-        modelMann = glm::scale(modelMann, glm::vec3(9.4f / 500.0f));
-        mannSphere = { glm::vec3(0.0f, 20.0f, 200.0f), 7.0f };
+        modelMann = glm::translate(modelMann, glm::vec3(0.0f, 20.0f, 550.0f));
+        modelMann = glm::scale(modelMann, glm::vec3(9.4f / 100.0f));
+        mannSphere = { glm::vec3(0.0f, 20.0f, 550.0f), 7.0f };
         shaderGeometryPass.setMat4("model", modelMann);
         mann.Draw(shaderGeometryPass);
 
         glm::mat4 modelMiller = glm::mat4(1.0f);
-        modelMiller = glm::translate(modelMiller, glm::vec3(0.0f, 20.0f, 250.0f));
-        modelMiller = glm::scale(modelMiller, glm::vec3(8.6f / 1000.0f));
-        millerSphere = { glm::vec3(0.0f, 20.0f, 250.0f), 5.0f };
+        modelMiller = glm::translate(modelMiller, glm::vec3(0.0f, 20.0f, 500.0f));
+        modelMiller = glm::scale(modelMiller, glm::vec3(8.6f / 100.0f));
+        millerSphere = { glm::vec3(0.0f, 20.0f, 500.0f), 5.0f };
         shaderGeometryPass.setMat4("model", modelMiller);
         miller.Draw(shaderGeometryPass);
 
         glm::mat4 modelSaturno = glm::mat4(1.0f);
-        modelSaturno = glm::translate(modelSaturno, glm::vec3(0.0f, 0.0f, 800.0f));
+        modelSaturno = glm::translate(modelSaturno, glm::vec3(0.0f, 0.0f, 900.0f));
         modelSaturno = glm::scale(modelSaturno, glm::vec3(83.7f / 1000));
         saturnoSphere = { glm::vec3(0.0f, 0.0f, 800.0f), 83.6f };
         shaderGeometryPass.setMat4("model", modelSaturno);
@@ -1261,7 +1261,7 @@ void carica_interstellar(GLFWwindow* window) {
             cameraCollided = true;
             std::string Title = "Gargantua";
             RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-            //carica_tesseract(window);
+            carica_tesseract(window);
         }
 
         bool collisioneMann = collisionTest(spaceshipSphere, mannSphere);
@@ -1308,8 +1308,8 @@ void carica_interstellar(GLFWwindow* window) {
         // draw skybox cube
         skyboxShader.use();
         glm::mat4 modelCube = glm::mat4(1.0f);
-        modelCube = glm::scale(modelCube, glm::vec3(2000000.0f, 2000000.0f, 2000000.0f));
-        glm::mat4 projectionCube = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 2000000.0f);
+        modelCube = glm::scale(modelCube, glm::vec3(20000.0f, 20000.0f, 20000.0f));
+        glm::mat4 projectionCube = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 20000.0f);
         skyboxShader.setMat4("model", modelCube);
         skyboxShader.setMat4("view", view);
         skyboxShader.setMat4("projection", projectionCube);
@@ -1568,10 +1568,10 @@ void carica_tesseract(GLFWwindow* window) {
         portalFuturama.Draw(shaderGeometryPass);
 
         glm::mat4 modelPortalUniverso = glm::mat4(1.0f);
-        modelPortalUniverso = glm::translate(modelPortalUniverso, glm::vec3(-200.0f, 0.0f, 100.0f));
+        modelPortalUniverso = glm::translate(modelPortalUniverso, glm::vec3(0.0f, 0.0f, 0.0f));
         modelPortalUniverso = glm::rotate(modelPortalUniverso, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
         modelPortalUniverso = glm::scale(modelPortalUniverso, glm::vec3(15.7f));
-        portalUniversoSphere = { glm::vec3(-200.0f, 0.0f, 100.0f), 10.0f };
+        portalUniversoSphere = { glm::vec3(0.0f, 0.0f, 0.0f), 10.0f };
         shaderGeometryPass.setMat4("model", modelPortalUniverso);
         portalUniverso.Draw(shaderGeometryPass);
 
@@ -1590,7 +1590,7 @@ void carica_tesseract(GLFWwindow* window) {
         if (collisionePortalFuturama == true) {
             std::string Title = "TELETRANSPORT TO FUTURAMA";
             RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-            carica_futurama(window);
+            //carica_futurama(window);
         }
 
         bool collisionePortalUniverso = collisionTest(spaceshipSphere, portalUniversoSphere);
@@ -1604,7 +1604,7 @@ void carica_tesseract(GLFWwindow* window) {
         if (collisionePortalInterstellar == true) {
             std::string Title = "TELETRANSPORT TO INTERSTELLAR";
             RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-            carica_interstellar(window);
+            //carica_interstellar(window);
         }
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -1898,7 +1898,7 @@ void processInput(GLFWwindow* window)
         camera.MovementSpeed -= 1.0f;
 
     if (camera.MovementSpeed <= 0.0f) {
-        camera.MovementSpeed = 10.0f;
+        camera.MovementSpeed = 1.0f;
     }
    
 
