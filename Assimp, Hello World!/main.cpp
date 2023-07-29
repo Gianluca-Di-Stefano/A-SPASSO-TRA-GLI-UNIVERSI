@@ -81,8 +81,9 @@ struct SphereCollision
     glm::vec3      centre;
     float          radius;
 }spaceshipSphere, soleSphere, mercurioSphere, venereSphere, terraSphere, 
-marteSphere, gioveSphere, saturnoSphere, uranoSphere, nettunoSphere, gargantuaSphere,mannSphere,millerSphere,
-portalUniversoSphere, portalFuturamaSphere, portalInterstellarSphere, tesseractSphere;
+marteSphere, gioveSphere, saturnoSphere, uranoSphere, nettunoSphere, benderGodSphere, decapodSphere,
+lunaSphere, wormulonSphere, neardeathSphere, omicronSphere, simianSphere, thunbanSphere, tornadusSphere, 
+gargantuaSphere,mannSphere,millerSphere, portalUniversoSphere, portalFuturamaSphere, portalInterstellarSphere, tesseractSphere;
 
 bool collisionTest(SphereCollision& sfera1, const SphereCollision& sfera2) {
     glm::vec3 distanzaCentri(sfera2.centre - sfera1.centre);
@@ -854,67 +855,77 @@ void carica_futurama(GLFWwindow* window) {
         modelBenderGod = glm::translate(modelBenderGod, glm::vec3(0.0f, 0.0f, 300.0f));
         modelBenderGod = glm::rotate(modelBenderGod, 180.0f, glm::vec3(0.0f, -1.0f, 0.0f));
         modelBenderGod = glm::scale(modelBenderGod, glm::vec3(1.0f / 10.0f));
+        benderGodSphere = {glm::vec3(0.0f, 0.0f, 300.0f), 5.0f };
         shaderGeometryPass.setMat4("model", modelBenderGod);
         bendergod.Draw(shaderGeometryPass);
 
         glm::mat4 modelDecapod = glm::mat4(1.0f);
         modelDecapod = glm::translate(modelDecapod, glm::vec3(0.0f, 0.0f, 400.0f));
         modelDecapod = glm::scale(modelDecapod, glm::vec3(8.6f / 1000.0f));
+        decapodSphere = {glm::vec3(0.0f, 0.0f, 400.0f), 10.0f };
         shaderGeometryPass.setMat4("model", modelDecapod);
         decapod.Draw(shaderGeometryPass);
 
         glm::mat4 modelTerra = glm::mat4(1.0f);
         modelTerra = glm::translate(modelTerra, glm::vec3(-500.0f, 0.0f, 0.0f));
         modelTerra = glm::scale(modelTerra, glm::vec3(9.1f / 1000));
+        terraSphere = {glm::vec3(-500.0f, 0.0f, 0.0f), 3.0f };
         shaderGeometryPass.setMat4("model", modelTerra);
         terra.Draw(shaderGeometryPass);
 
         glm::mat4 modelLuna = glm::mat4(1.0f);
         modelLuna = glm::translate(modelLuna, glm::vec3(-510.0f, 0.0f, 0.0f));
         modelLuna = glm::scale(modelLuna, glm::vec3(2.0f / 1000));
+        lunaSphere = {glm::vec3(-510.0f, 0.0f, 0.0f), 1.0f};
         shaderGeometryPass.setMat4("model", modelLuna);
         luna.Draw(shaderGeometryPass);
 
         glm::mat4 modelMarte = glm::mat4(1.0f);
         modelMarte = glm::translate(modelMarte, glm::vec3(0.0f, 0.0f, -600.0f));
         modelMarte = glm::scale(modelMarte, glm::vec3(2.0f / 1000));
+        marteSphere = {glm::vec3(0.0f, 0.0f, -600.0f), 5.0f};
         shaderGeometryPass.setMat4("model", modelMarte);
         marte.Draw(shaderGeometryPass);
 
         glm::mat4 modelWormulon = glm::mat4(1.0f);
         modelWormulon = glm::translate(modelWormulon, glm::vec3(0.0f, 0.0f, -400.0f));
-        modelWormulon = glm::scale(modelWormulon, glm::vec3(10.0f / 1000));
-        marteSphere = { glm::vec3(0.0f, 0.0f, -400.0f), 7.6f };
+        modelWormulon = glm::scale(modelWormulon, glm::vec3(100.0f / 1000));
+        wormulonSphere = { glm::vec3(0.0f, 0.0f, -400.0f), 100.0f };
         shaderGeometryPass.setMat4("model", modelWormulon);
         wormulon.Draw(shaderGeometryPass);
 
         glm::mat4 modelNeardeath = glm::mat4(1.0f);
         modelNeardeath = glm::translate(modelNeardeath, glm::vec3(700.0f, 0.0f, 0.0f));
         modelNeardeath = glm::scale(modelNeardeath, glm::vec3(102.7f / 1000));
+        neardeathSphere = { glm::vec3(700.0f, 0.0f, 0.0f), 100.0f };
         shaderGeometryPass.setMat4("model", modelNeardeath);
         neardeath.Draw(shaderGeometryPass);
 
         glm::mat4 modelOmicron = glm::mat4(1.0f);
         modelOmicron = glm::translate(modelOmicron, glm::vec3(0.0f, 0.0f, 800.0f));
         modelOmicron = glm::scale(modelOmicron, glm::vec3(83.7f / 1000));
+        omicronSphere = { glm::vec3(0.0f, 0.0f, 800.0f), 83.6f };
         shaderGeometryPass.setMat4("model", modelOmicron);
         omicron.Draw(shaderGeometryPass);
 
         glm::mat4 modelSimian = glm::mat4(1.0f);
         modelSimian = glm::translate(modelSimian, glm::vec3(-900.0f, 0.0f, 0.0f));
         modelSimian = glm::scale(modelSimian, glm::vec3(33.7f / 1000));
+        simianSphere = { glm::vec3(-900.0f, 0.0f, 0.0f), 15.6f };
         shaderGeometryPass.setMat4("model", modelSimian);
         simian.Draw(shaderGeometryPass);
 
         glm::mat4 modelThunban = glm::mat4(1.0f);
         modelThunban = glm::translate(modelThunban, glm::vec3(-950.0f, 0.0f, 0.0f));
         modelThunban = glm::scale(modelThunban, glm::vec3(32.7f / 1000));
+        thunbanSphere = { glm::vec3(-950.0f, 0.0f, 0.0f), 15.6f };
         shaderGeometryPass.setMat4("model", modelThunban);
         thunban.Draw(shaderGeometryPass);
 
         glm::mat4 modelTornadus = glm::mat4(1.0f);
-        modelTornadus = glm::translate(modelTornadus, glm::vec3(-950.0f, 0.0f, 0.0f));
+        modelTornadus = glm::translate(modelTornadus, glm::vec3(0.0f, 0.0f, 900.0f));
         modelTornadus = glm::scale(modelTornadus, glm::vec3(32.7f / 1000));
+        tornadusSphere = { glm::vec3(0.0f, 0.0f, 900.0f), 30.6f };
         shaderGeometryPass.setMat4("model", modelTornadus);
         tornadus.Draw(shaderGeometryPass);
 
@@ -934,6 +945,104 @@ void carica_futurama(GLFWwindow* window) {
         portalInterstellarSphere = { glm::vec3(-300.0f, 0.0f, 0.0f), 10.0f };
         shaderGeometryPass.setMat4("model", modelPortalInterstellar);
         portalInterstellar.Draw(shaderGeometryPass);
+
+        //collisioni
+        cameraCollided = false;
+
+        bool collisioneSun = collisionTest(spaceshipSphere, soleSphere);
+        if (collisioneSun == true) {
+            cameraCollided = true;
+            std::string Title = "Sole";
+            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+        }
+
+        bool collisioneBenderGod = collisionTest(spaceshipSphere, benderGodSphere);
+        if (collisioneBenderGod == true) {
+            cameraCollided = true;
+            std::string Title = "Bender Godfellas";
+            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+        }
+
+        bool collisioneDecapod = collisionTest(spaceshipSphere, decapodSphere);
+        if (collisioneDecapod == true) {
+            cameraCollided = true;
+            std::string Title = "Decapod";
+            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+        }
+
+        bool collisioneEarth = collisionTest(spaceshipSphere, terraSphere);
+        if (collisioneEarth == true) {
+            cameraCollided = true;
+            std::string Title = "Terra";
+            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+        }
+
+        bool collisioneLuna = collisionTest(spaceshipSphere, lunaSphere);
+        if (collisioneLuna == true) {
+            cameraCollided = true;
+            std::string Title = "Luna (chiuso)";
+            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+        }
+
+        bool collisioneMars = collisionTest(spaceshipSphere, marteSphere);
+        if (collisioneMars == true) {
+            cameraCollided = true;
+            std::string Title = "Marte";
+            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+        }
+
+        bool collisioneWormulon = collisionTest(spaceshipSphere, wormulonSphere);
+        if (collisioneWormulon == true) {
+            cameraCollided = true;
+            std::string Title = "Wormulon";
+            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+        }
+
+        bool collisioneNeardeath = collisionTest(spaceshipSphere, neardeathSphere);
+        if (collisioneNeardeath == true) {
+            cameraCollided = true;
+            std::string Title = "Near Death Star";
+            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+        }
+
+        bool collisioneOmicron = collisionTest(spaceshipSphere, omicronSphere);
+        if (collisioneOmicron == true) {
+            cameraCollided = true;
+            std::string Title = "Omicron Persei 8";
+            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+        }
+
+        bool collisioneSimian = collisionTest(spaceshipSphere, simianSphere);
+        if (collisioneSimian == true) {
+            cameraCollided = true;
+            std::string Title = "Simian";
+            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+        }
+
+        bool collisioneThunban = collisionTest(spaceshipSphere, thunbanSphere);
+        if (collisioneThunban == true) {
+            cameraCollided = true;
+            std::string Title = "Thunban";
+            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+        }
+
+        bool collisioneTornadus = collisionTest(spaceshipSphere, tornadusSphere);
+        if (collisioneTornadus == true) {
+            cameraCollided = true;
+            std::string Title = "Tornadus";
+            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+        }
 
         bool collisionePortalUniverso = collisionTest(spaceshipSphere, portalUniversoSphere);
         if (collisionePortalUniverso == true) {
