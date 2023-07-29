@@ -19,6 +19,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
+GLuint texture_id;
 unsigned int loadTexture(const char* path, bool gammaCorrection);
 void renderQuad();
 void renderCube();
@@ -38,6 +39,7 @@ void carica_tesseract(GLFWwindow* window);
 
 bool futurama_caricato = false;
 bool interstellar_caricato = false;
+
 
 unsigned int loadTexture(char const* path)
 {
@@ -74,6 +76,54 @@ unsigned int loadTexture(char const* path)
     }
 
     return textureID;
+}
+
+GLuint texture_id;
+GLuint vao, vbo, ebo;
+GLuint shader_program;
+
+void caricaTexture(const char* path_to_image) {
+    int width, height, channels;
+    unsigned char* image_data = stbi_load(path_to_image, &width, &height, &channels, STBI_rgb_alpha);
+
+    if (!image_data) {
+        std::cerr << "Errore durante il caricamento dell'immagine." << std::endl;
+        glfwTerminate();
+        exit(EXIT_FAILURE);
+    }
+
+    glGenTextures(1, &texture_id);
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
+
+    stbi_image_free(image_data);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+}
+
+void renderImage(GLuint texture_id) {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // Attiva il blending per gestire aree trasparenti
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    // Disegna il quadrato con la texture mappata
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex2f(-1.0f, -1.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex2f(1.0f, -1.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex2f(1.0f, 1.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex2f(-1.0f, 1.0f);
+    glEnd();
+
+    // Disabilita il blending dopo aver finito
+    glDisable(GL_BLEND);
+
+    glfwSwapBuffers(window);
 }
 
 struct SphereCollision
@@ -499,6 +549,7 @@ void carica_universo(GLFWwindow* window) {
             cameraCollided = true;
             std::string Title = "Sole";
             RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            renderImage(texture_id);
         }
 
         bool collisioneMercury = collisionTest(spaceshipSphere, mercurioSphere);
@@ -960,7 +1011,7 @@ void carica_futurama(GLFWwindow* window) {
         if (collisioneBenderGod == true) {
             cameraCollided = true;
             std::string Title = "Bender Godfellas";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));           
             RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
         }
 
@@ -1846,7 +1897,8 @@ int main()
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
 
-    
+    texture_id = loadTexture("resources/objects/futurama/info/bender_god.png");
+     
 
 
     switch (contatorePortali)
