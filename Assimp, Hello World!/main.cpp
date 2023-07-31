@@ -32,6 +32,8 @@ ISoundSource* universoTheme = SoundEngine->addSoundSourceFromFile("resources/mus
 ISoundSource* futuramaTheme = SoundEngine->addSoundSourceFromFile("resources/music/futurama.mp3");
 ISoundSource* interstellarTheme = SoundEngine->addSoundSourceFromFile("resources/music/interstellar.mp3");
 
+// Funzione per effettuare il rendering del quadrilatero
+
 void carica_universo(GLFWwindow* window);
 void carica_futurama(GLFWwindow* window);
 void carica_interstellar(GLFWwindow* window);
@@ -40,6 +42,60 @@ void carica_tesseract(GLFWwindow* window);
 bool futurama_caricato = false;
 bool interstellar_caricato = false;
 
+// Array dei vertici e delle coordinate delle texture
+float vertici_img[] = {
+    // Coordinata dei vertici (x, y, z)       // Coordinate della texture (u, v)
+    1.0f,  1.0f, 0.0f,   1.0f, 1.0f,
+    1.0f, -1.0f, 0.0f,   1.0f, 0.0f,
+    -1.0f, -1.0f, 0.0f,   0.0f, 0.0f,
+    -1.0f,  1.0f, 0.0f,   0.0f, 1.0f
+};
+
+unsigned int indices[] = {
+    1, 2, 3, // Primo triangolo
+    0, 1, 3  // Secondo triangolo
+};
+
+void renderImg(unsigned int textureID)
+{
+    // Genera un Vertex Array Object (VAO) e un Vertex Buffer Object (VBO) per il quadrilatero
+    unsigned int VAO, VBO, EBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertici_img), vertici_img, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    // Specifica la posizione degli attributi nel Vertex Shader
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Specifica le coordinate della texture negli attributi del Vertex Shader
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    glBindVertexArray(0);
+
+    // Attiva la texture
+    glBindTexture(GL_TEXTURE_2D, textureID);
+
+    // Effettua il rendering del quadrilatero
+    glBindVertexArray(VAO);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
+
+    // Pulizia delle risorse
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
+}
+
+unsigned int VBO_img, VAO_img, EBO_img;
 
 unsigned int loadTexture(char const* path)
 {
@@ -76,54 +132,6 @@ unsigned int loadTexture(char const* path)
     }
 
     return textureID;
-}
-
-GLuint texture_id;
-GLuint vao, vbo, ebo;
-GLuint shader_program;
-
-void caricaTexture(const char* path_to_image) {
-    int width, height, channels;
-    unsigned char* image_data = stbi_load(path_to_image, &width, &height, &channels, STBI_rgb_alpha);
-
-    if (!image_data) {
-        std::cerr << "Errore durante il caricamento dell'immagine." << std::endl;
-        glfwTerminate();
-        exit(EXIT_FAILURE);
-    }
-
-    glGenTextures(1, &texture_id);
-    glBindTexture(GL_TEXTURE_2D, texture_id);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
-
-    stbi_image_free(image_data);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-}
-
-void renderImage(GLuint texture_id) {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    // Attiva il blending per gestire aree trasparenti
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    // Disegna il quadrato con la texture mappata
-    glBindTexture(GL_TEXTURE_2D, texture_id);
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f); glVertex2f(-1.0f, -1.0f);
-    glTexCoord2f(1.0f, 0.0f); glVertex2f(1.0f, -1.0f);
-    glTexCoord2f(1.0f, 1.0f); glVertex2f(1.0f, 1.0f);
-    glTexCoord2f(0.0f, 1.0f); glVertex2f(-1.0f, 1.0f);
-    glEnd();
-
-    // Disabilita il blending dopo aver finito
-    glDisable(GL_BLEND);
-
-    glfwSwapBuffers(window);
 }
 
 struct SphereCollision
@@ -214,6 +222,8 @@ float cubeVertices[] = {
     -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
     -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 };
+
+
 
 void renderSphere()
 {
@@ -549,7 +559,6 @@ void carica_universo(GLFWwindow* window) {
             cameraCollided = true;
             std::string Title = "Sole";
             RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-            renderImage(texture_id);
         }
 
         bool collisioneMercury = collisionTest(spaceshipSphere, mercurioSphere);
@@ -1013,6 +1022,8 @@ void carica_futurama(GLFWwindow* window) {
             std::string Title = "Bender Godfellas";
             //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));           
             RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            unsigned int image = loadTexture("resources/objects/futurama/info/bender_god.png");
+            renderCube();
         }
 
         bool collisioneDecapod = collisionTest(spaceshipSphere, decapodSphere);
