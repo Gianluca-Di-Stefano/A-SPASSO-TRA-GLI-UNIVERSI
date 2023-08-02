@@ -169,7 +169,7 @@ float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 bool cameraCollided = false;
 
-int contatorePortali = 1;
+int contatorePortali = 0;
 
 enum class Universe {
     UNIVERSO,
@@ -1272,7 +1272,7 @@ void carica_interstellar(GLFWwindow* window) {
     Model saturno("resources/objects/universo/planets/saturno/saturno.obj");
     Model portalFuturama("resources/objects/portal/portal.obj");
     Model portalUniverso("resources/objects/portal/portal.obj");
-
+    Model info("resources/objects/info.obj");
     SoundEngine->stopAllSounds();
     ISound* ambientSound = SoundEngine->play2D(interstellarTheme, true);
     
@@ -1426,23 +1426,23 @@ void carica_interstellar(GLFWwindow* window) {
         gargantua.Draw(shaderGeometryPass);
 
         glm::mat4 modelMann = glm::mat4(1.0f);
-        modelMann = glm::translate(modelMann, glm::vec3(0.0f, 20.0f, 550.0f));
+        modelMann = glm::translate(modelMann, glm::vec3(-200.0f, 40.0f, 600.0f));
         modelMann = glm::scale(modelMann, glm::vec3(9.4f / 100.0f));
-        mannSphere = { glm::vec3(0.0f, 20.0f, 550.0f), 7.0f };
+        mannSphere = { glm::vec3(-200.0f, 40.0f, 600.0f), 20.0f };
         shaderGeometryPass.setMat4("model", modelMann);
         mann.Draw(shaderGeometryPass);
 
         glm::mat4 modelMiller = glm::mat4(1.0f);
-        modelMiller = glm::translate(modelMiller, glm::vec3(0.0f, 20.0f, 500.0f));
+        modelMiller = glm::translate(modelMiller, glm::vec3(400.0f, 35.0f, 600.0f));
         modelMiller = glm::scale(modelMiller, glm::vec3(8.6f / 100.0f));
-        millerSphere = { glm::vec3(0.0f, 20.0f, 500.0f), 5.0f };
+        millerSphere = { glm::vec3(400.0f, 35.0f, 600.0f), 20.0f };
         shaderGeometryPass.setMat4("model", modelMiller);
         miller.Draw(shaderGeometryPass);
 
         glm::mat4 modelSaturno = glm::mat4(1.0f);
-        modelSaturno = glm::translate(modelSaturno, glm::vec3(0.0f, 0.0f, 900.0f));
+        modelSaturno = glm::translate(modelSaturno, glm::vec3(0.0f, 0.0f, 800.0f));
         modelSaturno = glm::scale(modelSaturno, glm::vec3(83.7f / 1000));
-        saturnoSphere = { glm::vec3(0.0f, 0.0f, 800.0f), 83.6f };
+        saturnoSphere = { glm::vec3(0.0f, 0.0f, 800.0f), 20.6f };
         shaderGeometryPass.setMat4("model", modelSaturno);
         saturno.Draw(shaderGeometryPass);
 
@@ -1463,6 +1463,11 @@ void carica_interstellar(GLFWwindow* window) {
         shaderGeometryPass.setMat4("model", modelPortalUniverso);
         portalUniverso.Draw(shaderGeometryPass);
 
+        //draw info
+        glm::mat4 modelInfo = glm::mat4(1.0f);
+        modelInfo = glm::translate(modelInfo, camera.Position + 0.13f * camera.Front);
+        modelInfo = glm::rotate(modelInfo, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+
         //collisioni
         cameraCollided = false;
 
@@ -1477,25 +1482,34 @@ void carica_interstellar(GLFWwindow* window) {
         bool collisioneMann = collisionTest(spaceshipSphere, mannSphere);
         if (collisioneMann == true) {
             cameraCollided = true;
-            std::string Title = "Pianeta di Mann";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/interstellar/info/mann.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisioneMiller = collisionTest(spaceshipSphere, millerSphere);
         if (collisioneMiller == true) {
             cameraCollided = true;
-            std::string Title = "Pianeta di Miller";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/interstellar/info/miller.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisioneSaturn = collisionTest(spaceshipSphere, saturnoSphere);
         if (collisioneSaturn == true) {
             cameraCollided = true;
-            std::string Title = "Saturno";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/interstellar/info/saturno.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisionePortalFuturama = collisionTest(spaceshipSphere, portalFuturamaSphere);
@@ -1534,12 +1548,6 @@ void carica_interstellar(GLFWwindow* window) {
         glGenerateMipmap(GL_TEXTURE_2D);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         glBindVertexArray(0);
-
-
-
-
-
-
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         // 2. lighting pass: calculate lighting by iterating over a screen filled quad pixel-by-pixel using the gbuffer's content.
