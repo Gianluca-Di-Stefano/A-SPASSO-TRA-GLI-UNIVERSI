@@ -169,7 +169,7 @@ float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 bool cameraCollided = false;
 
-int contatorePortali = 0;
+int contatorePortali = 1;
 
 enum class Universe {
     UNIVERSO,
@@ -760,6 +760,7 @@ void carica_futurama(GLFWwindow* window) {
     Model wormulon("resources/objects/futurama/planets/wormulon/wormulon.obj");
     Model portalUniverso("resources/objects/portal/portal.obj");
     Model portalInterstellar("resources/objects/portal/portal.obj");
+    Model info("resources/objects/info.obj");
 
 
      SoundEngine->stopAllSounds();
@@ -1006,6 +1007,12 @@ void carica_futurama(GLFWwindow* window) {
         shaderGeometryPass.setMat4("model", modelPortalInterstellar);
         portalInterstellar.Draw(shaderGeometryPass);
 
+        //draw info
+        glm::mat4 modelInfo = glm::mat4(1.0f);
+        modelInfo = glm::translate(modelInfo, camera.Position + 0.13f * camera.Front);
+        modelInfo = glm::rotate(modelInfo, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+        //info.Draw(shaderGeometryPass);
+
         //collisioni
         cameraCollided = false;
 
@@ -1019,91 +1026,123 @@ void carica_futurama(GLFWwindow* window) {
         bool collisioneBenderGod = collisionTest(spaceshipSphere, benderGodSphere);
         if (collisioneBenderGod == true) {
             cameraCollided = true;
-            std::string Title = "Bender Godfellas";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));           
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
             unsigned int image = loadTexture("resources/objects/futurama/info/bender_god.png");
-            renderCube();
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisioneDecapod = collisionTest(spaceshipSphere, decapodSphere);
         if (collisioneDecapod == true) {
             cameraCollided = true;
-            std::string Title = "Decapod";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/futurama/info/decapod.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisioneEarth = collisionTest(spaceshipSphere, terraSphere);
         if (collisioneEarth == true) {
             cameraCollided = true;
             std::string Title = "Terra";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/futurama/info/terra.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisioneLuna = collisionTest(spaceshipSphere, lunaSphere);
         if (collisioneLuna == true) {
             cameraCollided = true;
-            std::string Title = "Luna (chiuso)";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/futurama/info/luna.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisioneMars = collisionTest(spaceshipSphere, marteSphere);
         if (collisioneMars == true) {
             cameraCollided = true;
-            std::string Title = "Marte";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/futurama/info/marte.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisioneWormulon = collisionTest(spaceshipSphere, wormulonSphere);
         if (collisioneWormulon == true) {
             cameraCollided = true;
-            std::string Title = "Wormulon";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/futurama/info/wormulon.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisioneNeardeath = collisionTest(spaceshipSphere, neardeathSphere);
         if (collisioneNeardeath == true) {
             cameraCollided = true;
-            std::string Title = "Near Death Star";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/futurama/info/neardeath.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisioneOmicron = collisionTest(spaceshipSphere, omicronSphere);
         if (collisioneOmicron == true) {
             cameraCollided = true;
-            std::string Title = "Omicron Persei 8";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/futurama/info/omicron.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisioneSimian = collisionTest(spaceshipSphere, simianSphere);
         if (collisioneSimian == true) {
             cameraCollided = true;
-            std::string Title = "Simian";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/futurama/info/simian.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisioneThunban = collisionTest(spaceshipSphere, thunbanSphere);
         if (collisioneThunban == true) {
             cameraCollided = true;
-            std::string Title = "Thunban";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/futurama/info/thunban.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisioneTornadus = collisionTest(spaceshipSphere, tornadusSphere);
         if (collisioneTornadus == true) {
             cameraCollided = true;
-            std::string Title = "Tornadus";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/futurama/info/tornadus.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisionePortalUniverso = collisionTest(spaceshipSphere, portalUniversoSphere);
