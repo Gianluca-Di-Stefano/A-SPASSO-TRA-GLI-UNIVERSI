@@ -18,7 +18,7 @@ enum Camera_Movement {
 // Default camera values
 const float YAW = 90.0f;
 const float PITCH = 0.0f;
-const float SPEED = 20.0f;
+const float SPEED = 10.0f;
 const float SENSITIVITY = 0.1f;
 const float ZOOM = 45.0f;
 
@@ -41,23 +41,26 @@ public:
   float MouseSensitivity;
   float Zoom;
 
+  glm::vec3 Acceleration = glm::vec3(0.0f);
+  glm::vec3 Velocity = glm::vec3(0.0f);
+
   // constructor with vectors
-  Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
+  Camera(float deltaTime, glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
   {
     Position = position;
     WorldUp = up;
     Yaw = yaw;
     Pitch = pitch;
-    updateCameraVectors();
+    updateCameraVectors(deltaTime);
   }
   // constructor with scalar values
-  Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
+  Camera(float deltaTime, float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
   {
     Position = glm::vec3(posX, posY, posZ);
     WorldUp = glm::vec3(upX, upY, upZ);
     Yaw = yaw;
     Pitch = pitch;
-    updateCameraVectors();
+    updateCameraVectors(deltaTime);
   }
 
   // returns the view matrix calculated using Euler Angles and the LookAt Matrix
@@ -70,10 +73,12 @@ public:
   void ProcessKeyboard(Camera_Movement direction, float deltaTime)
   {
     float velocity = MovementSpeed * deltaTime;
+    float accelerationMagnitude = MovementSpeed;
+
     if (direction == FORWARD)
-      Position += Front * velocity;
+      Position += Front * velocity * accelerationMagnitude;
     if (direction == BACKWARD)
-      Position -= Front * velocity;
+      Position -= Front * velocity * accelerationMagnitude;
     if (direction == LEFT)
       Position -= Right * velocity;
     if (direction == RIGHT)
@@ -81,7 +86,7 @@ public:
   }
 
   // processes input received from a mouse input system. Expects the offset value in both the x and y direction.
-  void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true)
+  void ProcessMouseMovement(float deltaTime, float xoffset, float yoffset, GLboolean constrainPitch = true)
   {
     xoffset *= MouseSensitivity;
     yoffset *= MouseSensitivity;
@@ -99,7 +104,7 @@ public:
     }
 
     // update Front, Right and Up Vectors using the updated Euler angles
-    updateCameraVectors();
+    updateCameraVectors(deltaTime);
   }
 
   // processes input received from a mouse scroll-wheel event. Only requires input on the vertical wheel-axis
@@ -114,8 +119,13 @@ public:
 
 private:
   // calculates the front vector from the Camera's (updated) Euler Angles
-  void updateCameraVectors()
+  void updateCameraVectors(float deltaTime)
   {
+    Velocity += Acceleration * deltaTime;
+
+    // Applica l'inerzia: diminuisci la velocità in modo graduale
+    float dampingFactor = 0.8f; // Fattore di smorzamento, puoi regolarlo a tuo piacimento
+    Velocity *= dampingFactor;
     // calculate the new Front vector
     glm::vec3 front;
     front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));

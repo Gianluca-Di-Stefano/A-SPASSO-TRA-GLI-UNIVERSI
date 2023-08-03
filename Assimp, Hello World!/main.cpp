@@ -105,16 +105,16 @@ bool collisionTest(SphereCollision& sfera1, const SphereCollision& sfera2) {
 int SCR_WIDTH = 1900;
 int SCR_HEIGHT = 1200;
 
-// camera
-Camera camera(glm::vec3(0.0f, 0.0f, 5.0f));
-float lastX = (float)SCR_WIDTH / 2.0;
-float lastY = (float)SCR_HEIGHT / 2.0;
-bool firstMouse = true;
-
 // timing
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 bool cameraCollided = false;
+
+// camera
+Camera camera(deltaTime, glm::vec3(0.0f, 0.0f, 5.0f));
+float lastX = (float)SCR_WIDTH / 2.0;
+float lastY = (float)SCR_HEIGHT / 2.0;
+bool firstMouse = true;
 
 int contatorePortali = 0;
 
@@ -400,14 +400,29 @@ void carica_universo(GLFWwindow* window) {
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 2000000000.0f);
         glm::mat4 view = camera.GetViewMatrix();
 
+        // Calcola la direzione in cui la telecamera dovrebbe guardare
+        glm::vec3 cameraFront = glm::normalize(camera.Front);
+        glm::vec3 cameraUp = glm::normalize(camera.Up);
+
+        // Definisci un vettore di offset dalla posizione della telecamera
+        float distanceBehind = 0.2f; // Sposta la telecamera dietro la navicella
+        float distanceAbove = -0.03f;   // Sposta la telecamera sopra la navicella
+        glm::vec3 cameraOffset = distanceBehind * cameraFront + distanceAbove * cameraUp;
+
+        // Calcola la nuova posizione del modello
+        glm::vec3 newModelPosition = camera.Position + cameraOffset;
+
         //draw space shuttle
         glm::mat4 modelSpaceShuttle = glm::mat4(1.0f);
         shaderGeometryPass.use();
         shaderGeometryPass.setMat4("projection", projection);
         shaderGeometryPass.setMat4("view", view);
         modelSpaceShuttle = glm::mat4(1.0f);
-        modelSpaceShuttle = glm::translate(modelSpaceShuttle, camera.Position + 0.2f * camera.Front);
+        modelSpaceShuttle = glm::translate(modelSpaceShuttle, newModelPosition);
+        modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+        
+        
         modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.001f));
         spaceshipSphere = { camera.Position + 2.0f * camera.Front, 5.0f };
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
@@ -882,13 +897,21 @@ void carica_futurama(GLFWwindow* window) {
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 2000000000.0f);
         glm::mat4 view = camera.GetViewMatrix();
 
+        // Definisci un vettore di offset dalla posizione della telecamera
+        float distanceBehind = 0.2f; // Sposta la telecamera dietro la navicella
+        float distanceAbove = -0.03f;   // Sposta la telecamera sopra la navicella
+        glm::vec3 cameraOffset = distanceBehind * camera.Front + distanceAbove * camera.Up;
+
+        // Calcola la nuova posizione del modello
+        glm::vec3 newModelPosition = camera.Position + cameraOffset;
+
         //draw space shuttle
         glm::mat4 modelSpaceShuttle = glm::mat4(1.0f);
         shaderGeometryPass.use();
         shaderGeometryPass.setMat4("projection", projection);
         shaderGeometryPass.setMat4("view", view);
         modelSpaceShuttle = glm::mat4(1.0f);
-        modelSpaceShuttle = glm::translate(modelSpaceShuttle, camera.Position + 0.2f * camera.Front);
+        modelSpaceShuttle = glm::translate(modelSpaceShuttle, newModelPosition);
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
         modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.001f));
         spaceshipSphere = { camera.Position + 2.0f * camera.Front, 5.0f };
@@ -1395,13 +1418,21 @@ void carica_interstellar(GLFWwindow* window) {
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100000.0f);
         glm::mat4 view = camera.GetViewMatrix();
 
+        // Definisci un vettore di offset dalla posizione della telecamera
+        float distanceBehind = 0.2f; // Sposta la telecamera dietro la navicella
+        float distanceAbove = -0.03f;   // Sposta la telecamera sopra la navicella
+        glm::vec3 cameraOffset = distanceBehind * camera.Front + distanceAbove * camera.Up;
+
+        // Calcola la nuova posizione del modello
+        glm::vec3 newModelPosition = camera.Position + cameraOffset;
+
         //draw space shuttle
         glm::mat4 modelSpaceShuttle = glm::mat4(1.0f);
         shaderGeometryPass.use();
         shaderGeometryPass.setMat4("projection", projection);
         shaderGeometryPass.setMat4("view", view);
         modelSpaceShuttle = glm::mat4(1.0f);
-        modelSpaceShuttle = glm::translate(modelSpaceShuttle, camera.Position + 0.2f * camera.Front);
+        modelSpaceShuttle = glm::translate(modelSpaceShuttle, newModelPosition);
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
         modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.001f));
         spaceshipSphere = { camera.Position + 2.0f * camera.Front, 5.0f };
@@ -2092,28 +2123,28 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
         camera.ProcessKeyboard(BACKWARD, deltaTime);
 
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        camera.ProcessKeyboard(LEFT, deltaTime);
+
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_RELEASE)
+        camera.ProcessKeyboard(FORWARD, deltaTime * 0.2);
 
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-        camera.MovementSpeed += 1.0f; // incrementa la velocità della camera
+        camera.MovementSpeed += 0.1f; // incrementa la velocità della camera
     if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
-        camera.MovementSpeed -= 1.0f;
+        camera.MovementSpeed -= 0.1f;
+
+    if (camera.MovementSpeed <= 0.0f) {
+        camera.MovementSpeed = 0.0f;
+    }
 
     if (glfwGetKey(window, GLFW_KEY_I) == GLFW_RELEASE && infoVisible == true)
             infoVisible = false;
 
     if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS && infoVisible == false)
             infoVisible = true;
-
-
-    if (camera.MovementSpeed <= 0.0f) {
-        camera.MovementSpeed = 1.0f;
-    }
-   
-
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -2142,7 +2173,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     lastX = xpos;
     lastY = ypos;
 
-    camera.ProcessMouseMovement(xoffset, yoffset);
+    camera.ProcessMouseMovement(deltaTime, xoffset, yoffset);
 }
 
 // glfw: whenever the mouse scroll wheel scrolls, this callback is called
