@@ -42,60 +42,7 @@ void carica_tesseract(GLFWwindow* window);
 bool futurama_caricato = false;
 bool interstellar_caricato = false;
 
-// Array dei vertici e delle coordinate delle texture
-float vertici_img[] = {
-    // Coordinata dei vertici (x, y, z)       // Coordinate della texture (u, v)
-    1.0f,  1.0f, 0.0f,   1.0f, 1.0f,
-    1.0f, -1.0f, 0.0f,   1.0f, 0.0f,
-    -1.0f, -1.0f, 0.0f,   0.0f, 0.0f,
-    -1.0f,  1.0f, 0.0f,   0.0f, 1.0f
-};
-
-unsigned int indices[] = {
-    1, 2, 3, // Primo triangolo
-    0, 1, 3  // Secondo triangolo
-};
-
-void renderImg(unsigned int textureID)
-{
-    // Genera un Vertex Array Object (VAO) e un Vertex Buffer Object (VBO) per il quadrilatero
-    unsigned int VAO, VBO, EBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertici_img), vertici_img, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    // Specifica la posizione degli attributi nel Vertex Shader
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    // Specifica le coordinate della texture negli attributi del Vertex Shader
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-    glBindVertexArray(0);
-
-    // Attiva la texture
-    glBindTexture(GL_TEXTURE_2D, textureID);
-
-    // Effettua il rendering del quadrilatero
-    glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
-
-    // Pulizia delle risorse
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
-}
-
-unsigned int VBO_img, VAO_img, EBO_img;
+bool infoVisible = false;
 
 unsigned int loadTexture(char const* path)
 {
@@ -321,6 +268,7 @@ void carica_universo(GLFWwindow* window) {
     Model venere("resources/objects/universo/planets/venere/venere.obj");
     Model portalFuturama("resources/objects/portal/portal.obj");
     Model portalInterstellar("resources/objects/portal/portal.obj");
+    Model info("resources/objects/info.obj");
 
     SoundEngine->stopAllSounds();
     ISound* ambientSound = SoundEngine->play2D(universoTheme, true);
@@ -434,7 +382,7 @@ void carica_universo(GLFWwindow* window) {
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
-
+        std::cout << "visible:" << infoVisible << std::endl;
         // input
         // -----
         processInput(window);
@@ -551,6 +499,12 @@ void carica_universo(GLFWwindow* window) {
         shaderGeometryPass.setMat4("model", modelPortalInterstellar);
         portalInterstellar.Draw(shaderGeometryPass);
 
+        glm::mat4 modelInfo = glm::mat4(1.0f);
+        modelInfo = glm::translate(modelInfo, camera.Position + 0.13f * camera.Front);
+        modelInfo = glm::rotate(modelInfo, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+        
+
+
         //collisioni
         cameraCollided = false;
 
@@ -562,67 +516,103 @@ void carica_universo(GLFWwindow* window) {
         }
 
         bool collisioneMercury = collisionTest(spaceshipSphere, mercurioSphere);
-        if (collisioneMercury == true) {
+        if (collisioneMercury == true && infoVisible == true) {
             cameraCollided = true;
-            std::string Title = "Mercurio";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/universo/info/mercurio.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisioneVenus = collisionTest(spaceshipSphere, venereSphere);
-        if (collisioneVenus == true) {
+        if (collisioneVenus == true && infoVisible == true) {
             cameraCollided = true;
-            std::string Title = "Venere";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/universo/info/venere.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisioneEarth = collisionTest(spaceshipSphere, terraSphere);
-        if (collisioneEarth == true) {
+        if (collisioneEarth == true && infoVisible == true) {
             cameraCollided = true;
-            std::string Title = "Terra e Luna";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/universo/info/terra.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
+        }
+
+
+        bool collisioneLuna = collisionTest(spaceshipSphere, lunaSphere);
+        if (collisioneLuna == true && infoVisible == true) {
+            cameraCollided = true;
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/universo/info/luna.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisioneMars = collisionTest(spaceshipSphere, marteSphere);
-        if (collisioneMars == true) {
+        if (collisioneMars == true && infoVisible == true) {
             cameraCollided = true;
-            std::string Title = "Marte";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/universo/info/marte.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisioneJupiter = collisionTest(spaceshipSphere, gioveSphere);
-        if (collisioneJupiter == true) {
+        if (collisioneJupiter == true && infoVisible == true) {
             cameraCollided = true;
-            std::string Title = "Giove";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/universo/info/giove.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisioneSaturn = collisionTest(spaceshipSphere, saturnoSphere);
-        if (collisioneSaturn == true) {
+        if (collisioneSaturn == true && infoVisible == true) {
             cameraCollided = true;
-            std::string Title = "Saturno";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/universo/info/saturno.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisioneUranus = collisionTest(spaceshipSphere, uranoSphere);
-        if (collisioneUranus == true) {
+        if (collisioneUranus == true && infoVisible == true) {
             cameraCollided = true;
-            std::string Title = "Urano";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/universo/info/urano.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisioneNeptune = collisionTest(spaceshipSphere, nettunoSphere);
-        if (collisioneNeptune == true) {
+        if (collisioneNeptune == true && infoVisible == true) {
             cameraCollided = true;
-            std::string Title = "Nettuno";
-            //RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f - (float)SCR_WIDTH / 4.0f, (float)SCR_HEIGHT / 2.0f, 1.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/universo/info/nettuno.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
         }
 
         bool collisionePortalFuturama = collisionTest(spaceshipSphere, portalFuturamaSphere);
@@ -1017,14 +1007,14 @@ void carica_futurama(GLFWwindow* window) {
         cameraCollided = false;
 
         bool collisioneSun = collisionTest(spaceshipSphere, soleSphere);
-        if (collisioneSun == true) {
+        if (collisioneSun == true && infoVisible == true) {
             cameraCollided = true;
             std::string Title = "Sole";
             RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
         }
 
         bool collisioneBenderGod = collisionTest(spaceshipSphere, benderGodSphere);
-        if (collisioneBenderGod == true) {
+        if (collisioneBenderGod == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
@@ -1035,7 +1025,7 @@ void carica_futurama(GLFWwindow* window) {
         }
 
         bool collisioneDecapod = collisionTest(spaceshipSphere, decapodSphere);
-        if (collisioneDecapod == true) {
+        if (collisioneDecapod == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
@@ -1046,7 +1036,7 @@ void carica_futurama(GLFWwindow* window) {
         }
 
         bool collisioneEarth = collisionTest(spaceshipSphere, terraSphere);
-        if (collisioneEarth == true) {
+        if (collisioneEarth == true && infoVisible == true) {
             cameraCollided = true;
             std::string Title = "Terra";
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
@@ -1058,7 +1048,7 @@ void carica_futurama(GLFWwindow* window) {
         }
 
         bool collisioneLuna = collisionTest(spaceshipSphere, lunaSphere);
-        if (collisioneLuna == true) {
+        if (collisioneLuna == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
@@ -1069,7 +1059,7 @@ void carica_futurama(GLFWwindow* window) {
         }
 
         bool collisioneMars = collisionTest(spaceshipSphere, marteSphere);
-        if (collisioneMars == true) {
+        if (collisioneMars == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
@@ -1080,7 +1070,7 @@ void carica_futurama(GLFWwindow* window) {
         }
 
         bool collisioneWormulon = collisionTest(spaceshipSphere, wormulonSphere);
-        if (collisioneWormulon == true) {
+        if (collisioneWormulon == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
@@ -1091,7 +1081,7 @@ void carica_futurama(GLFWwindow* window) {
         }
 
         bool collisioneNeardeath = collisionTest(spaceshipSphere, neardeathSphere);
-        if (collisioneNeardeath == true) {
+        if (collisioneNeardeath == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
@@ -1102,7 +1092,7 @@ void carica_futurama(GLFWwindow* window) {
         }
 
         bool collisioneOmicron = collisionTest(spaceshipSphere, omicronSphere);
-        if (collisioneOmicron == true) {
+        if (collisioneOmicron == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
@@ -1113,7 +1103,7 @@ void carica_futurama(GLFWwindow* window) {
         }
 
         bool collisioneSimian = collisionTest(spaceshipSphere, simianSphere);
-        if (collisioneSimian == true) {
+        if (collisioneSimian == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
@@ -1124,7 +1114,7 @@ void carica_futurama(GLFWwindow* window) {
         }
 
         bool collisioneThunban = collisionTest(spaceshipSphere, thunbanSphere);
-        if (collisioneThunban == true) {
+        if (collisioneThunban == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
@@ -1135,7 +1125,7 @@ void carica_futurama(GLFWwindow* window) {
         }
 
         bool collisioneTornadus = collisionTest(spaceshipSphere, tornadusSphere);
-        if (collisioneTornadus == true) {
+        if (collisioneTornadus == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
@@ -1480,7 +1470,7 @@ void carica_interstellar(GLFWwindow* window) {
         }
 
         bool collisioneMann = collisionTest(spaceshipSphere, mannSphere);
-        if (collisioneMann == true) {
+        if (collisioneMann == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
@@ -1491,7 +1481,7 @@ void carica_interstellar(GLFWwindow* window) {
         }
 
         bool collisioneMiller = collisionTest(spaceshipSphere, millerSphere);
-        if (collisioneMiller == true) {
+        if (collisioneMiller == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
@@ -1502,7 +1492,7 @@ void carica_interstellar(GLFWwindow* window) {
         }
 
         bool collisioneSaturn = collisionTest(spaceshipSphere, saturnoSphere);
-        if (collisioneSaturn == true) {
+        if (collisioneSaturn == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
@@ -1955,10 +1945,6 @@ int main()
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
 
-    texture_id = loadTexture("resources/objects/futurama/info/bender_god.png");
-     
-
-
     switch (contatorePortali)
     {
     case 0:
@@ -2115,6 +2101,13 @@ void processInput(GLFWwindow* window)
         camera.MovementSpeed += 1.0f; // incrementa la velocità della camera
     if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
         camera.MovementSpeed -= 1.0f;
+
+    if (glfwGetKey(window, GLFW_KEY_I) == GLFW_RELEASE && infoVisible == true)
+            infoVisible = false;
+
+    if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS && infoVisible == false)
+            infoVisible = true;
+
 
     if (camera.MovementSpeed <= 0.0f) {
         camera.MovementSpeed = 1.0f;
