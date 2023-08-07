@@ -40,7 +40,7 @@ void carica_tesseract(GLFWwindow* window);
 
 bool futurama_caricato = false;
 bool interstellar_caricato = false;
-
+int startGame = 0;
 bool infoVisible = false;
 
 float rotationAngle = 0.0f;
@@ -269,8 +269,9 @@ void carica_universo(GLFWwindow* window) {
     Model venere("resources/objects/universo/planets/venere/venere.obj");
     Model portalFuturama("resources/objects/portal/portal.obj");
     Model portalInterstellar("resources/objects/portal/portal.obj");
-    Model info("resources/objects/info.obj");
-
+    Model info("resources/objects/schermate/info.obj");
+    Model iniz("resources/objects/schermate/iniz.obj");
+    Model tutorial("resources/objects/schermate/tutorial.obj");
     SoundEngine->stopAllSounds();
     ISound* ambientSound = SoundEngine->play2D(universoTheme, true);
 
@@ -381,6 +382,9 @@ void carica_universo(GLFWwindow* window) {
     {
         std::string Velocity = "speed:" + std::to_string((int)camera.MovementSpeed * 1000) + " km/h";
         RenderText(Velocity.c_str(), 15.0f, (float)SCR_HEIGHT / 10.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+
+        std::cout << "start game: " << startGame << std::endl;
+
         // per-frame time logic
         // --------------------
         float currentFrame = glfwGetTime();
@@ -417,6 +421,9 @@ void carica_universo(GLFWwindow* window) {
         // Calcola la nuova posizione del modello
         glm::vec3 newModelPosition = camera.Position + cameraOffset;
 
+
+
+
         //draw space shuttle
         glm::mat4 modelSpaceShuttle = glm::mat4(1.0f);
         shaderGeometryPass.use();
@@ -426,13 +433,30 @@ void carica_universo(GLFWwindow* window) {
         modelSpaceShuttle = glm::translate(modelSpaceShuttle, newModelPosition);
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
-        
-        
         modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.001f));
         spaceshipSphere = { camera.Position + 2.0f * camera.Front, 5.0f };
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
         spaceShuttle.Draw(shaderGeometryPass);
 
+        //draw schermata iniziale
+        if (startGame == 0) {
+            glm::mat4 modelIniz = glm::mat4(1.0f);
+            modelIniz = glm::translate(modelIniz, camera.Position + 0.13f * camera.Front);
+            modelIniz = glm::rotate(modelIniz, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+            modelIniz = glm::rotate(modelIniz, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+            modelIniz = glm::scale(modelIniz, glm::vec3(0.06f));
+            shaderGeometryPass.setMat4("model", modelIniz);
+            iniz.Draw(shaderGeometryPass);
+        }
+        else if (startGame > 0 && startGame < 10) {
+            glm::mat4 modelTutorial = glm::mat4(1.0f);
+            modelTutorial = glm::translate(modelTutorial, camera.Position + 0.13f * camera.Front);
+            modelTutorial = glm::rotate(modelTutorial, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+            modelTutorial = glm::rotate(modelTutorial, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+            modelTutorial = glm::scale(modelTutorial, glm::vec3(0.06f));
+            shaderGeometryPass.setMat4("model", modelTutorial);
+            tutorial.Draw(shaderGeometryPass);
+        }
         // draw solar system
         glm::mat4 modelSole = glm::mat4(1.0f);
         modelSole = glm::scale(modelSole, glm::vec3(1.0f));
@@ -541,8 +565,9 @@ void carica_universo(GLFWwindow* window) {
 
         glm::mat4 modelInfo = glm::mat4(1.0f);
         modelInfo = glm::translate(modelInfo, camera.Position + 0.13f * camera.Front);
+        //modelInfo = glm::rotate(modelInfo, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+        modelInfo = glm::rotate(modelInfo, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
         modelInfo = glm::rotate(modelInfo, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
-        
 
 
         //collisioni
@@ -1048,6 +1073,7 @@ void carica_futurama(GLFWwindow* window) {
         //draw info
         glm::mat4 modelInfo = glm::mat4(1.0f);
         modelInfo = glm::translate(modelInfo, camera.Position + 0.13f * camera.Front);
+        modelInfo = glm::rotate(modelInfo, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
         modelInfo = glm::rotate(modelInfo, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
         //info.Draw(shaderGeometryPass);
 
@@ -2025,13 +2051,6 @@ int main()
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
 
-    // Mostra la schermata iniziale
-    std::cout << "Schermata iniziale di gioco" << std::endl;
-
-    // Attendi 10 secondi
-    std::this_thread::sleep_for(std::chrono::seconds(10));
-
-
     switch (contatorePortali)
     {
     case 0:
@@ -2173,6 +2192,9 @@ void processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+
+    if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS)
+        startGame ++;
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         camera.ProcessKeyboard(FORWARD, deltaTime * 0.5);
