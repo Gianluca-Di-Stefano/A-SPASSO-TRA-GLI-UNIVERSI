@@ -383,8 +383,6 @@ void carica_universo(GLFWwindow* window) {
         std::string Velocity = "speed:" + std::to_string((int)camera.MovementSpeed * 1000) + " km/h";
         RenderText(Velocity.c_str(), 15.0f, (float)SCR_HEIGHT / 10.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 
-        std::cout << "start game: " << startGame << std::endl;
-
         // per-frame time logic
         // --------------------
         float currentFrame = glfwGetTime();
@@ -524,6 +522,7 @@ void carica_universo(GLFWwindow* window) {
 
         glm::mat4 modelSaturno = glm::mat4(1.0f);
         modelSaturno = glm::translate(modelSaturno, glm::vec3(0.0f, 0.0f, 800.0f));
+        modelSaturno = glm::rotate(modelSaturno, 25.0f, glm::vec3(1.0f, 0.0f, 0.0f));
         modelSaturno = glm::rotate(modelSaturno, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelSaturno = glm::scale(modelSaturno, glm::vec3(83.7f / 1000));
         saturnoSphere = { glm::vec3(0.0f, 0.0f, 800.0f), 83.6f };
@@ -815,7 +814,7 @@ void carica_futurama(GLFWwindow* window) {
     Model wormulon("resources/objects/futurama/planets/wormulon/wormulon.obj");
     Model portalUniverso("resources/objects/portal/portal.obj");
     Model portalInterstellar("resources/objects/portal/portal.obj");
-    Model info("resources/objects/info.obj");
+    Model info("resources/objects/schermate/info.obj");
 
 
      SoundEngine->stopAllSounds();
@@ -916,6 +915,11 @@ void carica_futurama(GLFWwindow* window) {
     shaderLightingPass.setInt("gNormal", 1);
     shaderLightingPass.setInt("gAlbedoSpec", 2);
 
+    float rotationSpeed = 1.0f;
+    
+    
+
+
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -933,7 +937,7 @@ void carica_futurama(GLFWwindow* window) {
         // input
         // -----
         processInput(window);
-
+        rotationAngle += rotationSpeed * deltaTime;
         // render
         // ------
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -962,11 +966,13 @@ void carica_futurama(GLFWwindow* window) {
         shaderGeometryPass.setMat4("view", view);
         modelSpaceShuttle = glm::mat4(1.0f);
         modelSpaceShuttle = glm::translate(modelSpaceShuttle, newModelPosition);
+        modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
         modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.001f));
         spaceshipSphere = { camera.Position + 2.0f * camera.Front, 5.0f };
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
         spaceShuttle.Draw(shaderGeometryPass);
+
 
         // draw solar system
 
@@ -978,6 +984,7 @@ void carica_futurama(GLFWwindow* window) {
         glm::mat4 modelBenderGod = glm::mat4(1.0f);
         modelBenderGod = glm::translate(modelBenderGod, glm::vec3(0.0f, 0.0f, 300.0f));
         modelBenderGod = glm::rotate(modelBenderGod, 180.0f, glm::vec3(0.0f, -1.0f, 0.0f));
+        modelBenderGod = glm::rotate(modelBenderGod, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelBenderGod = glm::scale(modelBenderGod, glm::vec3(1.0f / 10.0f));
         benderGodSphere = {glm::vec3(0.0f, 0.0f, 300.0f), 5.0f };
         shaderGeometryPass.setMat4("model", modelBenderGod);
@@ -985,27 +992,40 @@ void carica_futurama(GLFWwindow* window) {
 
         glm::mat4 modelDecapod = glm::mat4(1.0f);
         modelDecapod = glm::translate(modelDecapod, glm::vec3(0.0f, 0.0f, 400.0f));
+        modelDecapod = glm::rotate(modelDecapod, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelDecapod = glm::scale(modelDecapod, glm::vec3(8.6f / 1000.0f));
         decapodSphere = {glm::vec3(0.0f, 0.0f, 400.0f), 10.0f };
         shaderGeometryPass.setMat4("model", modelDecapod);
         decapod.Draw(shaderGeometryPass);
 
+        // Definisci la distanza tra la Terra e la Luna
+        float distanceFromEarth = 8.0f;
+        glm::vec3 positionTerra = glm::vec3(-500.0f, 0.0f, 0.0f);
+
+        // Calcola la posizione della Luna rispetto alla Terra
+        glm::vec3 positionLuna = positionTerra + glm::vec3(cos(glm::radians(rotationAngle)) * distanceFromEarth,
+            0.0f,
+            sin(glm::radians(rotationAngle)) * distanceFromEarth);
+
         glm::mat4 modelTerra = glm::mat4(1.0f);
-        modelTerra = glm::translate(modelTerra, glm::vec3(-500.0f, 0.0f, 0.0f));
+        modelTerra = glm::translate(modelTerra, positionTerra);
+        modelTerra = glm::rotate(modelTerra, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelTerra = glm::scale(modelTerra, glm::vec3(9.1f / 1000));
-        terraSphere = {glm::vec3(-500.0f, 0.0f, 0.0f), 3.0f };
+        terraSphere = {positionTerra, 3.0f };
         shaderGeometryPass.setMat4("model", modelTerra);
         terra.Draw(shaderGeometryPass);
 
         glm::mat4 modelLuna = glm::mat4(1.0f);
-        modelLuna = glm::translate(modelLuna, glm::vec3(-510.0f, 0.0f, 0.0f));
+        modelLuna = glm::translate(modelLuna, positionLuna);
+        modelLuna = glm::rotate(modelLuna, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelLuna = glm::scale(modelLuna, glm::vec3(2.0f / 1000));
-        lunaSphere = {glm::vec3(-510.0f, 0.0f, 0.0f), 1.0f};
+        lunaSphere = { positionLuna, 1.0f};
         shaderGeometryPass.setMat4("model", modelLuna);
         luna.Draw(shaderGeometryPass);
 
         glm::mat4 modelMarte = glm::mat4(1.0f);
         modelMarte = glm::translate(modelMarte, glm::vec3(0.0f, 0.0f, -600.0f));
+        modelMarte = glm::rotate(modelMarte, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelMarte = glm::scale(modelMarte, glm::vec3(2.0f / 1000));
         marteSphere = {glm::vec3(0.0f, 0.0f, -600.0f), 5.0f};
         shaderGeometryPass.setMat4("model", modelMarte);
@@ -1013,6 +1033,8 @@ void carica_futurama(GLFWwindow* window) {
 
         glm::mat4 modelWormulon = glm::mat4(1.0f);
         modelWormulon = glm::translate(modelWormulon, glm::vec3(0.0f, 0.0f, -400.0f));
+        modelWormulon = glm::rotate(modelWormulon, 25.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+        modelWormulon = glm::rotate(modelWormulon, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelWormulon = glm::scale(modelWormulon, glm::vec3(100.0f / 1000));
         wormulonSphere = { glm::vec3(0.0f, 0.0f, -400.0f), 100.0f };
         shaderGeometryPass.setMat4("model", modelWormulon);
@@ -1020,6 +1042,7 @@ void carica_futurama(GLFWwindow* window) {
 
         glm::mat4 modelNeardeath = glm::mat4(1.0f);
         modelNeardeath = glm::translate(modelNeardeath, glm::vec3(700.0f, 0.0f, 0.0f));
+        modelNeardeath = glm::rotate(modelNeardeath, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelNeardeath = glm::scale(modelNeardeath, glm::vec3(102.7f / 1000));
         neardeathSphere = { glm::vec3(700.0f, 0.0f, 0.0f), 100.0f };
         shaderGeometryPass.setMat4("model", modelNeardeath);
@@ -1027,6 +1050,7 @@ void carica_futurama(GLFWwindow* window) {
 
         glm::mat4 modelOmicron = glm::mat4(1.0f);
         modelOmicron = glm::translate(modelOmicron, glm::vec3(0.0f, 0.0f, 800.0f));
+        modelOmicron = glm::rotate(modelOmicron, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelOmicron = glm::scale(modelOmicron, glm::vec3(83.7f / 1000));
         omicronSphere = { glm::vec3(0.0f, 0.0f, 800.0f), 83.6f };
         shaderGeometryPass.setMat4("model", modelOmicron);
@@ -1034,6 +1058,7 @@ void carica_futurama(GLFWwindow* window) {
 
         glm::mat4 modelSimian = glm::mat4(1.0f);
         modelSimian = glm::translate(modelSimian, glm::vec3(-900.0f, 0.0f, 0.0f));
+        modelSimian = glm::rotate(modelSimian, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelSimian = glm::scale(modelSimian, glm::vec3(33.7f / 1000));
         simianSphere = { glm::vec3(-900.0f, 0.0f, 0.0f), 15.6f };
         shaderGeometryPass.setMat4("model", modelSimian);
@@ -1041,6 +1066,7 @@ void carica_futurama(GLFWwindow* window) {
 
         glm::mat4 modelThunban = glm::mat4(1.0f);
         modelThunban = glm::translate(modelThunban, glm::vec3(-950.0f, 0.0f, 0.0f));
+        modelThunban = glm::rotate(modelThunban, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelThunban = glm::scale(modelThunban, glm::vec3(32.7f / 1000));
         thunbanSphere = { glm::vec3(-950.0f, 0.0f, 0.0f), 15.6f };
         shaderGeometryPass.setMat4("model", modelThunban);
@@ -1048,6 +1074,7 @@ void carica_futurama(GLFWwindow* window) {
 
         glm::mat4 modelTornadus = glm::mat4(1.0f);
         modelTornadus = glm::translate(modelTornadus, glm::vec3(0.0f, 0.0f, 900.0f));
+        modelTornadus = glm::rotate(modelTornadus, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelTornadus = glm::scale(modelTornadus, glm::vec3(32.7f / 1000));
         tornadusSphere = { glm::vec3(0.0f, 0.0f, 900.0f), 30.6f };
         shaderGeometryPass.setMat4("model", modelTornadus);
@@ -1336,7 +1363,7 @@ void carica_interstellar(GLFWwindow* window) {
     Model saturno("resources/objects/universo/planets/saturno/saturno.obj");
     Model portalFuturama("resources/objects/portal/portal.obj");
     Model portalUniverso("resources/objects/portal/portal.obj");
-    Model info("resources/objects/info.obj");
+    Model info("resources/objects/schermate/info.obj");
     SoundEngine->stopAllSounds();
     ISound* ambientSound = SoundEngine->play2D(interstellarTheme, true);
     
@@ -1504,6 +1531,7 @@ void carica_interstellar(GLFWwindow* window) {
         shaderGeometryPass.setMat4("view", view);
         modelSpaceShuttle = glm::mat4(1.0f);
         modelSpaceShuttle = glm::translate(modelSpaceShuttle, newModelPosition);
+        modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
         modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.001f));
         spaceshipSphere = { camera.Position + 2.0f * camera.Front, 5.0f };
@@ -1522,7 +1550,7 @@ void carica_interstellar(GLFWwindow* window) {
         modelMann = glm::translate(modelMann, positionMann);
         modelMann = glm::rotate(modelMann, glm::radians(rotationAngle * 20), glm::vec3(0.0f, 1.0f, 0.0f));
         modelMann = glm::scale(modelMann, glm::vec3(9.4f / 100.0f));
-        mannSphere = { positionMann, 30.0f };
+        mannSphere = {positionMann, 30.0f };
         shaderGeometryPass.setMat4("model", modelMann);
         mann.Draw(shaderGeometryPass);
 
@@ -1536,9 +1564,10 @@ void carica_interstellar(GLFWwindow* window) {
 
         glm::mat4 modelSaturno = glm::mat4(1.0f);
         modelSaturno = glm::translate(modelSaturno, positionSaturno);
+        modelSaturno = glm::rotate(modelSaturno, 25.0f, glm::vec3(1.0f, 0.0f, 0.0f));
         modelSaturno = glm::rotate(modelSaturno, glm::radians(rotationAngle * 10), glm::vec3(0.0f, 1.0f, 0.0f));
         modelSaturno = glm::scale(modelSaturno, glm::vec3(83.7f / 1000));
-        saturnoSphere = { positionSaturno, 20.6f };
+        saturnoSphere = {positionSaturno, 20.6f };
         shaderGeometryPass.setMat4("model", modelSaturno);
         saturno.Draw(shaderGeometryPass);
 
@@ -1554,6 +1583,7 @@ void carica_interstellar(GLFWwindow* window) {
         glm::mat4 modelPortalUniverso = glm::mat4(1.0f);
         modelPortalUniverso = glm::translate(modelPortalUniverso, glm::vec3(-200.0f, 0.0f, 100.0f));
         modelPortalUniverso = glm::rotate(modelPortalUniverso, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+        modelPortalUniverso = glm::rotate(modelPortalUniverso, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
         modelPortalUniverso = glm::scale(modelPortalUniverso, glm::vec3(15.7f));
         portalUniversoSphere = { glm::vec3(-200.0f, 0.0f, 100.0f), 10.0f };
         shaderGeometryPass.setMat4("model", modelPortalUniverso);
@@ -1562,6 +1592,7 @@ void carica_interstellar(GLFWwindow* window) {
         //draw info
         glm::mat4 modelInfo = glm::mat4(1.0f);
         modelInfo = glm::translate(modelInfo, camera.Position + 0.13f * camera.Front);
+        modelInfo = glm::rotate(modelInfo, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
         modelInfo = glm::rotate(modelInfo, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
 
         //collisioni
@@ -2218,10 +2249,10 @@ void processInput(GLFWwindow* window)
         camera.MovementSpeed = 0.0f;
     }
 
-    if (glfwGetKey(window, GLFW_KEY_I) == GLFW_RELEASE && infoVisible == true)
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE && infoVisible == true)
             infoVisible = false;
 
-    if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS && infoVisible == false)
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible == false)
             infoVisible = true;
 }
 
