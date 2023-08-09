@@ -89,7 +89,7 @@ struct SphereCollision
 }spaceshipSphere, soleSphere, mercurioSphere, venereSphere, terraSphere, 
 marteSphere, gioveSphere, saturnoSphere, uranoSphere, nettunoSphere, benderGodSphere, decapodSphere,
 lunaSphere, wormulonSphere, neardeathSphere, omicronSphere, simianSphere, thunbanSphere, tornadusSphere, 
-gargantuaSphere,mannSphere,millerSphere, portalUniversoSphere, portalFuturamaSphere, portalInterstellarSphere, tesseractSphere;
+gargantuaSphere, gargantuaInnerSphere, mannSphere,millerSphere, portalUniversoSphere, portalFuturamaSphere, portalInterstellarSphere, tesseractSphere;
 
 bool collisionTest(SphereCollision& sfera1, const SphereCollision& sfera2) {
     glm::vec3 distanzaCentri(sfera2.centre - sfera1.centre);
@@ -1357,7 +1357,7 @@ void carica_interstellar(GLFWwindow* window) {
     //COMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO(SOSTITUSCE IL SOLE)
     //Model sole("resources/objects/universo/planets/sole/sole.obj");
     //DECOMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO (SOSTITUSCE IL SOLE)
-    Model gargantua("resources/objects/interstellar/planets/gargantua/gargantua.obj");
+    Model gargantua("resources/objects/interstellar/planets/gargantua/gargantua2.obj");
     Model miller("resources/objects/interstellar/planets/miller/miller.obj");
     Model mann("resources/objects/interstellar/planets/mann/mann.obj");
     Model saturno("resources/objects/universo/planets/saturno/saturno.obj");
@@ -1501,7 +1501,7 @@ void carica_interstellar(GLFWwindow* window) {
         glm::mat4 view = camera.GetViewMatrix();
 
         // Definisci i raggi delle orbite per gli altri oggetti
-        float radiusMann = 400.0f;
+        float radiusMann = 450.0f;
         float radiusMiller = 600.0f;
         float radiusSaturno = 800.0f;
 
@@ -1540,9 +1540,10 @@ void carica_interstellar(GLFWwindow* window) {
 
         // draw solar system
         glm::mat4 modelGargantua = glm::mat4(1.0f);
-        modelGargantua = glm::scale(modelGargantua, glm::vec3(5.0f));
-        modelGargantua = glm::rotate(modelGargantua, glm::radians(rotationAngle*2), glm::vec3(0.0f, 1.0f, 0.0f));
-        gargantuaSphere = { glm::vec3(0.0f, 0.0f, 0.0f), 100.0f };
+        modelGargantua = glm::scale(modelGargantua, glm::vec3(400.0f));
+        modelGargantua = glm::rotate(modelGargantua, glm::radians(rotationAngle*60), glm::vec3(0.0f, 1.0f, 0.0f));
+        gargantuaSphere = { glm::vec3(0.0f, 0.0f, 0.0f), 400.0f };
+        gargantuaInnerSphere = { glm::vec3(0.0f, 0.0f, 0.0f), 200.0f };
         shaderGeometryPass.setMat4("model", modelGargantua);
         gargantua.Draw(shaderGeometryPass);
 
@@ -1599,10 +1600,17 @@ void carica_interstellar(GLFWwindow* window) {
         cameraCollided = false;
 
         bool collisioneGargantua = collisionTest(spaceshipSphere, gargantuaSphere);
-        if (collisioneGargantua == true) {
-            cameraCollided = true;
-            std::string Title = "Gargantua";
-            RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+        if (collisioneGargantua == true && infoVisible == true) {
+            modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
+            shaderGeometryPass.setMat4("model", modelInfo);
+            glActiveTexture(GL_TEXTURE0);
+            unsigned int image = loadTexture("resources/objects/interstellar/info/gargantua.png");
+            glBindTexture(GL_TEXTURE_2D, image);
+            info.Draw(shaderGeometryPass);
+        }
+
+        bool collisioneInnerGargantua = collisionTest(spaceshipSphere, gargantuaInnerSphere);
+        if (collisioneInnerGargantua) {
             carica_tesseract(window);
         }
 
