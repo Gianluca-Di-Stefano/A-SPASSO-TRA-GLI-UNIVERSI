@@ -42,7 +42,8 @@ bool futurama_caricato = false;
 bool interstellar_caricato = false;
 int startGame = 0;
 bool infoVisible = false;
-
+glm::vec3 initialPosition = glm::vec3(100.0f, 100.0f, 100.0f);
+float initialSpeed = 0.0;
 float rotationAngle = 0.0f;
 
 unsigned int loadTexture(char const* path)
@@ -377,6 +378,8 @@ void carica_universo(GLFWwindow* window) {
     // -----------
 
     float rotationSpeed = 1.0f;
+    camera.Position = initialPosition;
+    camera.MovementSpeed = initialSpeed;
 
     while (!glfwWindowShouldClose(window))
     {
@@ -695,6 +698,15 @@ void carica_universo(GLFWwindow* window) {
             RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
         }
 
+
+
+        //fine gioco
+        if (camera.Position[0] > 10000.0f || camera.Position[0] < -10000.0f || camera.Position[1] > 10000.0f || camera.Position[1] < -10000.0f || camera.Position[2] > 10000.0f || camera.Position[2] < -10000.0f) {
+            camera.MovementSpeed = initialSpeed;
+            camera.Position = initialPosition;
+            carica_tesseract(window);
+        }
+
         // draw skybox cube
         skyboxShader.use();
         glm::mat4 modelCube = glm::mat4(1.0f);
@@ -917,7 +929,8 @@ void carica_futurama(GLFWwindow* window) {
 
     float rotationSpeed = 1.0f;
     
-    
+    camera.Position = initialPosition;
+    camera.MovementSpeed = initialSpeed;
 
 
     // render loop
@@ -1103,6 +1116,15 @@ void carica_futurama(GLFWwindow* window) {
         modelInfo = glm::rotate(modelInfo, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
         modelInfo = glm::rotate(modelInfo, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
         //info.Draw(shaderGeometryPass);
+
+                //fine gioco
+        if (camera.Position[0] > 20000.0f || camera.Position[0] < -20000.0f || camera.Position[1] > 20000.0f || camera.Position[1] < -20000.0f || camera.Position[2] > 20000.0f || camera.Position[2] < -20000.0f) {
+            camera.MovementSpeed = 0.0;
+            camera.Position[0] = 30.0f;
+            camera.Position[1] = 30.0f;
+            camera.Position[2] = 30.0f;
+            carica_tesseract(window);
+        }
 
         //collisioni
         cameraCollided = false;
@@ -1466,7 +1488,8 @@ void carica_interstellar(GLFWwindow* window) {
     shaderLightingPass.setInt("gAlbedoSpec", 2);
 
     float rotationSpeed = 1.0f;
-    
+    camera.Position = initialPosition + 300.0f;
+    camera.MovementSpeed = initialSpeed;
 
 
     // render loop
@@ -1663,6 +1686,12 @@ void carica_interstellar(GLFWwindow* window) {
             contatorePortali = 2;
         }
 
+        //fine gioco
+        if (camera.Position[0] > 10000.0f || camera.Position[0] < -10000.0f || camera.Position[1] > 10000.0f || camera.Position[1] < -10000.0f || camera.Position[2] > 10000.0f || camera.Position[2] < -10000.0f) {
+            camera.MovementSpeed = initialSpeed;
+            camera.Position = initialPosition;
+            carica_tesseract(window);
+        }
 
         // draw skybox cube
         skyboxShader.use();
@@ -1762,7 +1791,7 @@ void carica_tesseract(GLFWwindow* window) {
     Shader skyboxShader("skybox.vs", "skybox.fs");
 
     // load models
-    Model spaceShuttle("resources/objects/interstellar/spaceship/rocket.obj");
+    Model spaceShuttle("resources/objects/interstellar/astronaut/astronaut.obj");
     std::vector<glm::vec3> objectPositions;
     objectPositions.push_back(glm::vec3(-3.0, -0.5, -3.0));
     //COMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO(SOSTITUSCE IL SOLE)
@@ -1774,8 +1803,8 @@ void carica_tesseract(GLFWwindow* window) {
     Model portalUniverso("resources/objects/portal/portal.obj");
     Model portalInterstellar("resources/objects/portal/portal.obj");
 
-    //SoundEngine->stopAllSounds();
-    //ISound* ambientSound = SoundEngine->play2D(interstellarTheme, true);
+    SoundEngine->stopAllSounds();
+    ISound* ambientSound = SoundEngine->play2D(interstellarTheme, true);
 
     // configure g-buffer framebuffer
 // ------------------------------
@@ -1890,15 +1919,26 @@ void carica_tesseract(GLFWwindow* window) {
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100000.0f);
         glm::mat4 view = camera.GetViewMatrix();
 
+        // Definisci un vettore di offset dalla posizione della telecamera
+        float distanceBehind = 0.2f; // Sposta la telecamera dietro la navicella
+        float distanceAbove = -0.03f;   // Sposta la telecamera sopra la navicella
+        glm::vec3 cameraOffset = distanceBehind * camera.Front + distanceAbove * camera.Up;
+
+        // Calcola la nuova posizione del modello
+        glm::vec3 newModelPosition = camera.Position + cameraOffset;
+
+
+
         //draw space shuttle
         glm::mat4 modelSpaceShuttle = glm::mat4(1.0f);
         shaderGeometryPass.use();
         shaderGeometryPass.setMat4("projection", projection);
         shaderGeometryPass.setMat4("view", view);
         modelSpaceShuttle = glm::mat4(1.0f);
-        modelSpaceShuttle = glm::translate(modelSpaceShuttle, camera.Position + 0.000002f * camera.Front);
+        modelSpaceShuttle = glm::translate(modelSpaceShuttle, newModelPosition);
+        modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
-        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.001f));
+        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.05f));
         spaceshipSphere = { camera.Position + 2.0f * camera.Front, 5.0f };
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
         spaceShuttle.Draw(shaderGeometryPass);
