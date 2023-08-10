@@ -268,7 +268,7 @@ void carica_universo(GLFWwindow* window) {
     Model saturno("resources/objects/universo/planets/saturno/saturno.obj");
     Model urano("resources/objects/universo/planets/urano/urano.obj");
     Model venere("resources/objects/universo/planets/venere/venere.obj");
-    Model portalFuturama("resources/objects/portal/portal.obj");
+    Model portalFuturama("resources/objects/futurama/box/box.obj");
     Model portalInterstellar("resources/objects/interstellar/planets/wormhole/wormhole.obj");
     Model info("resources/objects/schermate/info.obj");
     Model iniz("resources/objects/schermate/iniz.obj");
@@ -432,7 +432,7 @@ void carica_universo(GLFWwindow* window) {
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
         modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.001f));
-        spaceshipSphere = { camera.Position + 2.0f * camera.Front, 5.0f };
+        spaceshipSphere = { camera.Position + 2.0f * camera.Front, 1.0f };
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
         spaceShuttle.Draw(shaderGeometryPass);
 
@@ -549,24 +549,19 @@ void carica_universo(GLFWwindow* window) {
         glm::mat4 modelPortalFuturama = glm::mat4(1.0f);
         modelPortalFuturama = glm::translate(modelPortalFuturama, glm::vec3(200.0f, 0.0f, 0.0f));
         modelPortalFuturama = glm::rotate(modelPortalFuturama, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-        modelPortalFuturama = glm::scale(modelPortalFuturama, glm::vec3(15.7f));
-        portalFuturamaSphere = { glm::vec3(200.0f, 0.0f, 0.0f), 10.0f };
+        modelPortalFuturama = glm::scale(modelPortalFuturama, glm::vec3(0.5f));
+        portalFuturamaSphere = { glm::vec3(200.0f, 0.0f, 0.0f), 0.4f };
         shaderGeometryPass.setMat4("model", modelPortalFuturama);
         portalFuturama.Draw(shaderGeometryPass);
-        
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_DST_COLOR, GL_ONE);
    
         glm::mat4 modelPortalInterstellar = glm::mat4(1.0f);
         modelPortalInterstellar = glm::translate(modelPortalInterstellar, glm::vec3(-300.0f, 0.0f, 0.0f));
-        //modelPortalInterstellar = glm::rotate(modelPortalInterstellar, glm::radians(rotationAngle) *200, glm::vec3(1.0f, 0.0f, 0.0f));
-        modelPortalInterstellar = glm::rotate(modelPortalInterstellar, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+        modelPortalInterstellar = glm::rotate(modelPortalInterstellar, glm::radians(rotationAngle) *20000, glm::vec3(0.0f, 0.0f, 1.0f));
+        //modelPortalInterstellar = glm::rotate(modelPortalInterstellar, 90.0f, glm::vec3(0.0f, 0.0f, 1.0f));
         modelPortalInterstellar = glm::scale(modelPortalInterstellar, glm::vec3(15.7f));
         portalInterstellarSphere = { glm::vec3(-300.0f, 0.0f, 0.0f), 10.0f };
         shaderGeometryPass.setMat4("model", modelPortalInterstellar);
         portalInterstellar.Draw(shaderGeometryPass);
-
-        glDisable(GL_BLEND);
 
         glm::mat4 modelInfo = glm::mat4(1.0f);
         modelInfo = glm::translate(modelInfo, camera.Position + 0.13f * camera.Front);
