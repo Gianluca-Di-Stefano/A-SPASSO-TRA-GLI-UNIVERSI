@@ -7,7 +7,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd diffuse.png
-map_Ks metallic.png
-map_Ns roughness.png
-map_Bump normal.png
+map_Kd texture_diffuse.png
+map_Ks texture_specular.png
+map_Ns texture_height.png
+map_Bump texture_normal.png

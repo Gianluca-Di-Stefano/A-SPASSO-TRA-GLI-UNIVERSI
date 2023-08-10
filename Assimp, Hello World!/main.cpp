@@ -269,7 +269,7 @@ void carica_universo(GLFWwindow* window) {
     Model urano("resources/objects/universo/planets/urano/urano.obj");
     Model venere("resources/objects/universo/planets/venere/venere.obj");
     Model portalFuturama("resources/objects/portal/portal.obj");
-    Model portalInterstellar("resources/objects/portal/portal.obj");
+    Model portalInterstellar("resources/objects/interstellar/planets/wormhole/wormhole.obj");
     Model info("resources/objects/schermate/info.obj");
     Model iniz("resources/objects/schermate/iniz.obj");
     Model tutorial("resources/objects/schermate/tutorial.obj");
@@ -422,9 +422,6 @@ void carica_universo(GLFWwindow* window) {
         // Calcola la nuova posizione del modello
         glm::vec3 newModelPosition = camera.Position + cameraOffset;
 
-
-
-
         //draw space shuttle
         glm::mat4 modelSpaceShuttle = glm::mat4(1.0f);
         shaderGeometryPass.use();
@@ -556,14 +553,20 @@ void carica_universo(GLFWwindow* window) {
         portalFuturamaSphere = { glm::vec3(200.0f, 0.0f, 0.0f), 10.0f };
         shaderGeometryPass.setMat4("model", modelPortalFuturama);
         portalFuturama.Draw(shaderGeometryPass);
-
+        
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_DST_COLOR, GL_ONE);
+   
         glm::mat4 modelPortalInterstellar = glm::mat4(1.0f);
-        modelPortalInterstellar = glm::translate(modelPortalInterstellar, glm::vec3(-200.0f, 0.0f, 0.0f));
+        modelPortalInterstellar = glm::translate(modelPortalInterstellar, glm::vec3(-300.0f, 0.0f, 0.0f));
+        //modelPortalInterstellar = glm::rotate(modelPortalInterstellar, glm::radians(rotationAngle) *200, glm::vec3(1.0f, 0.0f, 0.0f));
         modelPortalInterstellar = glm::rotate(modelPortalInterstellar, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
         modelPortalInterstellar = glm::scale(modelPortalInterstellar, glm::vec3(15.7f));
-        portalInterstellarSphere = { glm::vec3(-200.0f, 0.0f, 0.0f), 10.0f };
+        portalInterstellarSphere = { glm::vec3(-300.0f, 0.0f, 0.0f), 10.0f };
         shaderGeometryPass.setMat4("model", modelPortalInterstellar);
         portalInterstellar.Draw(shaderGeometryPass);
+
+        glDisable(GL_BLEND);
 
         glm::mat4 modelInfo = glm::mat4(1.0f);
         modelInfo = glm::translate(modelInfo, camera.Position + 0.13f * camera.Front);
@@ -1866,11 +1869,31 @@ void carica_tesseract(GLFWwindow* window) {
         lightPositions.push_back(glm::vec3(100, 100, -100)); //prova posizione sole 
         lightPositions.push_back(glm::vec3(-100, 100, -100)); //prova posizione sole 
         lightPositions.push_back(glm::vec3(100, -100, -100)); //prova posizione sole 
-        lightPositions.push_back(glm::vec3(-100, -100, 100)); //prova posizione sole 
+        lightPositions.push_back(glm::vec3(-100, -100, 100)); //prova posizione sole
+        lightPositions.push_back(glm::vec3(100, 0, 100)); //prova posizione sole 
+        lightPositions.push_back(glm::vec3(-100, 0, 100)); //prova posizione sole 
+        lightPositions.push_back(glm::vec3(100, 0, -100)); //prova posizione sole 
+        lightPositions.push_back(glm::vec3(-100, 0, -100)); //prova posizione sole 
+        lightPositions.push_back(glm::vec3(0, 0, -100)); //prova posizione sole 
+        lightPositions.push_back(glm::vec3(0, 0, 100)); //prova posizione sole 
+        lightPositions.push_back(glm::vec3(100, 0, 0)); //prova posizione sole 
+        lightPositions.push_back(glm::vec3(-100, 0, 0)); //prova posizione sole 
+        lightPositions.push_back(glm::vec3(0, 0, 100)); //prova posizione sole 
+        lightPositions.push_back(glm::vec3(0, 0, -100)); //prova posizione sole 
         // also calculate random color
         float rColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
         float gColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
         float bColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
         lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
         lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
         lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
@@ -2045,7 +2068,6 @@ void carica_tesseract(GLFWwindow* window) {
 
         // 3. render lights on top of scene eliminare questa parte per togliere i cubi luminosi e lasciare solo la luce
         // --------------------------------
-        /*
         shaderLightBox.use();
         shaderLightBox.setMat4("projection", projection);
         shaderLightBox.setMat4("view", view);
@@ -2059,7 +2081,6 @@ void carica_tesseract(GLFWwindow* window) {
             //renderCube();
             renderSphere();
         }
-        */
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
