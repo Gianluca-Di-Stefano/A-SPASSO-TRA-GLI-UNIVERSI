@@ -11,6 +11,9 @@
 #include "model.h"
 #include "render_text.h"
 #include <iostream>
+#include <unordered_map>
+#include <chrono>
+#include <thread>
 
 #pragma comment(lib, "irrKlang.lib") 
 
@@ -45,6 +48,12 @@ bool infoVisible = false;
 glm::vec3 initialPosition = glm::vec3(100.0f, 100.0f, 100.0f);
 float initialSpeed = 0.0;
 float rotationAngle = 0.0f;
+
+//pianeti visitati variabili
+int pianetiScoperti = 0;
+std::unordered_map<std::string, bool> pianetiVisitatiUniverso;
+std::unordered_map<std::string, bool> pianetiVisitatiFuturama;
+std::unordered_map<std::string, bool> pianetiVisitatiInterstellar;
 
 unsigned int loadTexture(char const* path)
 {
@@ -383,8 +392,6 @@ void carica_universo(GLFWwindow* window) {
 
     while (!glfwWindowShouldClose(window))
     {
-        std::string Velocity = "speed:" + std::to_string((int)camera.MovementSpeed * 1000) + " km/h";
-        RenderText(Velocity.c_str(), 15.0f, (float)SCR_HEIGHT / 10.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 
         // per-frame time logic
         // --------------------
@@ -581,6 +588,7 @@ void carica_universo(GLFWwindow* window) {
         }
 
         bool collisioneMercury = collisionTest(spaceshipSphere, mercurioSphere);
+        std::string nomePianeta = "Mercurio";
         if (collisioneMercury == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
@@ -589,9 +597,16 @@ void carica_universo(GLFWwindow* window) {
             unsigned int image = loadTexture("resources/objects/universo/info/mercurio.png");
             glBindTexture(GL_TEXTURE_2D, image);
             info.Draw(shaderGeometryPass);
+            if (!pianetiVisitatiUniverso[nomePianeta]) {
+                // Incrementa il numero di pianeti scoperti
+                pianetiScoperti++;
+                // Imposta il pianeta come visitato
+                pianetiVisitatiUniverso[nomePianeta] = true;
+            }
         }
 
         bool collisioneVenus = collisionTest(spaceshipSphere, venereSphere);
+        nomePianeta = "Venere";
         if (collisioneVenus == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
@@ -600,9 +615,16 @@ void carica_universo(GLFWwindow* window) {
             unsigned int image = loadTexture("resources/objects/universo/info/venere.png");
             glBindTexture(GL_TEXTURE_2D, image);
             info.Draw(shaderGeometryPass);
+            if (!pianetiVisitatiUniverso[nomePianeta]) {
+                // Incrementa il numero di pianeti scoperti
+                pianetiScoperti++;
+                // Imposta il pianeta come visitato
+                pianetiVisitatiUniverso[nomePianeta] = true;
+            }
         }
 
         bool collisioneEarth = collisionTest(spaceshipSphere, terraSphere);
+        nomePianeta = "Terra";
         if (collisioneEarth == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
@@ -611,10 +633,17 @@ void carica_universo(GLFWwindow* window) {
             unsigned int image = loadTexture("resources/objects/universo/info/terra.png");
             glBindTexture(GL_TEXTURE_2D, image);
             info.Draw(shaderGeometryPass);
+            if (!pianetiVisitatiUniverso[nomePianeta]) {
+                // Incrementa il numero di pianeti scoperti
+                pianetiScoperti++;
+                // Imposta il pianeta come visitato
+                pianetiVisitatiUniverso[nomePianeta] = true;
+            }
         }
 
 
         bool collisioneLuna = collisionTest(spaceshipSphere, lunaSphere);
+        nomePianeta = "Luna";
         if (collisioneLuna == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
@@ -623,9 +652,16 @@ void carica_universo(GLFWwindow* window) {
             unsigned int image = loadTexture("resources/objects/universo/info/luna.png");
             glBindTexture(GL_TEXTURE_2D, image);
             info.Draw(shaderGeometryPass);
+            if (!pianetiVisitatiUniverso[nomePianeta]) {
+                // Incrementa il numero di pianeti scoperti
+                pianetiScoperti++;
+                // Imposta il pianeta come visitato
+                pianetiVisitatiUniverso[nomePianeta] = true;
+            }
         }
 
         bool collisioneMars = collisionTest(spaceshipSphere, marteSphere);
+        nomePianeta = "Marte";
         if (collisioneMars == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
@@ -634,9 +670,16 @@ void carica_universo(GLFWwindow* window) {
             unsigned int image = loadTexture("resources/objects/universo/info/marte.png");
             glBindTexture(GL_TEXTURE_2D, image);
             info.Draw(shaderGeometryPass);
+            if (!pianetiVisitatiUniverso[nomePianeta]) {
+                // Incrementa il numero di pianeti scoperti
+                pianetiScoperti++;
+                // Imposta il pianeta come visitato
+                pianetiVisitatiUniverso[nomePianeta] = true;
+            }
         }
 
         bool collisioneJupiter = collisionTest(spaceshipSphere, gioveSphere);
+        nomePianeta = "Giove";
         if (collisioneJupiter == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
@@ -645,9 +688,16 @@ void carica_universo(GLFWwindow* window) {
             unsigned int image = loadTexture("resources/objects/universo/info/giove.png");
             glBindTexture(GL_TEXTURE_2D, image);
             info.Draw(shaderGeometryPass);
+            if (!pianetiVisitatiUniverso[nomePianeta]) {
+                // Incrementa il numero di pianeti scoperti
+                pianetiScoperti++;
+                // Imposta il pianeta come visitato
+                pianetiVisitatiUniverso[nomePianeta] = true;
+            }
         }
 
         bool collisioneSaturn = collisionTest(spaceshipSphere, saturnoSphere);
+        nomePianeta = "Saturno";
         if (collisioneSaturn == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
@@ -656,9 +706,16 @@ void carica_universo(GLFWwindow* window) {
             unsigned int image = loadTexture("resources/objects/universo/info/saturno.png");
             glBindTexture(GL_TEXTURE_2D, image);
             info.Draw(shaderGeometryPass);
+            if (!pianetiVisitatiUniverso[nomePianeta]) {
+                // Incrementa il numero di pianeti scoperti
+                pianetiScoperti++;
+                // Imposta il pianeta come visitato
+                pianetiVisitatiUniverso[nomePianeta] = true;
+            }
         }
 
         bool collisioneUranus = collisionTest(spaceshipSphere, uranoSphere);
+        nomePianeta = "Urano";
         if (collisioneUranus == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
@@ -667,9 +724,16 @@ void carica_universo(GLFWwindow* window) {
             unsigned int image = loadTexture("resources/objects/universo/info/urano.png");
             glBindTexture(GL_TEXTURE_2D, image);
             info.Draw(shaderGeometryPass);
+            if (!pianetiVisitatiUniverso[nomePianeta]) {
+                // Incrementa il numero di pianeti scoperti
+                pianetiScoperti++;
+                // Imposta il pianeta come visitato
+                pianetiVisitatiUniverso[nomePianeta] = true;
+            }
         }
 
         bool collisioneNeptune = collisionTest(spaceshipSphere, nettunoSphere);
+        nomePianeta = "Nettuno";
         if (collisioneNeptune == true && infoVisible == true) {
             cameraCollided = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
@@ -678,6 +742,12 @@ void carica_universo(GLFWwindow* window) {
             unsigned int image = loadTexture("resources/objects/universo/info/nettuno.png");
             glBindTexture(GL_TEXTURE_2D, image);
             info.Draw(shaderGeometryPass);
+            if (!pianetiVisitatiUniverso[nomePianeta]) {
+                // Incrementa il numero di pianeti scoperti
+                pianetiScoperti++;
+                // Imposta il pianeta come visitato
+                pianetiVisitatiUniverso[nomePianeta] = true;
+            }
         }
 
         bool collisionePortalFuturama = collisionTest(spaceshipSphere, portalFuturamaSphere);
@@ -696,6 +766,19 @@ void carica_universo(GLFWwindow* window) {
             RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
         }
 
+        // testo su schermo
+
+        std::string Pianeti = "pianeti scoperti':" + std::to_string(pianetiScoperti) + "/9";
+        RenderText(Pianeti.c_str(), 15.0f, (float)SCR_HEIGHT / 6.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+
+        double startTime = 0.0;
+        if (pianetiScoperti == 2) {
+            Pianeti = "sistema solare esplorato";
+            RenderText(Pianeti.c_str(), 15.0f, (float)SCR_HEIGHT / 6.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+        }
+
+        std::string Velocity = "velocita':" + std::to_string((int)camera.MovementSpeed * 1000) + " km/h";
+        RenderText(Velocity.c_str(), 15.0f, (float)SCR_HEIGHT / 10.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 
 
         //fine gioco
