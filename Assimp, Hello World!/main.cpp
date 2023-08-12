@@ -261,6 +261,7 @@ void carica_universo(GLFWwindow* window) {
     Shader shaderLightingPass("deferred_shading.vs", "deferred_shading.fs");
     Shader shaderLightBox("deferred_light_box.vs", "deferred_light_box.fs");
     Shader skyboxShader("skybox.vs", "skybox.fs");
+    Shader bloom("bloom.vs", "bloom.fs");
 
     // load models
     Model spaceShuttle("resources/objects/universo/spaceship/rocket.obj");
@@ -384,6 +385,7 @@ void carica_universo(GLFWwindow* window) {
     shaderLightingPass.setInt("gPosition", 0);
     shaderLightingPass.setInt("gNormal", 1);
     shaderLightingPass.setInt("gAlbedoSpec", 2);
+    
 
     // render loop
     // -----------

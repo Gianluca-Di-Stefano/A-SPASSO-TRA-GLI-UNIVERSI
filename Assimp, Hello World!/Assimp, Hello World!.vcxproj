@@ -166,6 +166,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="bloom.fs" />
+    <None Include="bloom.vs" />
     <None Include="deferred_shading_toon.fs" />
     <None Include="deferred_shading_toon.vs" />
     <None Include="g_buffer.fs" />

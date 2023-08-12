@@ -52,6 +52,12 @@
     <None Include="skybox.vs">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="bloom.fs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="bloom.vs">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
