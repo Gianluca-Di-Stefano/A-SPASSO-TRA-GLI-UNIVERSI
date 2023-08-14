@@ -261,7 +261,8 @@ void carica_universo(GLFWwindow* window) {
     Shader shaderLightingPass("deferred_shading.vs", "deferred_shading.fs");
     Shader shaderLightBox("deferred_light_box.vs", "deferred_light_box.fs");
     Shader skyboxShader("skybox.vs", "skybox.fs");
-    Shader bloom("bloom.vs", "bloom.fs");
+    Shader asteroidShader("asteroids.vs", "asteroids.fs");
+
 
     // load models
     Model spaceShuttle("resources/objects/universo/spaceship/rocket.obj");
@@ -275,7 +276,7 @@ void carica_universo(GLFWwindow* window) {
     Model giove("resources/objects/universo/planets/giove/giove.obj");
     Model luna("resources/objects/universo/planets/luna/luna.obj");
     Model marte("resources/objects/universo/planets/marte/marte.obj");
-    Model asteroids("resources/objects/universo/planets/asteroid/asteroid.obj");
+    Model rock("resources/objects/universo/planets/asteroid/rock.obj");
     Model mercurio("resources/objects/universo/planets/mercurio/mercurio.obj");
     Model nettuno("resources/objects/universo/planets/nettuno/nettuno.obj");
     Model saturno("resources/objects/universo/planets/saturno/saturno.obj");
@@ -289,6 +290,72 @@ void carica_universo(GLFWwindow* window) {
     SoundEngine->stopAllSounds();
     ISound* ambientSound = SoundEngine->play2D(universoTheme, true);
 
+    // generate a large list of semi-random model transformation matrices
+  // ------------------------------------------------------------------
+    unsigned int amount = 10000;
+    glm::mat4* modelMatrices;
+    modelMatrices = new glm::mat4[amount];
+    srand(glfwGetTime()); // initialize random seed	
+    float innerRadius = 510.0f; // Inner radius of the disk
+    float outerRadius = 690.0f; // Outer radius of the disk
+    float diskHeight = 0.0f; // Height of the disk (z-coordinate)
+    for (unsigned int i = 0; i < amount; i++)
+    {
+        glm::mat4 model = glm::mat4(1.0f);
+
+        // 1. translation: displace in a circular path within the disk
+        float angle = ((float)rand() / RAND_MAX) * 360.0f; // Random angle in degrees
+        float radius = innerRadius + ((float)rand() / RAND_MAX) * (outerRadius - innerRadius); // Random radius within the disk width
+        float x = radius * cos(glm::radians(angle));
+        float y = diskHeight + ((float)rand() / RAND_MAX)* 200.0f - 200.0f; // Randomize z-coordinate slightly
+        float z = radius * sin(glm::radians(angle));
+        model = glm::translate(model, glm::vec3(x, y, z));
+
+        // 2. scale: Scale between 0.05 and 0.25f
+        float scale = ((rand() % 20) / 100.0f + 0.05);
+        model = glm::scale(model, glm::vec3(scale * 2));
+
+        // 3. rotation: add random rotation around a (semi)randomly picked rotation axis vector
+        float rotAngle = (rand() % 360);
+        model = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
+
+
+        // 4. now add to list of matrices
+        modelMatrices[i] = model;
+    }
+
+    // configure instanced array
+  // -------------------------
+    unsigned int buffer;
+    glGenBuffers(1, &buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
+
+    // set transformation matrices as an instance vertex attribute (with divisor 1)
+    // note: we're cheating a little by taking the, now publicly declared, VAO of the model's mesh(es) and adding new vertexAttribPointers
+    // normally you'd want to do this in a more organized fashion, but for learning purposes this will do.
+    // -----------------------------------------------------------------------------------------------------------------------------------
+    for (unsigned int i = 0; i < rock.meshes.size(); i++)
+    {
+        unsigned int VAO = rock.meshes[i].VAO;
+        glBindVertexArray(VAO);
+        // set attribute pointers for matrix (4 times vec4)
+        glEnableVertexAttribArray(3);
+        glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
+        glEnableVertexAttribArray(4);
+        glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
+        glEnableVertexAttribArray(5);
+        glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
+        glEnableVertexAttribArray(6);
+        glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+
+        glVertexAttribDivisor(3, 1);
+        glVertexAttribDivisor(4, 1);
+        glVertexAttribDivisor(5, 1);
+        glVertexAttribDivisor(6, 1);
+
+        glBindVertexArray(0);
+    }
 
     // cube VAO
     unsigned int cubeVAO, cubeVBO;
@@ -386,7 +453,7 @@ void carica_universo(GLFWwindow* window) {
     shaderLightingPass.setInt("gPosition", 0);
     shaderLightingPass.setInt("gNormal", 1);
     shaderLightingPass.setInt("gAlbedoSpec", 2);
-    
+
 
     // render loop
     // -----------
@@ -421,6 +488,10 @@ void carica_universo(GLFWwindow* window) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 2000000000.0f);
         glm::mat4 view = camera.GetViewMatrix();
+
+        asteroidShader.use();
+        asteroidShader.setMat4("projection", projection);
+        asteroidShader.setMat4("view", view);
 
         // Calcola la direzione in cui la telecamera dovrebbe guardare
         glm::vec3 cameraFront = glm::normalize(camera.Front);
@@ -475,13 +546,6 @@ void carica_universo(GLFWwindow* window) {
         shaderGeometryPass.setMat4("model", modelSole);
         sole.Draw(shaderGeometryPass);
 
-        glm::mat4 modelAsteroids = glm::mat4(1.0f);
-        modelAsteroids = glm::scale(modelAsteroids, glm::vec3(1.0f));
-        modelAsteroids = glm::rotate(modelAsteroids, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
-        //soleSphere = { glm::vec3(0.0f, 0.0f, 0.0f), 250.0f };
-        shaderGeometryPass.setMat4("model", modelAsteroids);
-        asteroids.Draw(shaderGeometryPass);
-
         glm::mat4 modelMercurio = glm::mat4(1.0f);
         modelMercurio = glm::translate(modelMercurio, glm::vec3(300.0f, 0.0f, 0.0f));
         modelMercurio = glm::rotate(modelMercurio, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -524,10 +588,10 @@ void carica_universo(GLFWwindow* window) {
         luna.Draw(shaderGeometryPass);
 
         glm::mat4 modelMarte = glm::mat4(1.0f);
-        modelMarte = glm::translate(modelMarte, glm::vec3(0.0f, 0.0f, -600.0f));
+        modelMarte = glm::translate(modelMarte, glm::vec3(0.0f, 0.0f, -500.0f));
         modelMarte = glm::rotate(modelMarte, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelMarte = glm::scale(modelMarte, glm::vec3(2.0f / 1000));
-        marteSphere = { glm::vec3(0.0f, 0.0f, -600.0f), 7.6f };
+        marteSphere = { glm::vec3(0.0f, 0.0f, -500.0f), 7.6f };
         shaderGeometryPass.setMat4("model", modelMarte);
         marte.Draw(shaderGeometryPass);
 
@@ -587,7 +651,6 @@ void carica_universo(GLFWwindow* window) {
         //modelInfo = glm::rotate(modelInfo, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
         modelInfo = glm::rotate(modelInfo, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
         modelInfo = glm::rotate(modelInfo, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
-
 
         //collisioni
         cameraCollided = false;
@@ -801,6 +864,23 @@ void carica_universo(GLFWwindow* window) {
             carica_tesseract(window);
         }
 
+        // draw meteorites
+        asteroidShader.use();
+        asteroidShader.setInt("texture_diffuse1", 0);
+        glBindTexture(GL_TEXTURE_2D, rock.textures_loaded[0].id); // note: we also made the textures_loaded vector public (instead of private) from the model class.
+        // Abilita il mipmapping
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        // Genera i mipmap
+        glGenerateMipmap(GL_TEXTURE_2D);
+        for (unsigned int i = 0; i < rock.meshes.size(); i++)
+        {
+            glBindVertexArray(rock.meshes[i].VAO);
+            glDrawElementsInstanced(GL_TRIANGLES, rock.meshes[i].indices.size(), GL_UNSIGNED_INT, 0, amount);
+            glBindVertexArray(0);
+        }
+
         // draw skybox cube
         skyboxShader.use();
         glm::mat4 modelCube = glm::mat4(1.0f);
@@ -822,6 +902,8 @@ void carica_universo(GLFWwindow* window) {
         glBindVertexArray(0);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
 
         // 2. lighting pass: calculate lighting by iterating over a screen filled quad pixel-by-pixel using the gbuffer's content.
         // -----------------------------------------------------------------------------------------------------------------------
