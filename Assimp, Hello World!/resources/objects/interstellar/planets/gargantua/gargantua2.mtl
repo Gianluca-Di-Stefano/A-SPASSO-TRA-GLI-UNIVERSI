@@ -17,7 +17,7 @@ Ka 1.000000 1.000000 1.000000
 Ks 0.000000 0.000000 0.000000
 Ni 1.450000
 illum 1
-map_Kd ring_diff_B.jpg
+map_Kd diffuse.jpg
 map_Ke ring_clouds_A.jpg
 map_d ring_opa.jpg
 
@@ -28,7 +28,7 @@ Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 illum 1
-map_Kd ring_diff_B.jpg
+map_Kd diffuse.jpg
 map_d ring_opa.jpg
 
 newmtl Blackhole_skin

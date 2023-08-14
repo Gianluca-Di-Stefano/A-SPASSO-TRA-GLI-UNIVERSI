@@ -275,6 +275,7 @@ void carica_universo(GLFWwindow* window) {
     Model giove("resources/objects/universo/planets/giove/giove.obj");
     Model luna("resources/objects/universo/planets/luna/luna.obj");
     Model marte("resources/objects/universo/planets/marte/marte.obj");
+    Model asteroids("resources/objects/universo/planets/asteroid/asteroid.obj");
     Model mercurio("resources/objects/universo/planets/mercurio/mercurio.obj");
     Model nettuno("resources/objects/universo/planets/nettuno/nettuno.obj");
     Model saturno("resources/objects/universo/planets/saturno/saturno.obj");
@@ -473,6 +474,13 @@ void carica_universo(GLFWwindow* window) {
         soleSphere = { glm::vec3(0.0f, 0.0f, 0.0f), 250.0f };
         shaderGeometryPass.setMat4("model", modelSole);
         sole.Draw(shaderGeometryPass);
+
+        glm::mat4 modelAsteroids = glm::mat4(1.0f);
+        modelAsteroids = glm::scale(modelAsteroids, glm::vec3(1.0f));
+        modelAsteroids = glm::rotate(modelAsteroids, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        //soleSphere = { glm::vec3(0.0f, 0.0f, 0.0f), 250.0f };
+        shaderGeometryPass.setMat4("model", modelAsteroids);
+        asteroids.Draw(shaderGeometryPass);
 
         glm::mat4 modelMercurio = glm::mat4(1.0f);
         modelMercurio = glm::translate(modelMercurio, glm::vec3(300.0f, 0.0f, 0.0f));
