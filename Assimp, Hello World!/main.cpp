@@ -9,6 +9,7 @@
 #include "shader_m.h"
 #include "camera.h"
 #include "model.h"
+#include "particle_generator.h"
 #include "render_text.h"
 #include <iostream>
 #include <unordered_map>
@@ -2439,6 +2440,9 @@ int main()
 
     // tell GLFW to capture our mouse
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+    // inizializza il sistema di particelle
+    ParticleGenerator particleGenerator;
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
