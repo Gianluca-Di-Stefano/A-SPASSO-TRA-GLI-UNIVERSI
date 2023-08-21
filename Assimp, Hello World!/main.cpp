@@ -985,10 +985,7 @@ void carica_futurama(GLFWwindow* window) {
     Model spaceShuttle("resources/objects/futurama/spaceship/rocket.obj");
     std::vector<glm::vec3> objectPositions;
     objectPositions.push_back(glm::vec3(-3.0, -0.5, -3.0));
-    //COMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO(SOSTITUSCE IL SOLE)
-    //Model sole("resources/objects/universo/planets/sole/sole.obj");
-    //DECOMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO (SOSTITUSCE IL SOLE)
-    Model sole("resources/objects/universo/planets/sole/sole.obj");
+    Model sole("resources/objects/futurama/planets/sole/sole.obj");
     Model terra("resources/objects/futurama/planets/terra/terra.obj");
     Model luna("resources/objects/futurama/planets/luna/luna.obj");
     Model marte("resources/objects/futurama/planets/marte/marte.obj");
@@ -2599,6 +2596,7 @@ void renderQuad()
 // ---------------------------------------------------------------------------------------------------------
 void processInput(GLFWwindow* window)
 {
+
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
