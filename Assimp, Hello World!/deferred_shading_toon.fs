@@ -19,10 +19,6 @@ const int NR_LIGHTS = 32;
 uniform Light lights[NR_LIGHTS];
 uniform vec3 viewPos;
 
-uniform bool enableOutline = true;
-uniform float outlineIntensity;
-uniform vec3 outlineColor;
-
 void main()
 {             
     // retrieve data from gbuffer
@@ -32,8 +28,8 @@ void main()
     float Specular = texture(gAlbedoSpec, TexCoords).a;
     
     // then calculate lighting as usual
-    vec3 lighting = Diffuse * 0.1; // hard-coded ambient component
-    vec3 viewDir = normalize(viewPos - FragPos);
+    vec3 lighting  = Diffuse * 0.1; // hard-coded ambient component messo a 0.2 anizhce 0.1 per illuminare l'ambiente
+    vec3 viewDir  = normalize(viewPos - FragPos);
     float scale = 1.0; //scala della sfera per aumentare l intensità
     float radius = 0.05;
     for(int i = 0; i < NR_LIGHTS; ++i)
@@ -44,22 +40,18 @@ void main()
         {
             // diffuse
             vec3 lightDir = normalize(lights[i].Position - FragPos);
-
-            vec3 toonDiffuse = max(dot(Normal, lightDir), 0.0) * Diffuse * lights[i].Color * scale;
-
+            vec3 diffuse = max(dot(Normal, lightDir), 0.0) * Diffuse * lights[i].Color * scale;
             // specular
-            vec3 halfwayDir = normalize(lightDir + viewDir);
+            vec3 halfwayDir = normalize(lightDir + viewDir);  
             float spec = pow(max(dot(Normal, halfwayDir), 0.0), 16.0);
-            float specularLevel = spec; // puoi quantizzare il valore speculare come desideri
-            vec3 toonSpecular = specularLevel * Specular * lights[i].Color;
-
+            vec3 specular = lights[i].Color * spec * Specular;
             // attenuation
             float attenuation = 1.0 / (1.0 + lights[i].Linear * distance + lights[i].Quadratic * distance * distance);
-            toonDiffuse *= attenuation;
-            toonSpecular *= attenuation;
-
-            lighting += toonDiffuse + toonSpecular;
+            diffuse *= attenuation;
+            specular *= attenuation;
+            lighting += diffuse + specular;
         }
-    }  
+    }    
     FragColor = vec4(lighting, 1.0);
 }
+

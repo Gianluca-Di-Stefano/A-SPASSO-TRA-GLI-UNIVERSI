@@ -415,36 +415,24 @@ void carica_universo(GLFWwindow* window) {
 
     // lighting info
     // -------------
-    const unsigned int NR_LIGHTS = 8;
+    const unsigned int NR_LIGHTS = 64;
     std::vector<glm::vec3> lightPositions;
     std::vector<glm::vec3> lightColors;
-    srand(100);
+    float radius = 120.0;
     for (unsigned int i = 0; i < NR_LIGHTS; i++)
     {
-        // calculate slightly random offsets
-        float xPos = ((rand() % 100) / 100.0) * 6.0 - 3.0;
-        float yPos = ((rand() % 100) / 100.0) * 6.0 - 4.0;
-        float zPos = ((rand() % 100) / 100.0) * 6.0 - 3.0;
-        lightPositions.push_back(glm::vec3(100, 100, 100)); //prova posizione sole 
-        lightPositions.push_back(glm::vec3(-100, -100, -100)); //prova posizione sole 
-        lightPositions.push_back(glm::vec3(-100, 100, 100)); //prova posizione sole 
-        lightPositions.push_back(glm::vec3(100, -100, 100)); //prova posizione sole 
-        lightPositions.push_back(glm::vec3(100, 100, -100)); //prova posizione sole 
-        lightPositions.push_back(glm::vec3(-100, 100, -100)); //prova posizione sole 
-        lightPositions.push_back(glm::vec3(100, -100, -100)); //prova posizione sole 
-        lightPositions.push_back(glm::vec3(-100, -100, 100)); //prova posizione sole 
-        // also calculate random color
-        float rColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
-        float gColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
-        float bColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
-        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
-        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
-        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
-        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
-        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
-        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
-        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
-        lightColors.push_back(glm::vec3(1.0, 1.0, 1.0));
+        float phi = glm::acos(-1.0 + (2.0 * float(i)) / float(NR_LIGHTS - 1)); // Inclinazione sull'asse z
+        float theta = glm::sqrt(float(NR_LIGHTS) * glm::pi<float>()) * phi; // Angolo attorno all'asse y
+
+        float xPos = radius * glm::sin(phi) * glm::cos(theta);
+        float yPos = radius * glm::sin(phi) * glm::sin(theta);
+        float zPos = radius * glm::cos(phi);
+        float time = glfwGetTime();
+        glm::vec3 dynamicEmission = glm::vec3(1.0, 0.5 + 0.5 * glm::sin(time), 1.0); // Esempio di variazione nel canale verde
+        lightPositions.push_back(glm::vec3(xPos, yPos, zPos));
+
+        // Imposta i colori delle luci come preferisci
+        lightColors.push_back(dynamicEmission);
     }
 
     // shader configuration
