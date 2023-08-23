@@ -166,6 +166,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="anim_model.fs" />
+    <None Include="anim_model.vs" />
     <None Include="asteroids.fs" />
     <None Include="asteroids.vs" />
     <None Include="deferred_shading_toon.fs" />
@@ -185,8 +187,14 @@
   <ItemGroup>
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="model_animation.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="animation.h" />
+    <ClInclude Include="animator.h" />
+    <ClInclude Include="animdata.h" />
+    <ClInclude Include="assimp_glm_helpers.h" />
+    <ClInclude Include="bone.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="model.h" />

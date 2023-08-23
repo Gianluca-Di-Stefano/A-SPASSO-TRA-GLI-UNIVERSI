@@ -58,6 +58,12 @@
     <None Include="asteroids.vs">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="anim_model.fs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="anim_model.vs">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -65,6 +71,9 @@
     </ClCompile>
     <ClCompile Include="glad.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model_animation.h">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +96,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp_glm_helpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="animdata.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="animator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bone.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

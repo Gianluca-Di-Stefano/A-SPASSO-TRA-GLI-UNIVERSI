@@ -9,6 +9,8 @@
 #include "shader_m.h"
 #include "camera.h"
 #include "model.h"
+#include "model_animation.h"
+#include "animator.h"
 #include "render_text.h"
 #include <iostream>
 #include <unordered_map>
@@ -2085,9 +2087,12 @@ void carica_tesseract(GLFWwindow* window) {
     Shader shaderLightingPass("deferred_shading.vs", "deferred_shading.fs");
     Shader shaderLightBox("deferred_light_box.vs", "deferred_light_box.fs");
     Shader skyboxShader("skybox.vs", "skybox.fs");
+    Shader animShader("anim_model.vs", "anim_model.fs");
 
     // load models
-    Model spaceShuttle("resources/objects/interstellar/astronaut/astronaut.obj");
+    ModelAnimation spaceShuttle("resources/objects/interstellar/astronaut/astronaut.dae");
+    Animation astronautAnimation("resources/objects/interstellar/astronaut/astronaut.dae", &spaceShuttle);
+    Animator animator(&astronautAnimation);
     std::vector<glm::vec3> objectPositions;
     objectPositions.push_back(glm::vec3(-3.0, -0.5, -3.0));
     //COMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO(SOSTITUSCE IL SOLE)
@@ -2221,11 +2226,13 @@ void carica_tesseract(GLFWwindow* window) {
         // input
         // -----
         processInput(window);
-
+        animator.UpdateAnimation(deltaTime);
         // render
         // ------
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        animShader.use();
 
         // 1. geometry pass: render scene's geometry/color data into gbuffer
         // -----------------------------------------------------------------
@@ -2235,6 +2242,9 @@ void carica_tesseract(GLFWwindow* window) {
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100000.0f);
         glm::mat4 view = camera.GetViewMatrix();
 
+        animShader.setMat4("projection", projection);
+        animShader.setMat4("view", view);
+
         // Definisci un vettore di offset dalla posizione della telecamera
         float distanceBehind = 0.2f; // Sposta la telecamera dietro la navicella
         float distanceAbove = -0.03f;   // Sposta la telecamera sopra la navicella
@@ -2243,7 +2253,9 @@ void carica_tesseract(GLFWwindow* window) {
         // Calcola la nuova posizione del modello
         glm::vec3 newModelPosition = camera.Position + cameraOffset;
 
-
+        auto transforms = animator.GetFinalBoneMatrices();
+        for (int i = 0; i < transforms.size(); ++i)
+            animShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
 
         //draw space shuttle
         glm::mat4 modelSpaceShuttle = glm::mat4(1.0f);
