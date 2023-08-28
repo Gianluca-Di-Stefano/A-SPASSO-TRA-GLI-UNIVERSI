@@ -430,11 +430,11 @@ void carica_universo(GLFWwindow* window) {
         float yPos = radius * glm::sin(phi) * glm::sin(theta);
         float zPos = radius * glm::cos(phi);
         float time = glfwGetTime();
-        glm::vec3 dynamicEmission = glm::vec3(1.0, 0.5 + 0.5 * glm::sin(time), 1.0); // Esempio di variazione nel canale verde
+        glm::vec3 emission = glm::vec3(1.0, 1.0, 1.0); // Esempio di variazione nel canale verde
         lightPositions.push_back(glm::vec3(xPos, yPos, zPos));
 
         // Imposta i colori delle luci come preferisci
-        lightColors.push_back(dynamicEmission);
+        lightColors.push_back(emission);
     }
 
     // shader configuration
