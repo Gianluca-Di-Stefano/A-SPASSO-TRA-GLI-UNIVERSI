@@ -519,7 +519,7 @@ void carica_universo(GLFWwindow* window) {
             shaderGeometryPass.setMat4("model", modelIniz);
             iniz.Draw(shaderGeometryPass);
         }
-        else if (startGame > 0 && startGame < 10) {
+        else if (startGame > 0 && startGame < 2) {
             glm::mat4 modelTutorial = glm::mat4(1.0f);
             modelTutorial = glm::translate(modelTutorial, camera.Position + 0.13f * camera.Front);
             modelTutorial = glm::rotate(modelTutorial, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
@@ -656,12 +656,15 @@ void carica_universo(GLFWwindow* window) {
         std::string nomePianeta = "Mercurio";
         if (collisioneMercury == true && infoVisible == true) {
             cameraCollided = true;
+            lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
+            // Imposta i colori delle luci come preferisci
+            lightColors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
             unsigned int image = loadTexture("resources/objects/universo/info/mercurio.png");
             glBindTexture(GL_TEXTURE_2D, image);
-            info.Draw(shaderGeometryPass);
+            //info.Draw(shaderGeometryPass);
             if (!pianetiVisitatiUniverso[nomePianeta]) {
                 // Incrementa il numero di pianeti scoperti
                 pianetiScopertiUniverso++;
@@ -765,6 +768,11 @@ void carica_universo(GLFWwindow* window) {
         nomePianeta = "Saturno";
         if (collisioneSaturn == true && infoVisible == true) {
             cameraCollided = true;
+            if (lightPositions.size() < NR_LIGHTS + 1) {
+                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
+                // Imposta i colori delle luci come preferisci
+                lightColors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -776,6 +784,10 @@ void carica_universo(GLFWwindow* window) {
                 pianetiScopertiUniverso++;
                 // Imposta il pianeta come visitato
                 pianetiVisitatiUniverso[nomePianeta] = true;
+            }
+            if (infoVisible == false) {
+                lightPositions.pop_back();
+                lightColors.pop_back();
             }
         }
 
@@ -799,8 +811,13 @@ void carica_universo(GLFWwindow* window) {
 
         bool collisioneNeptune = collisionTest(spaceshipSphere, nettunoSphere);
         nomePianeta = "Nettuno";
-        if (collisioneNeptune == true && infoVisible == true) {
+        if (collisioneNeptune == true && infoVisible == true ) {
             cameraCollided = true;
+            if (lightPositions.size() < NR_LIGHTS + 1) {
+                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
+                // Imposta i colori delle luci come preferisci
+                lightColors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
+            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -812,6 +829,12 @@ void carica_universo(GLFWwindow* window) {
                 pianetiScopertiUniverso++;
                 // Imposta il pianeta come visitato
                 pianetiVisitatiUniverso[nomePianeta] = true;
+            }
+            if (!collisioneNeptune || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
+                if (!lightPositions.empty()) {
+                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
+                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
+                }
             }
         }
 
@@ -843,7 +866,8 @@ void carica_universo(GLFWwindow* window) {
             RenderText(Pianeti.c_str(), 15.0f, (float)SCR_HEIGHT / 6.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
         }
 
-        std::string Velocity = "velocita':" + std::to_string((int)camera.MovementSpeed * 1000) + " km/h";
+        //std::string Velocity = "velocita':" + std::to_string((int)camera.MovementSpeed * 1000) + " km/h";
+        std::string Velocity = "luci':" + std::to_string(lightPositions.size());
         RenderText(Velocity.c_str(), 15.0f, (float)SCR_HEIGHT / 10.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 
 
@@ -946,11 +970,11 @@ void carica_universo(GLFWwindow* window) {
         {
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, lightPositions[i]);
-            model = glm::scale(model, glm::vec3(10.125f));
+            model = glm::scale(model, glm::vec3(1.125f));
             shaderLightBox.setMat4("model", model);
             shaderLightBox.setVec3("lightColor", lightColors[i]);
-            //renderCube();
-            renderSphere();
+            renderCube();
+            //renderSphere();
         }
         */
 
@@ -2590,8 +2614,9 @@ void renderQuad()
     glBindVertexArray(0);
 }
 
-
-
+bool mouseLeftPressed = false;
+bool mouseLeftReleased = false;
+bool enterPressed = false;
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
 void processInput(GLFWwindow* window)
@@ -2600,8 +2625,15 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
-    if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS)
-        startGame ++;
+    if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS) {
+        if (!enterPressed) {
+            startGame++;
+            enterPressed = true;
+        }
+    }
+    else {
+        enterPressed = false;
+    }
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         camera.ProcessKeyboard(FORWARD, deltaTime * 0.21);
@@ -2625,11 +2657,25 @@ void processInput(GLFWwindow* window)
         camera.MovementSpeed = 0.0f;
     }
 
-    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE && infoVisible == true)
-            infoVisible = false;
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
+        mouseLeftReleased = true;
+    }
+    else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+        if (mouseLeftReleased) {
+            mouseLeftPressed = true;
+            mouseLeftReleased = false;
+        }
+    }
 
-    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible == false)
+    if (mouseLeftPressed) {
+        if (infoVisible) {
+            infoVisible = false;
+        }
+        else {
             infoVisible = true;
+        }
+        mouseLeftPressed = false;
+    }
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
