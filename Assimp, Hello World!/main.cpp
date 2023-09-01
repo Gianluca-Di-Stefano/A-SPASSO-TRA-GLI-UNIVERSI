@@ -27,6 +27,7 @@ GLuint texture_id;
 unsigned int loadTexture(const char* path, bool gammaCorrection);
 void renderQuad();
 void renderCube();
+unsigned int loadCubemap(vector<std::string> faces);
 
 
 //SOUNDTRACK
@@ -190,6 +191,9 @@ float cubeVertices[] = {
 
 
 
+
+
+
 void renderSphere()
 {
     static unsigned int sphereVAO = 0;
@@ -268,6 +272,40 @@ void carica_universo(GLFWwindow* window) {
     Shader skyboxShader("skybox.vs", "skybox.fs");
     Shader asteroidShader("asteroids.vs", "asteroids.fs");
 
+
+    float skyboxVertices[] =
+    {
+        -1.0f, -1.0f, 1.0f,
+         1.0f, -1.0f, 1.0f,
+         1.0f, -1.0f, -1.0f,
+         -1.0f, -1.0f, -1.0f,
+         -1.0f, 1.0f, 1.0f,
+         1.0f, 1.0f, 1.0f,
+         1.0f, 1.0f, -1.0f,
+         -1.0f, 1.0f, -1.0f
+    };
+
+    unsigned int skyboxIndices[] =
+    {
+        //right
+        1, 2, 6,
+        6, 5, 1,
+        //left
+        0, 4, 7,
+        7, 3, 0,
+        //top
+        4, 5, 6,
+        6, 7, 4,
+        //bottom
+        0, 3, 2,
+        2, 1, 0,
+        //back
+        0, 1, 5,
+        5, 4, 0,
+        //front
+        3, 7, 6,
+        6, 2, 3
+    };
 
     // load models
     Model spaceShuttle("resources/objects/universo/spaceship/rocket.obj");
@@ -362,20 +400,6 @@ void carica_universo(GLFWwindow* window) {
         glBindVertexArray(0);
     }
 
-    // cube VAO
-    unsigned int cubeVAO, cubeVBO;
-    glGenVertexArrays(1, &cubeVAO);
-    glGenBuffers(1, &cubeVBO);
-    glBindVertexArray(cubeVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-
-    unsigned int cubeTexture = loadTexture("resources/objects/universo/skybox/back.jpg");
-
 
     // configure g-buffer framebuffer
 // ------------------------------
@@ -447,6 +471,8 @@ void carica_universo(GLFWwindow* window) {
     shaderLightingPass.setInt("gNormal", 1);
     shaderLightingPass.setInt("gAlbedoSpec", 2);
 
+    skyboxShader.use();
+    glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"), 0);
 
     // render loop
     // -----------
@@ -455,6 +481,30 @@ void carica_universo(GLFWwindow* window) {
     camera.Position = initialPosition;
     camera.MovementSpeed = initialSpeed;
 
+
+
+    std::vector<std::string> facesCubemap =
+    {
+        "resources/objects/universo/skybox/px.png", // right
+       "resources/objects/universo/skybox/nx.png",  // left
+       "resources/objects/universo/skybox/py.png",  // top
+       "resources/objects/universo/skybox/ny.png",  // bottom
+       "resources/objects/universo/skybox/pz.png",  // front
+       "resources/objects/universo/skybox/nz.png"   // back
+    };
+
+    unsigned int cubemapTexture = loadCubemap(facesCubemap);
+    unsigned int skyboxVAO, skyboxVBO;
+    glGenVertexArrays(1, &skyboxVAO);
+    glGenBuffers(1, &skyboxVBO);
+    glBindVertexArray(skyboxVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+    skyboxShader.use();
+    skyboxShader.setInt("skybox", 0); // Passa il canale 0 alla texture cubemap
     while (!glfwWindowShouldClose(window))
     {
 
@@ -990,6 +1040,7 @@ void carica_universo(GLFWwindow* window) {
         }
 
         // draw skybox cube
+        /* codice skybox iniziale
         skyboxShader.use();
         glm::mat4 modelCube = glm::mat4(1.0f);
         modelCube = glm::scale(modelCube, glm::vec3(20000.0f, 20000.0f, 20000.0f));
@@ -1003,6 +1054,7 @@ void carica_universo(GLFWwindow* window) {
         // Abilita il mipmapping
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        */
 
         // Genera i mipmap
         glGenerateMipmap(GL_TEXTURE_2D);
@@ -1071,6 +1123,25 @@ void carica_universo(GLFWwindow* window) {
             //renderSphere();
         }
         */
+
+        // Disegna la skybox
+        glDepthFunc(GL_LEQUAL); // Imposta la funzione di profondità per la skybox
+        skyboxShader.use();
+        skyboxShader.setMat4("view", view);
+        skyboxShader.setMat4("projection", projection);
+
+        // Renderizza la skybox
+        glBindVertexArray(skyboxVAO);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glBindVertexArray(0);
+        glDepthFunc(GL_LESS); // Ripristina la funzione di profondità predefinita
+
+
+
+
+
+
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
