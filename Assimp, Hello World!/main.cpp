@@ -48,7 +48,8 @@ bool futurama_caricato = false;
 bool interstellar_caricato = false;
 int startGame = 0;
 bool infoVisible = false;
-glm::vec3 initialPosition = glm::vec3(100.0f, 100.0f, 100.0f);
+glm::vec3 initialPosition = glm::vec3(-904.0f, 0.0f, 0.0f);//urano
+//glm::vec3 initialPosition = glm::vec3(-503.0f, 0.0f, 0.0f);//terra
 float initialSpeed = 0.0;
 float rotationAngle = 0.0f;
 
@@ -871,7 +872,9 @@ void carica_universo(GLFWwindow* window) {
             movementBlocked = true;
             cameraCollided = true;
             if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelInfo[3].x, modelInfo[3].y, modelInfo[3].z));
+                glm::mat4 modelLuce = modelInfo;
+                modelLuce = glm::translate(modelLuce, glm::vec3(10.0f, 0.0f, 0.0f));
+                lightPositions.push_back(glm::vec3(modelLuce[3].x, modelLuce[3].y, modelLuce[3].z));
                 // Imposta i colori delle luci come preferisci
                 lightColors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
             }
