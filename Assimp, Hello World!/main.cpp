@@ -866,6 +866,10 @@ void carica_universo(GLFWwindow* window) {
             }
         }
 
+        
+        
+        
+        
         bool collisioneUranus = collisionTest(spaceshipSphere, uranoSphere);
         nomePianeta = "Urano";
         if (collisioneUranus == true && infoVisible == true) {
