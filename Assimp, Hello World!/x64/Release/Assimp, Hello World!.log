@@ -8,50 +8,50 @@ C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\a
 C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\animation.h(35,31): warning C4244: '=': conversione da 'double' a 'int'. Possibile perdita di dati.
 C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\animation.h(59,44): warning C4244: 'return': conversione da 'int' a 'float'. Possibile perdita di dati.
 C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\animation.h(101,21): warning C4018: '<': errata corrispondenza tra signed e unsigned
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(132,13): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
 C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(133,13): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(210,39): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(247,36): warning C4267: '=': conversione da 'size_t' a 'unsigned int'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(302,22): warning C4244: 'argomento': conversione da 'double' a 'unsigned int'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(319,21): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(323,24): warning C4244: 'inizializzazione': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(428,19): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(434,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(462,28): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(981,108): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1026,37): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1027,40): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1171,19): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1177,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1206,28): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1806,37): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1807,40): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1947,19): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1953,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1983,28): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2300,37): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2301,40): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2428,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2429,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2430,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2450,22): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2451,22): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2452,22): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2490,28): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2618,37): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2619,40): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2884,55): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2886,56): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2889,53): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2891,52): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2894,55): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2944,17): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2945,17): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2949,19): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2950,19): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2952,13): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2953,13): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2964,31): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(134,13): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(211,39): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(248,36): warning C4267: '=': conversione da 'size_t' a 'unsigned int'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(303,22): warning C4244: 'argomento': conversione da 'double' a 'unsigned int'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(320,21): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(324,24): warning C4244: 'inizializzazione': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(429,19): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(435,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(463,28): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(988,108): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1033,37): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1034,40): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1178,19): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1184,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1213,28): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1813,37): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1814,40): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1954,19): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1960,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1990,28): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2307,37): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2308,40): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2435,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2436,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2437,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2457,22): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2458,22): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2459,22): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2497,28): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2625,37): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2626,40): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2891,55): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2893,56): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2896,53): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2898,52): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2901,55): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2951,17): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2952,17): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2956,19): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2957,19): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2959,13): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2960,13): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\gianl\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2971,31): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
 LINK : warning LNK4098: la libreria predefinita 'LIBCMT' è in conflitto con l'utilizzo di altre librerie; usare /NODEFAULTLIB:libreria
   Generazione codice in corso...
   1 of 1699 functions (<0.1%) were compiled, the rest were copied from previous compilation.

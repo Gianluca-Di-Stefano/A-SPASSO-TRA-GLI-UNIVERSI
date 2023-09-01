@@ -624,8 +624,8 @@ void carica_universo(GLFWwindow* window) {
         //draw portal
         glm::mat4 modelPortalFuturama = glm::mat4(1.0f);
         modelPortalFuturama = glm::translate(modelPortalFuturama, glm::vec3(200.0f, 0.0f, 0.0f));
-        modelPortalFuturama = glm::rotate(modelPortalFuturama, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-        modelPortalFuturama = glm::scale(modelPortalFuturama, glm::vec3(0.5f));
+        //modelPortalFuturama = glm::rotate(modelPortalFuturama, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+        modelPortalFuturama = glm::scale(modelPortalFuturama, glm::vec3(2.0f));
         portalFuturamaSphere = { glm::vec3(200.0f, 0.0f, 0.0f), 0.4f };
         shaderGeometryPass.setMat4("model", modelPortalFuturama);
         portalFuturama.Draw(shaderGeometryPass);
