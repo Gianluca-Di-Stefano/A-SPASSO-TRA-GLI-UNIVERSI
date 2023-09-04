@@ -460,7 +460,7 @@ void carica_universo(GLFWwindow* window) {
         
         // render
         // ------
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // 1. geometry pass: render scene's geometry/color data into gbuffer
@@ -629,7 +629,7 @@ void carica_universo(GLFWwindow* window) {
         portalInterstellar.Draw(shaderGeometryPass);
 
         glm::mat4 modelSkybox = glm::mat4(1.0f);
-        modelSkybox = glm::scale(modelSkybox, glm::vec3(10.2f));
+        modelSkybox = glm::scale(modelSkybox, glm::vec3(5000.2f));
         shaderGeometryPass.setMat4("model", modelSkybox);
         skybox.Draw(shaderGeometryPass);
 
@@ -1100,6 +1100,7 @@ void carica_futurama(GLFWwindow* window) {
     Model portalUniverso("resources/objects/portal/portal.obj");
     Model portalInterstellar("resources/objects/portal/portal.obj");
     Model info("resources/objects/schermate/info.obj");
+    Model skybox("resources/objects/universo/skybox/skybox.obj");
 
 
      SoundEngine->stopAllSounds();
@@ -1115,8 +1116,6 @@ void carica_futurama(GLFWwindow* window) {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-
-    unsigned int cubeTexture = loadTexture("resources/objects/universo/skybox/back.jpg");
 
     // configure g-buffer framebuffer
 // ------------------------------
@@ -1368,6 +1367,11 @@ void carica_futurama(GLFWwindow* window) {
         portalInterstellarSphere = { glm::vec3(-300.0f, 0.0f, 0.0f), 10.0f };
         shaderGeometryPass.setMat4("model", modelPortalInterstellar);
         portalInterstellar.Draw(shaderGeometryPass);
+
+        glm::mat4 modelSkybox = glm::mat4(1.0f);
+        modelSkybox = glm::scale(modelSkybox, glm::vec3(10000.2f));
+        shaderGeometryPass.setMat4("model", modelSkybox);
+        skybox.Draw(shaderGeometryPass);
 
         //draw info
         glm::mat4 modelInfo = glm::mat4(1.0f);
@@ -1763,17 +1767,6 @@ void carica_futurama(GLFWwindow* window) {
         std::string Velocity = "velocita':" + std::to_string((int)camera.MovementSpeed * 1000) + " km/h";
         RenderText(Velocity.c_str(), 15.0f, (float)SCR_HEIGHT / 10.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 
-        // draw skybox cube
-        skyboxShader.use();
-        glm::mat4 modelCube = glm::mat4(1.0f);
-        modelCube = glm::scale(modelCube, glm::vec3(20000.0f, 20000.0f, 20000.0f));
-        glm::mat4 projectionCube = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 20000.0f);
-        skyboxShader.setMat4("model", modelCube);
-        skyboxShader.setMat4("view", view);
-        skyboxShader.setMat4("projection", projectionCube);
-        glBindVertexArray(cubeVAO);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, cubeTexture);
         // Abilita il mipmapping
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -1874,11 +1867,10 @@ void carica_interstellar(GLFWwindow* window) {
     Model saturno("resources/objects/universo/planets/saturno/saturno.obj");
     Model portalFuturama("resources/objects/portal/portal.obj");
     Model portalUniverso("resources/objects/portal/portal.obj");
+    Model skybox("resources/objects/universo/skybox/skybox.obj");
     Model info("resources/objects/schermate/info.obj");
     SoundEngine->stopAllSounds();
     ISound* ambientSound = SoundEngine->play2D(interstellarTheme, true);
-    
-
     // cube VAO
     unsigned int cubeVAO, cubeVBO;
     glGenVertexArrays(1, &cubeVAO);
@@ -1890,9 +1882,6 @@ void carica_interstellar(GLFWwindow* window) {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-
-    unsigned int cubeTexture = loadTexture("resources/objects/universo/skybox/back.jpg");
-
 
     // configure g-buffer framebuffer
 // ------------------------------
@@ -1965,7 +1954,8 @@ void carica_interstellar(GLFWwindow* window) {
     shaderLightingPass.setInt("gAlbedoSpec", 2);
 
     float rotationSpeed = 1.0f;
-    camera.Position = initialPosition + 300.0f;
+
+    camera.Position = initialPosition;
     camera.MovementSpeed = initialSpeed;
 
 
@@ -2089,6 +2079,11 @@ void carica_interstellar(GLFWwindow* window) {
         portalUniversoSphere = { glm::vec3(-200.0f, 0.0f, 100.0f), 10.0f };
         shaderGeometryPass.setMat4("model", modelPortalUniverso);
         portalUniverso.Draw(shaderGeometryPass);
+
+        glm::mat4 modelSkybox = glm::mat4(1.0f);
+        modelSkybox = glm::scale(modelSkybox, glm::vec3(10000.2f));
+        shaderGeometryPass.setMat4("model", modelSkybox);
+        skybox.Draw(shaderGeometryPass);
 
         //draw info
         glm::mat4 modelInfo = glm::mat4(1.0f);
@@ -2256,19 +2251,6 @@ void carica_interstellar(GLFWwindow* window) {
         }
 
         Velocity = "velocita':" + std::to_string((int)camera.MovementSpeed * 1000) + " km/h";
-        RenderText(Velocity.c_str(), 15.0f, (float)SCR_HEIGHT / 10.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-
-        // draw skybox cube
-        skyboxShader.use();
-        glm::mat4 modelCube = glm::mat4(1.0f);
-        modelCube = glm::scale(modelCube, glm::vec3(20000.0f, 20000.0f, 20000.0f));
-        glm::mat4 projectionCube = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 20000.0f);
-        skyboxShader.setMat4("model", modelCube);
-        skyboxShader.setMat4("view", view);
-        skyboxShader.setMat4("projection", projectionCube);
-        glBindVertexArray(cubeVAO);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, cubeTexture);
         // Abilita il mipmapping
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -2277,6 +2259,7 @@ void carica_interstellar(GLFWwindow* window) {
         glGenerateMipmap(GL_TEXTURE_2D);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         glBindVertexArray(0);
+
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         // 2. lighting pass: calculate lighting by iterating over a screen filled quad pixel-by-pixel using the gbuffer's content.
