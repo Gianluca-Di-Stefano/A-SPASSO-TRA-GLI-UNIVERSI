@@ -272,41 +272,6 @@ void carica_universo(GLFWwindow* window) {
     Shader skyboxShader("skybox.vs", "skybox.fs");
     Shader asteroidShader("asteroids.vs", "asteroids.fs");
 
-
-    float skyboxVertices[] =
-    {
-        -1.0f, -1.0f, 1.0f,
-         1.0f, -1.0f, 1.0f,
-         1.0f, -1.0f, -1.0f,
-         -1.0f, -1.0f, -1.0f,
-         -1.0f, 1.0f, 1.0f,
-         1.0f, 1.0f, 1.0f,
-         1.0f, 1.0f, -1.0f,
-         -1.0f, 1.0f, -1.0f
-    };
-
-    unsigned int skyboxIndices[] =
-    {
-        //right
-        1, 2, 6,
-        6, 5, 1,
-        //left
-        0, 4, 7,
-        7, 3, 0,
-        //top
-        4, 5, 6,
-        6, 7, 4,
-        //bottom
-        0, 3, 2,
-        2, 1, 0,
-        //back
-        0, 1, 5,
-        5, 4, 0,
-        //front
-        3, 7, 6,
-        6, 2, 3
-    };
-
     // load models
     Model spaceShuttle("resources/objects/universo/spaceship/rocket.obj");
     std::vector<glm::vec3> objectPositions;
@@ -327,6 +292,7 @@ void carica_universo(GLFWwindow* window) {
     Model venere("resources/objects/universo/planets/venere/venere.obj");
     Model portalFuturama("resources/objects/futurama/box/box.obj");
     Model portalInterstellar("resources/objects/interstellar/planets/wormhole/wormhole.obj");
+    Model skybox("resources/objects/universo/skybox/skybox.obj");
     Model info("resources/objects/schermate/info.obj");
     Model iniz("resources/objects/schermate/iniz.obj");
     Model tutorial("resources/objects/schermate/tutorial.obj");
@@ -471,9 +437,6 @@ void carica_universo(GLFWwindow* window) {
     shaderLightingPass.setInt("gNormal", 1);
     shaderLightingPass.setInt("gAlbedoSpec", 2);
 
-    skyboxShader.use();
-    glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"), 0);
-
     // render loop
     // -----------
 
@@ -481,30 +444,6 @@ void carica_universo(GLFWwindow* window) {
     camera.Position = initialPosition;
     camera.MovementSpeed = initialSpeed;
 
-
-
-    std::vector<std::string> facesCubemap =
-    {
-        "resources/objects/universo/skybox/px.png", // right
-       "resources/objects/universo/skybox/nx.png",  // left
-       "resources/objects/universo/skybox/py.png",  // top
-       "resources/objects/universo/skybox/ny.png",  // bottom
-       "resources/objects/universo/skybox/pz.png",  // front
-       "resources/objects/universo/skybox/nz.png"   // back
-    };
-
-    unsigned int cubemapTexture = loadCubemap(facesCubemap);
-    unsigned int skyboxVAO, skyboxVBO;
-    glGenVertexArrays(1, &skyboxVAO);
-    glGenBuffers(1, &skyboxVBO);
-    glBindVertexArray(skyboxVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
-    skyboxShader.use();
-    skyboxShader.setInt("skybox", 0); // Passa il canale 0 alla texture cubemap
     while (!glfwWindowShouldClose(window))
     {
 
@@ -688,6 +627,11 @@ void carica_universo(GLFWwindow* window) {
         portalInterstellarSphere = { glm::vec3(-300.0f, 0.0f, 0.0f), 10.0f };
         shaderGeometryPass.setMat4("model", modelPortalInterstellar);
         portalInterstellar.Draw(shaderGeometryPass);
+
+        glm::mat4 modelSkybox = glm::mat4(1.0f);
+        modelSkybox = glm::scale(modelSkybox, glm::vec3(10.2f));
+        shaderGeometryPass.setMat4("model", modelSkybox);
+        skybox.Draw(shaderGeometryPass);
 
         glm::mat4 modelInfo = glm::mat4(1.0f);
         modelInfo = glm::translate(modelInfo, camera.Position + 0.13f * camera.Front);
@@ -915,10 +859,6 @@ void carica_universo(GLFWwindow* window) {
                 }
             }
         }
-
-        
-        
-        
         
         bool collisioneUranus = collisionTest(spaceshipSphere, uranoSphere);
         nomePianeta = "Urano";
@@ -1123,25 +1063,6 @@ void carica_universo(GLFWwindow* window) {
             //renderSphere();
         }
         */
-
-        // Disegna la skybox
-        glDepthFunc(GL_LEQUAL); // Imposta la funzione di profondità per la skybox
-        skyboxShader.use();
-        skyboxShader.setMat4("view", view);
-        skyboxShader.setMat4("projection", projection);
-
-        // Renderizza la skybox
-        glBindVertexArray(skyboxVAO);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        glBindVertexArray(0);
-        glDepthFunc(GL_LESS); // Ripristina la funzione di profondità predefinita
-
-
-
-
-
-
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
