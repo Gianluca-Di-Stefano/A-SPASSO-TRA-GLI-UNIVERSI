@@ -2089,9 +2089,7 @@ void carica_tesseract(GLFWwindow* window) {
     Shader animShader("anim_model.vs", "anim_model.fs");
 
     // load models
-    ModelAnimation spaceShuttle("resources/objects/interstellar/astronaut/astronaut.dae");
-    Animation astronautAnimation("resources/objects/interstellar/astronaut/astronaut.dae", &spaceShuttle);
-    Animator animator(&astronautAnimation);
+    Model spaceShuttle("resources/objects/interstellar/astronaut/astronaut.obj");
     std::vector<glm::vec3> objectPositions;
     objectPositions.push_back(glm::vec3(-3.0, -0.5, -3.0));
     //COMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO(SOSTITUSCE IL SOLE)
@@ -2102,7 +2100,7 @@ void carica_tesseract(GLFWwindow* window) {
     Model portalFuturama("resources/objects/portal/portal.obj");
     Model portalUniverso("resources/objects/portal/portal.obj");
     Model portalInterstellar("resources/objects/portal/portal.obj");
-
+    Model fine("resources/objects/schermate/fine.obj");
     SoundEngine->stopAllSounds();
     ISound* ambientSound = SoundEngine->play2D(interstellarTheme, true);
 
@@ -2225,13 +2223,11 @@ void carica_tesseract(GLFWwindow* window) {
         // input
         // -----
         processInput(window);
-        animator.UpdateAnimation(deltaTime);
         // render
         // ------
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        animShader.use();
 
         // 1. geometry pass: render scene's geometry/color data into gbuffer
         // -----------------------------------------------------------------
@@ -2251,10 +2247,6 @@ void carica_tesseract(GLFWwindow* window) {
 
         // Calcola la nuova posizione del modello
         glm::vec3 newModelPosition = camera.Position + cameraOffset;
-
-        auto transforms = animator.GetFinalBoneMatrices();
-        for (int i = 0; i < transforms.size(); ++i)
-            animShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
 
         //draw space shuttle
         glm::mat4 modelSpaceShuttle = glm::mat4(1.0f);
@@ -2325,6 +2317,18 @@ void carica_tesseract(GLFWwindow* window) {
             std::string Title = "TELETRANSPORT TO INTERSTELLAR";
             RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
             //carica_interstellar(window);
+        }
+
+        //fine gioco
+        if (camera.Position[0] > 20000.0f || camera.Position[0] < -20000.0f || camera.Position[1] > 20000.0f || camera.Position[1] < -20000.0f || camera.Position[2] > 20000.0f || camera.Position[2] < -20000.0f) {
+            camera.MovementSpeed = 0.0f;
+            glm::mat4 modelFine = glm::mat4(1.0f);
+            modelFine = glm::translate(modelFine, camera.Position + 0.13f * camera.Front);
+            modelFine = glm::rotate(modelFine, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+            modelFine = glm::rotate(modelFine, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+            modelFine = glm::scale(modelFine, glm::vec3(0.06f));
+            shaderGeometryPass.setMat4("model", modelFine);
+            fine.Draw(shaderGeometryPass);
         }
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
