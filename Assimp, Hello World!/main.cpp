@@ -654,11 +654,6 @@ void carica_universo(GLFWwindow* window) {
         if (collisioneMercury == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(0.3f, 0.3f, 0.3f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -671,12 +666,6 @@ void carica_universo(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiUniverso[nomePianeta] = true;
             }
-            if (!collisioneMercury || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
-            }
         }
 
         bool collisioneVenus = collisionTest(spaceshipSphere, venereSphere);
@@ -684,11 +673,6 @@ void carica_universo(GLFWwindow* window) {
         if (collisioneVenus == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -701,12 +685,6 @@ void carica_universo(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiUniverso[nomePianeta] = true;
             }
-            if (!collisioneVenus || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
-            }
         }
 
         bool collisioneEarth = collisionTest(spaceshipSphere, terraSphere);
@@ -714,11 +692,6 @@ void carica_universo(GLFWwindow* window) {
         if (collisioneEarth == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -731,12 +704,6 @@ void carica_universo(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiUniverso[nomePianeta] = true;
             }
-            if (!collisioneEarth || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
-            }
         }
 
 
@@ -745,11 +712,6 @@ void carica_universo(GLFWwindow* window) {
         if (collisioneLuna == true && infoVisible == true) {
             movementBlocked = true;
             cameraCollided = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -762,12 +724,6 @@ void carica_universo(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiUniverso[nomePianeta] = true;
             }
-            if (!collisioneLuna || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
-            }
         }
 
         bool collisioneMars = collisionTest(spaceshipSphere, marteSphere);
@@ -775,11 +731,6 @@ void carica_universo(GLFWwindow* window) {
         if (collisioneMars == true && infoVisible == true) {
             movementBlocked = true;
             cameraCollided = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -792,12 +743,6 @@ void carica_universo(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiUniverso[nomePianeta] = true;
             }
-            if (!collisioneMars || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
-            }
         }
 
         bool collisioneJupiter = collisionTest(spaceshipSphere, gioveSphere);
@@ -805,11 +750,6 @@ void carica_universo(GLFWwindow* window) {
         if (collisioneJupiter == true && infoVisible == true) {
             movementBlocked = true;
             cameraCollided = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -822,12 +762,6 @@ void carica_universo(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiUniverso[nomePianeta] = true;
             }
-            if (!collisioneJupiter || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
-            }
         }
 
         bool collisioneSaturn = collisionTest(spaceshipSphere, saturnoSphere);
@@ -835,11 +769,6 @@ void carica_universo(GLFWwindow* window) {
         if (collisioneSaturn == true && infoVisible == true) {
             movementBlocked = true;
             cameraCollided = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -852,12 +781,6 @@ void carica_universo(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiUniverso[nomePianeta] = true;
             }
-            if (!collisioneSaturn || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
-            }
         }
         
         bool collisioneUranus = collisionTest(spaceshipSphere, uranoSphere);
@@ -865,13 +788,6 @@ void carica_universo(GLFWwindow* window) {
         if (collisioneUranus == true && infoVisible == true) {
             movementBlocked = true;
             cameraCollided = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                glm::mat4 modelLuce = modelInfo;
-                modelLuce = glm::translate(modelLuce, glm::vec3(10.0f, 0.0f, 0.0f));
-                lightPositions.push_back(glm::vec3(modelLuce[3].x, modelLuce[3].y, modelLuce[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -884,12 +800,6 @@ void carica_universo(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiUniverso[nomePianeta] = true;
             }
-            if (!collisioneUranus || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
-            }
         }
 
         bool collisioneNeptune = collisionTest(spaceshipSphere, nettunoSphere);
@@ -897,11 +807,6 @@ void carica_universo(GLFWwindow* window) {
         if (collisioneNeptune == true && infoVisible == true ) {
             movementBlocked = true;
             cameraCollided = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -913,12 +818,6 @@ void carica_universo(GLFWwindow* window) {
                 pianetiScopertiUniverso++;
                 // Imposta il pianeta come visitato
                 pianetiVisitatiUniverso[nomePianeta] = true;
-            }
-            if (!collisioneNeptune || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
             }
         }
 
@@ -940,19 +839,28 @@ void carica_universo(GLFWwindow* window) {
 
         // testo su schermo
 
+        if (infoVisible == true) {
+            std::string Info = "info: on";
+            RenderText(Info.c_str(), 15.0f, (float)SCR_HEIGHT / 6.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+        }
+
+        if (infoVisible == false) {
+            std::string Info = "info: off";
+            RenderText(Info.c_str(), 15.0f, (float)SCR_HEIGHT / 6.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+        }
+
         std::string Pianeti = "pianeti scoperti':" + std::to_string(pianetiScopertiUniverso) + "/9";
         if (pianetiScopertiUniverso < 9)
-            RenderText(Pianeti.c_str(), 15.0f, (float)SCR_HEIGHT / 6.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            RenderText(Pianeti.c_str(), 15.0f, (float)SCR_HEIGHT / 8.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
 
         
         if (pianetiScopertiUniverso == 9) {
             Pianeti = "sistema solare esplorato";
-            RenderText(Pianeti.c_str(), 15.0f, (float)SCR_HEIGHT / 6.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            RenderText(Pianeti.c_str(), 15.0f, (float)SCR_HEIGHT / 8.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
         }
 
-        //std::string Velocity = "velocita':" + std::to_string((int)camera.MovementSpeed * 1000) + " km/h";
-        std::string Velocity = "luci':" + std::to_string(lightPositions.size());
-        RenderText(Velocity.c_str(), 15.0f, (float)SCR_HEIGHT / 10.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+        std::string Velocity = "velocita':" + std::to_string((int)camera.MovementSpeed * 1000) + " km/h";
+        RenderText(Velocity.c_str(), 15.0f, (float)SCR_HEIGHT / 10.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
 
 
         //fine gioco
@@ -1409,11 +1317,6 @@ void carica_futurama(GLFWwindow* window) {
         if (collisioneBenderGod == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -1426,12 +1329,6 @@ void carica_futurama(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiFuturama[nomePianeta] = true;
             }
-            if (!collisioneBenderGod || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
-            }
         }
 
         nomePianeta = "Decapod";
@@ -1439,11 +1336,6 @@ void carica_futurama(GLFWwindow* window) {
         if (collisioneDecapod == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -1456,12 +1348,6 @@ void carica_futurama(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiFuturama[nomePianeta] = true;
             }
-            if (!collisioneDecapod || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
-            }
         }
 
         nomePianeta = "Terra";
@@ -1469,11 +1355,6 @@ void carica_futurama(GLFWwindow* window) {
         if (collisioneEarth == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-            }
             std::string Title = "Terra";
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
@@ -1487,12 +1368,6 @@ void carica_futurama(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiFuturama[nomePianeta] = true;
             }
-            if (!collisioneEarth || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
-            }
         }
 
         nomePianeta = "Luna";
@@ -1500,11 +1375,6 @@ void carica_futurama(GLFWwindow* window) {
         if (collisioneLuna == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -1517,12 +1387,6 @@ void carica_futurama(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiFuturama[nomePianeta] = true;
             }
-            if (!collisioneLuna || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
-            }
         }
 
         nomePianeta = "Marte";
@@ -1530,11 +1394,6 @@ void carica_futurama(GLFWwindow* window) {
         if (collisioneMars == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -1547,12 +1406,6 @@ void carica_futurama(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiFuturama[nomePianeta] = true;
             }
-            if (!collisioneMars || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
-            }
         }
 
         nomePianeta = "Wormulon";
@@ -1560,11 +1413,6 @@ void carica_futurama(GLFWwindow* window) {
         if (collisioneWormulon == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -1577,12 +1425,6 @@ void carica_futurama(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiFuturama[nomePianeta] = true;
             }
-            if (!collisioneWormulon || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
-            }
         }
 
         nomePianeta = "Neardeath";
@@ -1590,11 +1432,6 @@ void carica_futurama(GLFWwindow* window) {
         if (collisioneNeardeath == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -1607,12 +1444,6 @@ void carica_futurama(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiFuturama[nomePianeta] = true;
             }
-            if (!collisioneNeardeath || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
-            }
         }
 
         nomePianeta = "Omicron";
@@ -1620,11 +1451,6 @@ void carica_futurama(GLFWwindow* window) {
         if (collisioneOmicron == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -1637,12 +1463,6 @@ void carica_futurama(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiFuturama[nomePianeta] = true;
             }
-            if (!collisioneOmicron || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
-            }
         }
 
         nomePianeta = "Simian";
@@ -1650,11 +1470,6 @@ void carica_futurama(GLFWwindow* window) {
         if (collisioneSimian == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -1667,12 +1482,6 @@ void carica_futurama(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiFuturama[nomePianeta] = true;
             }
-            if (!collisioneSimian || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
-            }
         }
 
         nomePianeta = "Thunban";
@@ -1680,11 +1489,6 @@ void carica_futurama(GLFWwindow* window) {
         if (collisioneThunban == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -1697,12 +1501,6 @@ void carica_futurama(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiFuturama[nomePianeta] = true;
             }
-            if (!collisioneThunban || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
-            }
         }
 
         nomePianeta = "Tornadus";
@@ -1710,11 +1508,6 @@ void carica_futurama(GLFWwindow* window) {
         if (collisioneTornadus == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -1726,12 +1519,6 @@ void carica_futurama(GLFWwindow* window) {
                 pianetiScopertiFuturama++;
                 // Imposta il pianeta come visitato
                 pianetiVisitatiFuturama[nomePianeta] = true;
-            }
-            if (!collisioneTornadus || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
             }
         }
 
@@ -1753,18 +1540,28 @@ void carica_futurama(GLFWwindow* window) {
 
         // testo su schermo
 
+        if (infoVisible == true) {
+            std::string Info = "info: on";
+            RenderText(Info.c_str(), 15.0f, (float)SCR_HEIGHT / 6.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+        }
+
+        if (infoVisible == false) {
+            std::string Info = "info: off";
+            RenderText(Info.c_str(), 15.0f, (float)SCR_HEIGHT / 6.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+        }
+
         std::string Pianeti = "pianeti scoperti':" + std::to_string(pianetiScopertiFuturama) + "/11";
         if (pianetiScopertiFuturama < 11)
-            RenderText(Pianeti.c_str(), 15.0f, (float)SCR_HEIGHT / 6.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            RenderText(Pianeti.c_str(), 15.0f, (float)SCR_HEIGHT / 8.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
 
 
         if (pianetiScopertiFuturama == 11) {
             Pianeti = "universo Futurama esplorato";
-            RenderText(Pianeti.c_str(), 15.0f, (float)SCR_HEIGHT / 6.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            RenderText(Pianeti.c_str(), 15.0f, (float)SCR_HEIGHT / 8.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
         }
 
         std::string Velocity = "velocita':" + std::to_string((int)camera.MovementSpeed * 1000) + " km/h";
-        RenderText(Velocity.c_str(), 15.0f, (float)SCR_HEIGHT / 10.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+        RenderText(Velocity.c_str(), 15.0f, (float)SCR_HEIGHT / 10.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
 
         // Abilita il mipmapping
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -2086,11 +1883,6 @@ void carica_interstellar(GLFWwindow* window) {
         bool collisioneGargantua = collisionTest(spaceshipSphere, gargantuaSphere);
         if (collisioneGargantua == true && infoVisible == true) {
             cameraCollided = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -2103,12 +1895,6 @@ void carica_interstellar(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiInterstellar[nomePianeta] = true;
             }
-            if (!collisioneGargantua || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
-            }
         }
 
         bool collisioneInnerGargantua = collisionTest(spaceshipSphere, gargantuaInnerSphere);
@@ -2120,11 +1906,6 @@ void carica_interstellar(GLFWwindow* window) {
         bool collisioneMann = collisionTest(spaceshipSphere, mannSphere);
         if (collisioneMann == true && infoVisible == true) {
             cameraCollided = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -2137,23 +1918,12 @@ void carica_interstellar(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiInterstellar[nomePianeta] = true;
             }
-            if (!collisioneMann || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
-            }
         }
 
         nomePianeta = "Miller";
         bool collisioneMiller = collisionTest(spaceshipSphere, millerSphere);
         if (collisioneMiller == true && infoVisible == true) {
             cameraCollided = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -2166,23 +1936,12 @@ void carica_interstellar(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiInterstellar[nomePianeta] = true;
             }
-            if (!collisioneMiller || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
-            }
         }
 
         nomePianeta = "Saturno";
         bool collisioneSaturn = collisionTest(spaceshipSphere, saturnoSphere);
         if (collisioneSaturn == true && infoVisible == true) {
             cameraCollided = true;
-            if (lightPositions.size() < NR_LIGHTS + 1) {
-                lightPositions.push_back(glm::vec3(modelSpaceShuttle[3].x, modelSpaceShuttle[3].y, modelSpaceShuttle[3].z));
-                // Imposta i colori delle luci come preferisci
-                lightColors.push_back(glm::vec3(0.5f, 0.5f, 0.5f));
-            }
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -2194,12 +1953,6 @@ void carica_interstellar(GLFWwindow* window) {
                 pianetiScopertiInterstellar++;
                 // Imposta il pianeta come visitato
                 pianetiVisitatiInterstellar[nomePianeta] = true;
-            }
-            if (!collisioneSaturn || (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && infoVisible)) {
-                if (!lightPositions.empty()) {
-                    lightPositions.pop_back(); // Rimuovi l'ultima luce creata
-                    lightColors.pop_back();    // Rimuovi l'ultimo colore luce
-                }
             }
         }
 
@@ -2228,15 +1981,28 @@ void carica_interstellar(GLFWwindow* window) {
 
         // testo su schermo
 
+        if (infoVisible == true) {
+            std::string Info = "info: on";
+            RenderText(Info.c_str(), 15.0f, (float)SCR_HEIGHT / 6.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+        }
+
+        if (infoVisible == false) {
+            std::string Info = "info: off";
+            RenderText(Info.c_str(), 15.0f, (float)SCR_HEIGHT / 6.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+        }
+
         std::string Pianeti = "pianeti scoperti':" + std::to_string(pianetiScopertiInterstellar) + "/4";
         if (pianetiScopertiInterstellar < 4)
-            RenderText(Pianeti.c_str(), 15.0f, (float)SCR_HEIGHT / 6.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            RenderText(Pianeti.c_str(), 15.0f, (float)SCR_HEIGHT / 8.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
 
 
         if (pianetiScopertiInterstellar == 4) {
             Pianeti = "universo INTERSTELLAR esplorato";
-            RenderText(Pianeti.c_str(), 15.0f, (float)SCR_HEIGHT / 6.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            RenderText(Pianeti.c_str(), 15.0f, (float)SCR_HEIGHT / 8.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
         }
+
+        std::string Velocity = "velocita':" + std::to_string((int)camera.MovementSpeed * 1000) + " km/h";
+        RenderText(Velocity.c_str(), 15.0f, (float)SCR_HEIGHT / 10.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
 
         // Genera i mipmap
         glGenerateMipmap(GL_TEXTURE_2D);
