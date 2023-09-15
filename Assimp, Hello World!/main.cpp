@@ -2630,12 +2630,20 @@ void processInput(GLFWwindow* window)
 
         if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
             camera.MovementSpeed += 0.1f; // incrementa la velocità della camera
+            
         if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
             camera.MovementSpeed -= 0.1f;
 
         if (camera.MovementSpeed <= 0.0f) {
             camera.MovementSpeed = 0.0f;
         }
+
+        if (camera.MovementSpeed >= 5.0f) {
+            camera.MovementSpeed = 5.0f;
+        }
+        
+        
+        
     }
     
 
