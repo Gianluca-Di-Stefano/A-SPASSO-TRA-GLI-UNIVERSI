@@ -189,11 +189,6 @@ float cubeVertices[] = {
     -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 };
 
-
-
-
-
-
 void renderSphere()
 {
     static unsigned int sphereVAO = 0;
@@ -296,6 +291,7 @@ void carica_universo(GLFWwindow* window) {
     Model info("resources/objects/schermate/info.obj");
     Model iniz("resources/objects/schermate/iniz.obj");
     Model tutorial("resources/objects/schermate/tutorial.obj");
+    Model display("resources/objects/schermate/display.obj");
     SoundEngine->stopAllSounds();
     ISound* ambientSound = SoundEngine->play2D(universoTheme, true);
 
@@ -520,6 +516,20 @@ void carica_universo(GLFWwindow* window) {
             shaderGeometryPass.setMat4("model", modelTutorial);
             tutorial.Draw(shaderGeometryPass);
         }
+
+        glm::vec3 cameraOffsetDisplay = distanceBehind * cameraFront + distanceAbove * cameraUp;
+        //draw display
+        // Calcola la posizione del display in base alla posizione della telecamera
+        glm::vec3 displayPosition = camera.Position + cameraOffsetDisplay - 0.12f * camera.Right;
+        displayPosition.y = camera.Position.y + cameraOffsetDisplay.y;
+        glm::mat4 modelDisplay = glm::mat4(1.0f);
+        modelDisplay = glm::translate(modelDisplay, displayPosition);
+        modelDisplay = glm::rotate(modelDisplay, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+        modelDisplay = glm::rotate(modelDisplay, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+        modelDisplay = glm::scale(modelDisplay, glm::vec3(0.065f));
+        shaderGeometryPass.setMat4("model", modelDisplay);
+        display.Draw(shaderGeometryPass);
+
         // draw solar system
         glm::mat4 modelSole = glm::mat4(1.0f);
         modelSole = glm::scale(modelSole, glm::vec3(1.0f));
@@ -861,7 +871,6 @@ void carica_universo(GLFWwindow* window) {
 
         std::string Velocity = "velocita':" + std::to_string((int)camera.MovementSpeed * 1000) + " km/h";
         RenderText(Velocity.c_str(), 15.0f, (float)SCR_HEIGHT / 10.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
-
 
         //fine gioco
         if (camera.Position[0] > 10000.0f || camera.Position[0] < -10000.0f || camera.Position[1] > 10000.0f || camera.Position[1] < -10000.0f || camera.Position[2] > 10000.0f || camera.Position[2] < -10000.0f) {
