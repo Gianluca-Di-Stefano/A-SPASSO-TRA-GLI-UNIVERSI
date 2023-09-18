@@ -833,19 +833,17 @@ void carica_universo(GLFWwindow* window) {
 
         bool collisionePortalFuturama = collisionTest(spaceshipSphere, portalFuturamaSphere);
         if (collisionePortalFuturama == true) {
-            std::string Title = "TELETRANSPORT TO FUTURAMA";
-            contatorePortali = 1;
             carica_futurama(window);
-            RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            contatorePortali = 1;
         }
 
         bool collisionePortalInterstellar = collisionTest(spaceshipSphere, portalInterstellarSphere);
         if (collisionePortalInterstellar == true) {
-            std::string Title = "TELETRANSPORT TO INTERSTELLAR";
-            contatorePortali = 2;
             carica_interstellar(window);
-            RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+            contatorePortali = 2;
         }
+
+
 
         // testo su schermo
 
@@ -913,13 +911,14 @@ void carica_universo(GLFWwindow* window) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         */
 
+
+
         // Genera i mipmap
         glGenerateMipmap(GL_TEXTURE_2D);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         glBindVertexArray(0);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
 
 
         // 2. lighting pass: calculate lighting by iterating over a screen filled quad pixel-by-pixel using the gbuffer's content.
@@ -1017,7 +1016,7 @@ void carica_futurama(GLFWwindow* window) {
     Model portalInterstellar("resources/objects/portal/portal.obj");
     Model info("resources/objects/schermate/info.obj");
     Model skybox("resources/objects/futurama/skybox/skybox.obj");
-
+    Model display("resources/objects/schermate/display.obj");
 
      SoundEngine->stopAllSounds();
      ISound* ambientSound = SoundEngine->play2D(futuramaTheme, true);
@@ -1160,9 +1159,21 @@ void carica_futurama(GLFWwindow* window) {
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
         spaceShuttle.Draw(shaderGeometryPass);
 
+        glm::vec3 cameraOffsetDisplay = distanceBehind * camera.Front + distanceAbove * camera.Up;
+        //draw display
+        // Calcola la posizione del display in base alla posizione della telecamera
+        glm::vec3 displayPosition = camera.Position + cameraOffsetDisplay - 0.12f * camera.Right;
+        displayPosition.y = camera.Position.y + cameraOffsetDisplay.y;
+        glm::mat4 modelDisplay = glm::mat4(1.0f);
+        modelDisplay = glm::translate(modelDisplay, displayPosition);
+        modelDisplay = glm::rotate(modelDisplay, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+        modelDisplay = glm::rotate(modelDisplay, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+        modelDisplay = glm::scale(modelDisplay, glm::vec3(0.065f));
+        shaderGeometryPass.setMat4("model", modelDisplay);
+        display.Draw(shaderGeometryPass);
+
 
         // draw solar system
-
         glm::mat4 modelSole = glm::mat4(1.0f);
         modelSole = glm::scale(modelSole, glm::vec3(1.0f));
         shaderGeometryPass.setMat4("model", modelSole);
@@ -1316,10 +1327,6 @@ void carica_futurama(GLFWwindow* window) {
             std::string Title = "Sole";
             RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
         }
-
-
-
-
 
         std::string nomePianeta = "BenderGod";
         bool collisioneBenderGod = collisionTest(spaceshipSphere, benderGodSphere);
@@ -1533,19 +1540,16 @@ void carica_futurama(GLFWwindow* window) {
 
         bool collisionePortalUniverso = collisionTest(spaceshipSphere, portalUniversoSphere);
         if (collisionePortalUniverso == true) {
-            std::string Title = "TELETRANSPORT TO UNIVERSE";
-            RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
             carica_universo(window);
             contatorePortali = 0;
         }
 
         bool collisionePortalInterstellar = collisionTest(spaceshipSphere, portalInterstellarSphere);
         if (collisionePortalInterstellar == true) {
-            std::string Title = "TELETRANSPORT TO INTERSTELLAR";
-            RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
             carica_interstellar(window);
             contatorePortali = 2;
         }
+
 
         // testo su schermo
 
@@ -1674,6 +1678,7 @@ void carica_interstellar(GLFWwindow* window) {
     Model portalUniverso("resources/objects/portal/portal.obj");
     Model skybox("resources/objects/interstellar/skybox/skybox.obj");
     Model info("resources/objects/schermate/info.obj");
+    Model display("resources/objects/schermate/display.obj");
     SoundEngine->stopAllSounds();
     ISound* ambientSound = SoundEngine->play2D(interstellarTheme, true);
    
@@ -1821,6 +1826,19 @@ void carica_interstellar(GLFWwindow* window) {
         spaceshipSphere = { camera.Position + 2.0f * camera.Front, 5.0f };
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
         spaceShuttle.Draw(shaderGeometryPass);
+
+        glm::vec3 cameraOffsetDisplay = distanceBehind * camera.Front + distanceAbove * camera.Up;
+        //draw display
+        // Calcola la posizione del display in base alla posizione della telecamera
+        glm::vec3 displayPosition = camera.Position + cameraOffsetDisplay - 0.12f * camera.Right;
+        displayPosition.y = camera.Position.y + cameraOffsetDisplay.y;
+        glm::mat4 modelDisplay = glm::mat4(1.0f);
+        modelDisplay = glm::translate(modelDisplay, displayPosition);
+        modelDisplay = glm::rotate(modelDisplay, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+        modelDisplay = glm::rotate(modelDisplay, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+        modelDisplay = glm::scale(modelDisplay, glm::vec3(0.065f));
+        shaderGeometryPass.setMat4("model", modelDisplay);
+        display.Draw(shaderGeometryPass);
 
         // draw solar system
         glm::mat4 modelGargantua = glm::mat4(1.0f);
@@ -2105,7 +2123,7 @@ void carica_tesseract(GLFWwindow* window) {
     //Model sole("resources/objects/universo/planets/sole/sole.obj");
     //DECOMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO (SOSTITUSCE IL SOLE)
     Model tesseract("resources/objects/interstellar/planets/tesseract/scene.gltf");
-
+    Model display("resources/objects/schermate/display.obj");
     Model portalFuturama("resources/objects/portal/portal.obj");
     Model portalUniverso("resources/objects/portal/portal.obj");
     Model portalInterstellar("resources/objects/portal/portal.obj");
@@ -2329,7 +2347,7 @@ void carica_tesseract(GLFWwindow* window) {
         }
 
         //fine gioco
-        if (camera.Position[0] > 20000.0f || camera.Position[0] < -20000.0f || camera.Position[1] > 20000.0f || camera.Position[1] < -20000.0f || camera.Position[2] > 20000.0f || camera.Position[2] < -20000.0f) {
+        if (camera.Position[0] > 5000.0f || camera.Position[0] < -5000.0f || camera.Position[1] > 5000.0f || camera.Position[1] < -5000.0f || camera.Position[2] > 5000.0f || camera.Position[2] < -5000.0f) {
             camera.MovementSpeed = 0.0f;
             glm::mat4 modelFine = glm::mat4(1.0f);
             modelFine = glm::translate(modelFine, camera.Position + 0.13f * camera.Front);
@@ -2647,8 +2665,8 @@ void processInput(GLFWwindow* window)
             camera.MovementSpeed = 0.0f;
         }
 
-        if (camera.MovementSpeed >= 5.0f) {
-            camera.MovementSpeed = 5.0f;
+        if (camera.MovementSpeed >= 20.0f) {
+            camera.MovementSpeed = 20.0f;
         }
         
         
