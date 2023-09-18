@@ -49,8 +49,8 @@ bool futurama_caricato = false;
 bool interstellar_caricato = false;
 int startGame = 0;
 bool infoVisible = false;
-glm::vec3 initialPosition = glm::vec3(-904.0f, 0.0f, 0.0f);//urano
-//glm::vec3 initialPosition = glm::vec3(-503.0f, 0.0f, 0.0f);//terra
+bool mapVisible = false;
+glm::vec3 initialPosition = glm::vec3(-503.0f, 0.0f, 0.0f);//terra
 float initialSpeed = 0.0;
 float rotationAngle = 0.0f;
 
@@ -292,6 +292,8 @@ void carica_universo(GLFWwindow* window) {
     Model iniz("resources/objects/schermate/iniz.obj");
     Model tutorial("resources/objects/schermate/tutorial.obj");
     Model display("resources/objects/schermate/display.obj");
+    Model mappa("resources/objects/schermate/mappa.obj");
+
     SoundEngine->stopAllSounds();
     ISound* ambientSound = SoundEngine->play2D(universoTheme, true);
 
@@ -530,6 +532,17 @@ void carica_universo(GLFWwindow* window) {
         shaderGeometryPass.setMat4("model", modelDisplay);
         display.Draw(shaderGeometryPass);
 
+        if (mapVisible) {
+            movementBlocked = true;
+            glm::mat4 modelMap = glm::mat4(1.0f);
+            modelMap = glm::translate(modelMap, camera.Position + 0.13f * camera.Front);
+            modelMap = glm::rotate(modelMap, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+            modelMap = glm::rotate(modelMap, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+            modelMap = glm::scale(modelMap, glm::vec3(0.06f));
+            shaderGeometryPass.setMat4("model", modelMap);
+            mappa.Draw(shaderGeometryPass);
+        }
+
         // draw solar system
         glm::mat4 modelSole = glm::mat4(1.0f);
         modelSole = glm::scale(modelSole, glm::vec3(1.0f));
@@ -625,7 +638,7 @@ void carica_universo(GLFWwindow* window) {
         modelPortalFuturama = glm::translate(modelPortalFuturama, glm::vec3(200.0f, 0.0f, 0.0f));
         //modelPortalFuturama = glm::rotate(modelPortalFuturama, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
         modelPortalFuturama = glm::scale(modelPortalFuturama, glm::vec3(2.0f));
-        portalFuturamaSphere = { glm::vec3(200.0f, 0.0f, 0.0f), 0.4f };
+        portalFuturamaSphere = { glm::vec3(200.0f, 0.0f, 0.0f), 1.0f };
         shaderGeometryPass.setMat4("model", modelPortalFuturama);
         portalFuturama.Draw(shaderGeometryPass);
    
@@ -1012,11 +1025,12 @@ void carica_futurama(GLFWwindow* window) {
     Model thunban("resources/objects/futurama/planets/thunban/thunban.obj");
     Model tornadus("resources/objects/futurama/planets/tornadus/tornadus.obj");
     Model wormulon("resources/objects/futurama/planets/wormulon/wormulon.obj");
-    Model portalUniverso("resources/objects/portal/portal.obj");
-    Model portalInterstellar("resources/objects/portal/portal.obj");
+    Model portalUniverso("resources/objects/futurama/box/boxUniverso.obj");
+    Model portalInterstellar("resources/objects/futurama/box/boxInterstellar.obj");
     Model info("resources/objects/schermate/info.obj");
     Model skybox("resources/objects/futurama/skybox/skybox.obj");
     Model display("resources/objects/schermate/display.obj");
+    Model mappa("resources/objects/schermate/mappa.obj");
 
      SoundEngine->stopAllSounds();
      ISound* ambientSound = SoundEngine->play2D(futuramaTheme, true);
@@ -1172,6 +1186,16 @@ void carica_futurama(GLFWwindow* window) {
         shaderGeometryPass.setMat4("model", modelDisplay);
         display.Draw(shaderGeometryPass);
 
+        if (mapVisible) {
+            movementBlocked = true;
+            glm::mat4 modelMap = glm::mat4(1.0f);
+            modelMap = glm::translate(modelMap, camera.Position + 0.13f * camera.Front);
+            modelMap = glm::rotate(modelMap, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+            modelMap = glm::rotate(modelMap, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+            modelMap = glm::scale(modelMap, glm::vec3(0.06f));
+            shaderGeometryPass.setMat4("model", modelMap);
+            mappa.Draw(shaderGeometryPass);
+        }
 
         // draw solar system
         glm::mat4 modelSole = glm::mat4(1.0f);
@@ -1281,17 +1305,15 @@ void carica_futurama(GLFWwindow* window) {
         //draw portal
         glm::mat4 modelPortalUniverso = glm::mat4(1.0f);
         modelPortalUniverso = glm::translate(modelPortalUniverso, glm::vec3(300.0f, 0.0f, 0.0f));
-        modelPortalUniverso = glm::rotate(modelPortalUniverso, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-        modelPortalUniverso = glm::scale(modelPortalUniverso, glm::vec3(15.7f));
-        portalUniversoSphere = { glm::vec3(300.0f, 0.0f, 0.0f), 10.0f };
+        modelPortalUniverso = glm::scale(modelPortalUniverso, glm::vec3(2.0f));
+        portalUniversoSphere = { glm::vec3(300.0f, 0.0f, 0.0f), 1.0f };
         shaderGeometryPass.setMat4("model", modelPortalUniverso);
         portalUniverso.Draw(shaderGeometryPass);
 
         glm::mat4 modelPortalInterstellar = glm::mat4(1.0f);
         modelPortalInterstellar = glm::translate(modelPortalInterstellar, glm::vec3(-300.0f, 0.0f, 0.0f));
-        modelPortalInterstellar = glm::rotate(modelPortalInterstellar, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-        modelPortalInterstellar = glm::scale(modelPortalInterstellar, glm::vec3(15.7f));
-        portalInterstellarSphere = { glm::vec3(-300.0f, 0.0f, 0.0f), 10.0f };
+        modelPortalInterstellar = glm::scale(modelPortalInterstellar, glm::vec3(2.0f));
+        portalInterstellarSphere = { glm::vec3(-300.0f, 0.0f, 0.0f), 1.0f };
         shaderGeometryPass.setMat4("model", modelPortalInterstellar);
         portalInterstellar.Draw(shaderGeometryPass);
 
@@ -1679,6 +1701,7 @@ void carica_interstellar(GLFWwindow* window) {
     Model skybox("resources/objects/interstellar/skybox/skybox.obj");
     Model info("resources/objects/schermate/info.obj");
     Model display("resources/objects/schermate/display.obj");
+    Model mappa("resources/objects/schermate/mappa.obj");
     SoundEngine->stopAllSounds();
     ISound* ambientSound = SoundEngine->play2D(interstellarTheme, true);
    
@@ -1840,6 +1863,17 @@ void carica_interstellar(GLFWwindow* window) {
         shaderGeometryPass.setMat4("model", modelDisplay);
         display.Draw(shaderGeometryPass);
 
+        if (mapVisible) {
+            movementBlocked = true;
+            glm::mat4 modelMap = glm::mat4(1.0f);
+            modelMap = glm::translate(modelMap, camera.Position + 0.13f * camera.Front);
+            modelMap = glm::rotate(modelMap, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+            modelMap = glm::rotate(modelMap, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+            modelMap = glm::scale(modelMap, glm::vec3(0.06f));
+            shaderGeometryPass.setMat4("model", modelMap);
+            mappa.Draw(shaderGeometryPass);
+        }
+
         // draw solar system
         glm::mat4 modelGargantua = glm::mat4(1.0f);
         modelGargantua = glm::scale(modelGargantua, glm::vec3(400.0f));
@@ -1874,23 +1908,6 @@ void carica_interstellar(GLFWwindow* window) {
         shaderGeometryPass.setMat4("model", modelSaturno);
         saturno.Draw(shaderGeometryPass);
 
-        //draw portal
-        glm::mat4 modelPortalFuturama = glm::mat4(1.0f);
-        modelPortalFuturama = glm::translate(modelPortalFuturama, glm::vec3(200.0f, 0.0f, 100.0f));
-        modelPortalFuturama = glm::rotate(modelPortalFuturama, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-        modelPortalFuturama = glm::scale(modelPortalFuturama, glm::vec3(15.7f));
-        portalFuturamaSphere = { glm::vec3(200.0f, 0.0f, 100.0f), 10.0f };
-        shaderGeometryPass.setMat4("model", modelPortalFuturama);
-        portalFuturama.Draw(shaderGeometryPass);
-
-        glm::mat4 modelPortalUniverso = glm::mat4(1.0f);
-        modelPortalUniverso = glm::translate(modelPortalUniverso, glm::vec3(-200.0f, 0.0f, 100.0f));
-        modelPortalUniverso = glm::rotate(modelPortalUniverso, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-        modelPortalUniverso = glm::rotate(modelPortalUniverso, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-        modelPortalUniverso = glm::scale(modelPortalUniverso, glm::vec3(15.7f));
-        portalUniversoSphere = { glm::vec3(-200.0f, 0.0f, 100.0f), 10.0f };
-        shaderGeometryPass.setMat4("model", modelPortalUniverso);
-        portalUniverso.Draw(shaderGeometryPass);
 
         glm::mat4 modelSkybox = glm::mat4(1.0f);
         modelSkybox = glm::scale(modelSkybox, glm::vec3(5000.2f));
@@ -1981,22 +1998,6 @@ void carica_interstellar(GLFWwindow* window) {
                 // Imposta il pianeta come visitato
                 pianetiVisitatiInterstellar[nomePianeta] = true;
             }
-        }
-
-        bool collisionePortalFuturama = collisionTest(spaceshipSphere, portalFuturamaSphere);
-        if (collisionePortalFuturama == true) {
-            std::string Title = "TELETRANSPORT TO FUTURAMA";
-            RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-            carica_futurama(window);
-            contatorePortali = 1;
-        }
-
-        bool collisionePortalUniverso = collisionTest(spaceshipSphere, portalUniversoSphere);
-        if (collisionePortalUniverso == true) {
-            std::string Title = "TELETRANSPORT TO UNIVERSE";
-            RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-            carica_universo(window);
-            contatorePortali = 2;
         }
 
         //fine gioco
@@ -2128,6 +2129,7 @@ void carica_tesseract(GLFWwindow* window) {
     Model portalUniverso("resources/objects/portal/portal.obj");
     Model portalInterstellar("resources/objects/portal/portal.obj");
     Model fine("resources/objects/schermate/fine.obj");
+    Model skybox("resources/objects/interstellar/planets/tesseract/skybox/skybox.obj");
     SoundEngine->stopAllSounds();
     ISound* ambientSound = SoundEngine->play2D(interstellarTheme, true);
 
@@ -2298,13 +2300,6 @@ void carica_tesseract(GLFWwindow* window) {
         tesseract.Draw(shaderGeometryPass);
 
         //draw portal
-        glm::mat4 modelPortalFuturama = glm::mat4(1.0f);
-        modelPortalFuturama = glm::translate(modelPortalFuturama, glm::vec3(200.0f, 0.0f, 100.0f));
-        modelPortalFuturama = glm::rotate(modelPortalFuturama, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-        modelPortalFuturama = glm::scale(modelPortalFuturama, glm::vec3(15.7f));
-        portalFuturamaSphere = { glm::vec3(200.0f, 0.0f, 100.0f), 10.0f };
-        shaderGeometryPass.setMat4("model", modelPortalFuturama);
-        portalFuturama.Draw(shaderGeometryPass);
 
         glm::mat4 modelPortalUniverso = glm::mat4(1.0f);
         modelPortalUniverso = glm::translate(modelPortalUniverso, glm::vec3(0.0f, 0.0f, 0.0f));
@@ -2314,36 +2309,17 @@ void carica_tesseract(GLFWwindow* window) {
         shaderGeometryPass.setMat4("model", modelPortalUniverso);
         portalUniverso.Draw(shaderGeometryPass);
 
-        glm::mat4 modelPortalInterstellar = glm::mat4(1.0f);
-        modelPortalInterstellar = glm::translate(modelPortalInterstellar, glm::vec3(-200.0f, 0.0f, 100.0f));
-        modelPortalUniverso = glm::rotate(modelPortalInterstellar, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-        modelPortalInterstellar = glm::scale(modelPortalInterstellar, glm::vec3(15.7f));
-        portalInterstellarSphere = { glm::vec3(-200.0f, 0.0f, 100.0f), 10.0f };
-        shaderGeometryPass.setMat4("model", modelPortalInterstellar);
-        portalInterstellar.Draw(shaderGeometryPass);
+        glm::mat4 modelSkybox = glm::mat4(1.0f);
+        modelSkybox = glm::scale(modelSkybox, glm::vec3(5000.2f));
+        shaderGeometryPass.setMat4("model", modelSkybox);
+        skybox.Draw(shaderGeometryPass);
 
         //collisioni
         cameraCollided = false;
 
-        bool collisionePortalFuturama = collisionTest(spaceshipSphere, portalFuturamaSphere);
-        if (collisionePortalFuturama == true) {
-            std::string Title = "TELETRANSPORT TO FUTURAMA";
-            RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-            //carica_futurama(window);
-        }
-
         bool collisionePortalUniverso = collisionTest(spaceshipSphere, portalUniversoSphere);
         if (collisionePortalUniverso == true) {
-            std::string Title = "TELETRANSPORT TO UNIVERSE";
-            RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
             carica_universo(window);
-        }
-
-        bool collisionePortalInterstellar = collisionTest(spaceshipSphere, portalInterstellarSphere);
-        if (collisionePortalInterstellar == true) {
-            std::string Title = "TELETRANSPORT TO INTERSTELLAR";
-            RenderText(Title.c_str(), (float)SCR_WIDTH / 2.0f, (float)SCR_HEIGHT / 2.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-            //carica_interstellar(window);
         }
 
         //fine gioco
@@ -2622,6 +2598,8 @@ void renderQuad()
 
 bool mouseLeftPressed = false;
 bool mouseLeftReleased = false;
+bool keyMPressed = false;
+bool keyMReleased = false;
 bool enterPressed = false;
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
@@ -2693,6 +2671,27 @@ void processInput(GLFWwindow* window)
             infoVisible = true;
         }
         mouseLeftPressed = false;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_M) == GLFW_RELEASE) {
+        keyMReleased = true;
+        movementBlocked = false;
+    }
+    else if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
+        if (keyMReleased) {
+            keyMPressed = true;
+            keyMReleased = false;
+        }
+    }
+
+    if (keyMPressed) {
+        if (mapVisible) {
+            mapVisible = false;
+        }
+        else {
+            mapVisible = true;
+        }
+        keyMPressed = false;
     }
 }
 
