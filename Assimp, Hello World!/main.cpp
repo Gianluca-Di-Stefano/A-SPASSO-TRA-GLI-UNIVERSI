@@ -53,6 +53,8 @@ bool mapVisible = false;
 glm::vec3 initialPosition = glm::vec3(-503.0f, 0.0f, 0.0f);//terra
 float initialSpeed = 0.0;
 float rotationAngle = 0.0f;
+float rotationAngle1 = 0.0f;
+float rotationSpeed = 1.0f;
 
 //pianeti visitati variabili
 int pianetiScopertiUniverso = 0;
@@ -279,7 +281,7 @@ void carica_universo(GLFWwindow* window) {
     Model giove("resources/objects/universo/planets/giove/giove.obj");
     Model luna("resources/objects/universo/planets/luna/luna.obj");
     Model marte("resources/objects/universo/planets/marte/marte.obj");
-    Model rock("resources/objects/universo/planets/asteroid/rock.obj");
+    Model asteroids("resources/objects/universo/planets/asteroid/asteroid.obj");
     Model mercurio("resources/objects/universo/planets/mercurio/mercurio.obj");
     Model nettuno("resources/objects/universo/planets/nettuno/nettuno.obj");
     Model saturno("resources/objects/universo/planets/saturno/saturno.obj");
@@ -293,6 +295,7 @@ void carica_universo(GLFWwindow* window) {
     Model tutorial("resources/objects/schermate/tutorial.obj");
     Model display("resources/objects/schermate/display.obj");
     Model mappa("resources/objects/schermate/mappa.obj");
+    Model fine("resources/objects/schermate/fine.obj");
 
     SoundEngine->stopAllSounds();
     ISound* ambientSound = SoundEngine->play2D(universoTheme, true);
@@ -338,32 +341,7 @@ void carica_universo(GLFWwindow* window) {
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
 
-    // set transformation matrices as an instance vertex attribute (with divisor 1)
-    // note: we're cheating a little by taking the, now publicly declared, VAO of the model's mesh(es) and adding new vertexAttribPointers
-    // normally you'd want to do this in a more organized fashion, but for learning purposes this will do.
-    // -----------------------------------------------------------------------------------------------------------------------------------
-    for (unsigned int i = 0; i < rock.meshes.size(); i++)
-    {
-        unsigned int VAO = rock.meshes[i].VAO;
-        glBindVertexArray(VAO);
-        // set attribute pointers for matrix (4 times vec4)
-        glEnableVertexAttribArray(3);
-        glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
-        glEnableVertexAttribArray(4);
-        glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
-        glEnableVertexAttribArray(5);
-        glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
-        glEnableVertexAttribArray(6);
-        glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
-
-        glVertexAttribDivisor(3, 1);
-        glVertexAttribDivisor(4, 1);
-        glVertexAttribDivisor(5, 1);
-        glVertexAttribDivisor(6, 1);
-
-        glBindVertexArray(0);
-    }
-
+    
 
     // configure g-buffer framebuffer
 // ------------------------------
@@ -468,10 +446,6 @@ void carica_universo(GLFWwindow* window) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 2000000000.0f);
         glm::mat4 view = camera.GetViewMatrix();
-
-        asteroidShader.use();
-        asteroidShader.setMat4("projection", projection);
-        asteroidShader.setMat4("view", view);
 
         // Calcola la direzione in cui la telecamera dovrebbe guardare
         glm::vec3 cameraFront = glm::normalize(camera.Front);
@@ -599,6 +573,12 @@ void carica_universo(GLFWwindow* window) {
         marteSphere = { glm::vec3(0.0f, 0.0f, -500.0f), 7.6f };
         shaderGeometryPass.setMat4("model", modelMarte);
         marte.Draw(shaderGeometryPass);
+
+        glm::mat4 modelAsteroids = glm::mat4(1.0f);
+        //modelAsteroids = glm::rotate(modelAsteroids, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelAsteroids = glm::scale(modelAsteroids, glm::vec3(1.0f));
+        shaderGeometryPass.setMat4("model", modelAsteroids);
+        asteroids.Draw(shaderGeometryPass);
 
         glm::mat4 modelGiove = glm::mat4(1.0f);
         modelGiove = glm::translate(modelGiove, glm::vec3(700.0f, 0.0f, 0.0f));
@@ -890,23 +870,6 @@ void carica_universo(GLFWwindow* window) {
             carica_tesseract(window);
         }
 
-        // draw meteorites
-        asteroidShader.use();
-        asteroidShader.setInt("texture_diffuse1", 0);
-        glBindTexture(GL_TEXTURE_2D, rock.textures_loaded[0].id); // note: we also made the textures_loaded vector public (instead of private) from the model class.
-        // Abilita il mipmapping
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        // Genera i mipmap
-        glGenerateMipmap(GL_TEXTURE_2D);
-        for (unsigned int i = 0; i < rock.meshes.size(); i++)
-        {
-            glBindVertexArray(rock.meshes[i].VAO);
-            glDrawElementsInstanced(GL_TRIANGLES, rock.meshes[i].indices.size(), GL_UNSIGNED_INT, 0, amount);
-            glBindVertexArray(0);
-        }
-
         // draw skybox cube
         /* codice skybox iniziale
         skyboxShader.use();
@@ -998,7 +961,6 @@ void carica_universo(GLFWwindow* window) {
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-
     glfwTerminate();
 
 }
@@ -1776,7 +1738,7 @@ void carica_interstellar(GLFWwindow* window) {
     shaderLightingPass.setInt("gNormal", 1);
     shaderLightingPass.setInt("gAlbedoSpec", 2);
 
-    float rotationSpeed = 1.0f;
+
 
     camera.Position = initialPosition;
     camera.MovementSpeed = initialSpeed;
@@ -1798,7 +1760,7 @@ void carica_interstellar(GLFWwindow* window) {
         processInput(window);
 
         rotationAngle += rotationSpeed * deltaTime;
-
+        rotationAngle1 += deltaTime;
         // render
         // ------
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -1877,7 +1839,7 @@ void carica_interstellar(GLFWwindow* window) {
         // draw solar system
         glm::mat4 modelGargantua = glm::mat4(1.0f);
         modelGargantua = glm::scale(modelGargantua, glm::vec3(400.0f));
-        modelGargantua = glm::rotate(modelGargantua, glm::radians(rotationAngle*60), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelGargantua = glm::rotate(modelGargantua, glm::radians(rotationAngle1*60), glm::vec3(0.0f, 1.0f, 0.0f));
         gargantuaSphere = { glm::vec3(0.0f, 0.0f, 0.0f), 400.0f };
         gargantuaInnerSphere = { glm::vec3(0.0f, 0.0f, 0.0f), 200.0f };
         shaderGeometryPass.setMat4("model", modelGargantua);
@@ -1885,7 +1847,7 @@ void carica_interstellar(GLFWwindow* window) {
 
         glm::mat4 modelMann = glm::mat4(1.0f);
         modelMann = glm::translate(modelMann, positionMann);
-        modelMann = glm::rotate(modelMann, glm::radians(rotationAngle * 20), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelMann = glm::rotate(modelMann, glm::radians(rotationAngle1 * 20), glm::vec3(0.0f, 1.0f, 0.0f));
         modelMann = glm::scale(modelMann, glm::vec3(9.4f / 100.0f));
         mannSphere = {positionMann, 30.0f };
         shaderGeometryPass.setMat4("model", modelMann);
@@ -1893,7 +1855,7 @@ void carica_interstellar(GLFWwindow* window) {
 
         glm::mat4 modelMiller = glm::mat4(1.0f);
         modelMiller = glm::translate(modelMiller, positionMiller);
-        modelMiller = glm::rotate(modelMiller, glm::radians(rotationAngle * 20), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelMiller = glm::rotate(modelMiller, glm::radians(rotationAngle1 * 20), glm::vec3(0.0f, 1.0f, 0.0f));
         modelMiller = glm::scale(modelMiller, glm::vec3(8.6f / 100.0f));
         millerSphere = {positionMiller, 30.0f };
         shaderGeometryPass.setMat4("model", modelMiller);
@@ -1902,7 +1864,7 @@ void carica_interstellar(GLFWwindow* window) {
         glm::mat4 modelSaturno = glm::mat4(1.0f);
         modelSaturno = glm::translate(modelSaturno, positionSaturno);
         modelSaturno = glm::rotate(modelSaturno, 25.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-        modelSaturno = glm::rotate(modelSaturno, glm::radians(rotationAngle * 10), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelSaturno = glm::rotate(modelSaturno, glm::radians(rotationAngle1 * 10), glm::vec3(0.0f, 1.0f, 0.0f));
         modelSaturno = glm::scale(modelSaturno, glm::vec3(83.7f / 1000));
         saturnoSphere = {positionSaturno, 20.6f };
         shaderGeometryPass.setMat4("model", modelSaturno);
@@ -1927,6 +1889,7 @@ void carica_interstellar(GLFWwindow* window) {
         bool collisioneGargantua = collisionTest(spaceshipSphere, gargantuaSphere);
         if (collisioneGargantua == true && infoVisible == true) {
             cameraCollided = true;
+            movementBlocked = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -1950,6 +1913,7 @@ void carica_interstellar(GLFWwindow* window) {
         bool collisioneMann = collisionTest(spaceshipSphere, mannSphere);
         if (collisioneMann == true && infoVisible == true) {
             cameraCollided = true;
+            movementBlocked = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -1968,6 +1932,7 @@ void carica_interstellar(GLFWwindow* window) {
         bool collisioneMiller = collisionTest(spaceshipSphere, millerSphere);
         if (collisioneMiller == true && infoVisible == true) {
             cameraCollided = true;
+            movementBlocked = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -1986,6 +1951,7 @@ void carica_interstellar(GLFWwindow* window) {
         bool collisioneSaturn = collisionTest(spaceshipSphere, saturnoSphere);
         if (collisioneSaturn == true && infoVisible == true) {
             cameraCollided = true;
+            movementBlocked = true;
             modelInfo = glm::scale(modelInfo, glm::vec3(0.05f));
             shaderGeometryPass.setMat4("model", modelInfo);
             glActiveTexture(GL_TEXTURE0);
@@ -2666,9 +2632,11 @@ void processInput(GLFWwindow* window)
     if (mouseLeftPressed) {
         if (infoVisible) {
             infoVisible = false;
+            rotationSpeed = 1.0f;
         }
         else {
             infoVisible = true;
+            rotationSpeed = 0.0f;
         }
         mouseLeftPressed = false;
     }
