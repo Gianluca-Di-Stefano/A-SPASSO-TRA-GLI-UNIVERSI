@@ -577,6 +577,7 @@ void carica_universo(GLFWwindow* window) {
         glm::mat4 modelAsteroids = glm::mat4(1.0f);
         //modelAsteroids = glm::rotate(modelAsteroids, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelAsteroids = glm::scale(modelAsteroids, glm::vec3(1.0f));
+        modelAsteroids = glm::rotate(modelAsteroids, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         shaderGeometryPass.setMat4("model", modelAsteroids);
         asteroids.Draw(shaderGeometryPass);
 
