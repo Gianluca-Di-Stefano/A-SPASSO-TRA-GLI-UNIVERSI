@@ -281,7 +281,7 @@ void carica_universo(GLFWwindow* window) {
     Model giove("resources/objects/universo/planets/giove/giove.obj");
     Model luna("resources/objects/universo/planets/luna/luna.obj");
     Model marte("resources/objects/universo/planets/marte/marte.obj");
-    Model asteroids("resources/objects/universo/planets/asteroid/asteroid.obj");
+    Model asteroids("resources/objects/universo/planets/asteroid/asteroid2.obj");
     Model mercurio("resources/objects/universo/planets/mercurio/mercurio.obj");
     Model nettuno("resources/objects/universo/planets/nettuno/nettuno.obj");
     Model saturno("resources/objects/universo/planets/saturno/saturno.obj");
