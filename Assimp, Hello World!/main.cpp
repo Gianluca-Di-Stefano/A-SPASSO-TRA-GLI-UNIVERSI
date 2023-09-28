@@ -50,7 +50,7 @@ bool interstellar_caricato = false;
 int startGame = 0;
 bool infoVisible = false;
 bool mapVisible = false;
-glm::vec3 initialPosition = glm::vec3(-503.0f, 0.0f, 0.0f);//terra
+glm::vec3 initialPosition = glm::vec3(-510.0f, 0.0f, 0.0f);//terra
 float initialSpeed = 0.0;
 float rotationAngle = 0.0f;
 float rotationAngle1 = 0.0f;
@@ -63,6 +63,12 @@ int pianetiScopertiInterstellar = 0;
 std::unordered_map<std::string, bool> pianetiVisitatiUniverso;
 std::unordered_map<std::string, bool> pianetiVisitatiFuturama;
 std::unordered_map<std::string, bool> pianetiVisitatiInterstellar;
+
+
+//impatti
+bool impattoEarth;
+bool impattoSun;
+
 
 unsigned int loadTexture(char const* path)
 {
@@ -105,9 +111,12 @@ struct SphereCollision
 {
     glm::vec3      centre;
     float          radius;
-}spaceshipSphere, soleSphere, mercurioSphere, venereSphere, terraSphere, 
-marteSphere, gioveSphere, saturnoSphere, uranoSphere, nettunoSphere, benderGodSphere, decapodSphere,
-lunaSphere, wormulonSphere, neardeathSphere, omicronSphere, simianSphere, thunbanSphere, tornadusSphere, 
+}
+spaceshipSphere, soleSphere, mercurioSphere, venereSphere, terraSphere, marteSphere, gioveSphere, saturnoSphere, uranoSphere, nettunoSphere,
+
+terraImpatto, soleImpatto,
+
+benderGodSphere, decapodSphere, lunaSphere, wormulonSphere, neardeathSphere, omicronSphere, simianSphere, thunbanSphere, tornadusSphere, 
 gargantuaSphere, gargantuaInnerSphere, mannSphere,millerSphere, portalUniversoSphere, portalFuturamaSphere, portalInterstellarSphere, tesseractSphere;
 
 bool collisionTest(SphereCollision& sfera1, const SphereCollision& sfera2) {
@@ -522,6 +531,7 @@ void carica_universo(GLFWwindow* window) {
         modelSole = glm::scale(modelSole, glm::vec3(1.0f));
         modelSole = glm::rotate(modelSole, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         soleSphere = { glm::vec3(0.0f, 0.0f, 0.0f), 250.0f };
+        soleImpatto = { glm::vec3(0.0f, 0.0f, 0.0f), 150.0f };
         shaderGeometryPass.setMat4("model", modelSole);
         sole.Draw(shaderGeometryPass);
 
@@ -555,6 +565,8 @@ void carica_universo(GLFWwindow* window) {
         modelTerra = glm::rotate(modelTerra, glm::radians(rotationAngle * 20), glm::vec3(0.0f, 1.0f, 0.0f));
         modelTerra = glm::scale(modelTerra, glm::vec3(9.1f / 1000));
         terraSphere = { positionTerra, 3.0f };
+        terraImpatto = { positionTerra, 1.5f };
+
         shaderGeometryPass.setMat4("model", modelTerra);
         terra.Draw(shaderGeometryPass);
 
@@ -647,6 +659,8 @@ void carica_universo(GLFWwindow* window) {
         cameraCollided = false;
 
         bool collisioneSun = collisionTest(spaceshipSphere, soleSphere);
+        impattoSun = collisionTest(spaceshipSphere, soleImpatto);
+
         if (collisioneSun == true) {
             cameraCollided = true;
             std::string Title = "Sole";
@@ -692,6 +706,8 @@ void carica_universo(GLFWwindow* window) {
         }
 
         bool collisioneEarth = collisionTest(spaceshipSphere, terraSphere);
+        impattoEarth = collisionTest(spaceshipSphere, terraImpatto);
+
         nomePianeta = "Terra";
         if (collisioneEarth == true && infoVisible == true) {
             cameraCollided = true;
@@ -2371,6 +2387,16 @@ void carica_tesseract(GLFWwindow* window) {
 
 }
 
+
+bool impatto() {
+    if (impattoEarth) {
+        return true;
+    }
+    if (impattoSun) {
+        return true;
+    }
+}
+
 int main()
 {
     // glfw: initialize and configure
@@ -2587,18 +2613,35 @@ void processInput(GLFWwindow* window)
     }
 
     if (!movementBlocked) {
-        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-            camera.ProcessKeyboard(FORWARD, deltaTime * 0.21);
-        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-            camera.ProcessKeyboard(BACKWARD, deltaTime * 0.5);
-
-        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-            camera.ProcessKeyboard(RIGHT, deltaTime * 0.5);
-        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-            camera.ProcessKeyboard(LEFT, deltaTime * 0.5);
-
-        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_RELEASE)
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
             camera.ProcessKeyboard(FORWARD, deltaTime * 0.2);
+            if (impatto()) {
+                camera.ProcessKeyboard(BACKWARD, deltaTime * 0.2);
+            }
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+            camera.ProcessKeyboard(BACKWARD, deltaTime * 0.2);
+            if (impatto()) {
+                camera.ProcessKeyboard(FORWARD, deltaTime * 0.2);
+            }
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+            camera.ProcessKeyboard(RIGHT, deltaTime * 0.2);
+            if (impatto()) {
+                camera.ProcessKeyboard(LEFT, deltaTime * 0.2);
+            }
+
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+            camera.ProcessKeyboard(LEFT, deltaTime * 0.2);
+            if (impatto()) {
+                camera.ProcessKeyboard(RIGHT, deltaTime * 0.2);
+            }
+
+        }
 
         if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
             camera.MovementSpeed += 0.1f; // incrementa la velocità della camera
@@ -2610,8 +2653,8 @@ void processInput(GLFWwindow* window)
             camera.MovementSpeed = 0.0f;
         }
 
-        if (camera.MovementSpeed >= 20.0f) {
-            camera.MovementSpeed = 20.0f;
+        if (camera.MovementSpeed >= 5.0f) {
+            camera.MovementSpeed = 5.0f;
         }
         
         
