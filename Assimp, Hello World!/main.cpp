@@ -66,8 +66,17 @@ std::unordered_map<std::string, bool> pianetiVisitatiInterstellar;
 
 
 //impatti
-bool impattoEarth;
-bool impattoSun;
+bool impattoEarth = false;
+bool impattoSun = false;
+bool impattoMoon = false;
+bool impattoMercury = false;
+bool impattoVenus = false;
+bool impattoMars = false;
+bool impattoJupiter = false;
+bool impattoSaturn = false;
+bool impattoUranus = false;
+bool impattoNeptune = false;
+
 
 
 unsigned int loadTexture(char const* path)
@@ -113,10 +122,11 @@ struct SphereCollision
     float          radius;
 }
 spaceshipSphere, soleSphere, mercurioSphere, venereSphere, terraSphere, marteSphere, gioveSphere, saturnoSphere, uranoSphere, nettunoSphere,
-
-terraImpatto, soleImpatto,
+terraImpatto, soleImpatto, mercurioImpatto, venereImpatto, lunaImpatto, marteImpatto, gioveImpatto, saturnoImpatto, uranoImpatto, nettunoImpatto, 
 
 benderGodSphere, decapodSphere, lunaSphere, wormulonSphere, neardeathSphere, omicronSphere, simianSphere, thunbanSphere, tornadusSphere, 
+
+
 gargantuaSphere, gargantuaInnerSphere, mannSphere,millerSphere, portalUniversoSphere, portalFuturamaSphere, portalInterstellarSphere, tesseractSphere;
 
 bool collisionTest(SphereCollision& sfera1, const SphereCollision& sfera2) {
@@ -540,6 +550,7 @@ void carica_universo(GLFWwindow* window) {
         modelMercurio = glm::rotate(modelMercurio, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelMercurio = glm::scale(modelMercurio, glm::vec3(3.4f / 1000.0f));
         mercurioSphere = { glm::vec3(300.0f, 0.0f, 0.0f), 5.0f };
+        mercurioImpatto = { glm::vec3(300.0f, 0.0f, 0.0f), 3.0f };
         shaderGeometryPass.setMat4("model", modelMercurio);
         mercurio.Draw(shaderGeometryPass);
 
@@ -548,6 +559,7 @@ void carica_universo(GLFWwindow* window) {
         modelVenere = glm::rotate(modelVenere, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelVenere = glm::scale(modelVenere, glm::vec3(8.6f / 1000.0f));
         venereSphere = { glm::vec3(0.0f, 0.0f, 400.0f), 10.0f };
+        venereImpatto = { glm::vec3(0.0f, 0.0f, 400.0f), 7.0f };
         shaderGeometryPass.setMat4("model", modelVenere);
         venere.Draw(shaderGeometryPass);
 
@@ -575,6 +587,7 @@ void carica_universo(GLFWwindow* window) {
         modelLuna = glm::rotate(modelLuna, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelLuna = glm::scale(modelLuna, glm::vec3(2.0f / 1000));
         lunaSphere = { positionLuna, 1.0f };
+        lunaImpatto = { positionLuna, 0.01f };
         shaderGeometryPass.setMat4("model", modelLuna);
         luna.Draw(shaderGeometryPass);
 
@@ -583,6 +596,8 @@ void carica_universo(GLFWwindow* window) {
         modelMarte = glm::rotate(modelMarte, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelMarte = glm::scale(modelMarte, glm::vec3(2.0f / 1000));
         marteSphere = { glm::vec3(0.0f, 0.0f, -500.0f), 7.6f };
+        marteImpatto = { glm::vec3(0.0f, 0.0f, -500.0f), 5.0f };
+
         shaderGeometryPass.setMat4("model", modelMarte);
         marte.Draw(shaderGeometryPass);
 
@@ -597,7 +612,9 @@ void carica_universo(GLFWwindow* window) {
         modelGiove = glm::translate(modelGiove, glm::vec3(700.0f, 0.0f, 0.0f));
         modelGiove = glm::rotate(modelGiove, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelGiove = glm::scale(modelGiove, glm::vec3(102.7f / 1000));
+
         gioveSphere = { glm::vec3(700.0f, 0.0f, 0.0f), 100.0f };
+        gioveImpatto = { glm::vec3(700.0f, 0.0f, 0.0f), 70.0f };
         shaderGeometryPass.setMat4("model", modelGiove);
         giove.Draw(shaderGeometryPass);
 
@@ -607,6 +624,8 @@ void carica_universo(GLFWwindow* window) {
         modelSaturno = glm::rotate(modelSaturno, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelSaturno = glm::scale(modelSaturno, glm::vec3(83.7f / 1000));
         saturnoSphere = { glm::vec3(0.0f, 0.0f, 800.0f), 83.6f };
+        saturnoImpatto = { glm::vec3(0.0f, 0.0f, 800.0f), 67.9f };
+
         shaderGeometryPass.setMat4("model", modelSaturno);
         saturno.Draw(shaderGeometryPass);
 
@@ -615,6 +634,8 @@ void carica_universo(GLFWwindow* window) {
         modelUrano = glm::rotate(modelUrano, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelUrano = glm::scale(modelUrano, glm::vec3(33.7f / 1000));
         uranoSphere = { glm::vec3(-900.0f, 0.0f, 0.0f), 30.0f };
+        uranoImpatto = { glm::vec3(-900.0f, 0.0f, 0.0f), 20.0f };
+
         shaderGeometryPass.setMat4("model", modelUrano);
         urano.Draw(shaderGeometryPass);
 
@@ -623,6 +644,8 @@ void carica_universo(GLFWwindow* window) {
         modelNettuno = glm::rotate(modelNettuno, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelNettuno = glm::scale(modelNettuno, glm::vec3(32.7f / 1000));
         nettunoSphere = { glm::vec3(-950.0f, 0.0f, 0.0f), 30.0f };
+        nettunoImpatto = { glm::vec3(-950.0f, 0.0f, 0.0f), 20.0f };
+
         shaderGeometryPass.setMat4("model", modelNettuno);
         nettuno.Draw(shaderGeometryPass);
 
@@ -668,6 +691,7 @@ void carica_universo(GLFWwindow* window) {
         }
 
         bool collisioneMercury = collisionTest(spaceshipSphere, mercurioSphere);
+        impattoMercury = collisionTest(spaceshipSphere, mercurioImpatto);
         std::string nomePianeta = "Mercurio";
         if (collisioneMercury == true && infoVisible == true) {
             cameraCollided = true;
@@ -687,6 +711,8 @@ void carica_universo(GLFWwindow* window) {
         }
 
         bool collisioneVenus = collisionTest(spaceshipSphere, venereSphere);
+       impattoVenus = collisionTest(spaceshipSphere, venereImpatto);
+
         nomePianeta = "Venere";
         if (collisioneVenus == true && infoVisible == true) {
             cameraCollided = true;
@@ -728,6 +754,8 @@ void carica_universo(GLFWwindow* window) {
 
 
         bool collisioneLuna = collisionTest(spaceshipSphere, lunaSphere);
+        impattoMoon = collisionTest(spaceshipSphere, lunaImpatto);
+
         nomePianeta = "Luna";
         if (collisioneLuna == true && infoVisible == true) {
             movementBlocked = true;
@@ -747,6 +775,8 @@ void carica_universo(GLFWwindow* window) {
         }
 
         bool collisioneMars = collisionTest(spaceshipSphere, marteSphere);
+        impattoMars = collisionTest(spaceshipSphere, marteImpatto);
+
         nomePianeta = "Marte";
         if (collisioneMars == true && infoVisible == true) {
             movementBlocked = true;
@@ -766,6 +796,8 @@ void carica_universo(GLFWwindow* window) {
         }
 
         bool collisioneJupiter = collisionTest(spaceshipSphere, gioveSphere);
+        impattoJupiter = collisionTest(spaceshipSphere, gioveImpatto);
+
         nomePianeta = "Giove";
         if (collisioneJupiter == true && infoVisible == true) {
             movementBlocked = true;
@@ -785,6 +817,8 @@ void carica_universo(GLFWwindow* window) {
         }
 
         bool collisioneSaturn = collisionTest(spaceshipSphere, saturnoSphere);
+        impattoSaturn = collisionTest(spaceshipSphere, saturnoImpatto);
+
         nomePianeta = "Saturno";
         if (collisioneSaturn == true && infoVisible == true) {
             movementBlocked = true;
@@ -804,6 +838,8 @@ void carica_universo(GLFWwindow* window) {
         }
         
         bool collisioneUranus = collisionTest(spaceshipSphere, uranoSphere);
+        impattoUranus = collisionTest(spaceshipSphere, uranoImpatto);
+
         nomePianeta = "Urano";
         if (collisioneUranus == true && infoVisible == true) {
             movementBlocked = true;
@@ -823,6 +859,8 @@ void carica_universo(GLFWwindow* window) {
         }
 
         bool collisioneNeptune = collisionTest(spaceshipSphere, nettunoSphere);
+        impattoNeptune = collisionTest(spaceshipSphere, nettunoImpatto);
+
         nomePianeta = "Nettuno";
         if (collisioneNeptune == true && infoVisible == true ) {
             movementBlocked = true;
@@ -2395,6 +2433,31 @@ bool impatto() {
     if (impattoSun) {
         return true;
     }
+    if (impattoMercury) {
+        return true;
+    }
+    if (impattoVenus) {
+        return true;
+    }
+    if (impattoMoon) {
+        return true;
+    }
+    if (impattoMars) {
+        return true;
+    }
+    if (impattoJupiter) {
+        return true;
+    }
+    if (impattoSaturn) {
+        return true;
+    }
+    if (impattoUranus) {
+        return true;
+    }
+    if (impattoNeptune) {
+        return true;
+    }
+
 }
 
 int main()
@@ -2653,15 +2716,10 @@ void processInput(GLFWwindow* window)
             camera.MovementSpeed = 0.0f;
         }
 
-        if (camera.MovementSpeed >= 5.0f) {
-            camera.MovementSpeed = 5.0f;
+        if (camera.MovementSpeed >= 15.0f) {
+            camera.MovementSpeed = 15.0f;
         }
-        
-        
-        
     }
-    
-
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
         mouseLeftReleased = true;
         movementBlocked = false;
