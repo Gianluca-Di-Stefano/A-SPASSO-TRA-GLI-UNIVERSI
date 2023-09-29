@@ -435,7 +435,6 @@ void carica_universo(GLFWwindow* window) {
     // render loop
     // -----------
 
-    float rotationSpeed = 1.0f;
     camera.Position = initialPosition;
     camera.MovementSpeed = initialSpeed;
 
@@ -452,7 +451,7 @@ void carica_universo(GLFWwindow* window) {
         processInput(window);
 
         rotationAngle += rotationSpeed * deltaTime;
-        
+        rotationAngle1 += deltaTime;
         // render
         // ------
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -512,6 +511,49 @@ void carica_universo(GLFWwindow* window) {
             tutorial.Draw(shaderGeometryPass);
         }
 
+        // Definisci i raggi delle orbite per i pianeti
+        float radiusMercurio = 350.0f;
+        float radiusVenere = 400.0f;
+        float radiusTerra = 500.0f;
+        float radiusMarte = 550.0f;
+        float radiusGiove = 900.0f;
+        float radiusSaturno = 1000.0f;
+        float radiusUrano = 1050.0f;
+        float radiusNettuno = 1080.0f;
+
+        // Aggiorna la posizione degli oggetti in base all'angolo di orbita
+        glm::vec3 positionMercurio = glm::vec3(cos(glm::radians(+rotationAngle)*0.1f) * radiusMercurio,
+            0.0f,
+            sin(glm::radians( + rotationAngle) * 0.1f) * radiusMercurio);
+
+        glm::vec3 positionVenere = glm::vec3(cos(glm::radians(200 + rotationAngle)*0.08f) * radiusVenere,
+            0.0f,
+            sin(glm::radians(200 + rotationAngle) * 0.08f) * radiusVenere);
+
+        glm::vec3 positionTerra = glm::vec3(cos(glm::radians(400 + rotationAngle)*0.07f) * radiusTerra,
+            0.0f,
+            sin(glm::radians(400 + rotationAngle) * 0.07f) * radiusTerra);
+
+        glm::vec3 positionMarte = glm::vec3(cos(glm::radians(500+ rotationAngle)*0.06f) * radiusMarte,
+            0.0f,
+            sin(glm::radians(500 + rotationAngle) * 0.06f) * radiusMarte);
+
+        glm::vec3 positionGiove = glm::vec3(cos(glm::radians(600+ rotationAngle)*0.05f) * radiusGiove,
+            0.0f,
+            sin(glm::radians(600+ rotationAngle) * 0.05f) * radiusGiove);
+
+        glm::vec3 positionSaturno = glm::vec3(cos(glm::radians(700+ rotationAngle)*0.04f) * radiusSaturno,
+            0.0f,
+            sin(glm::radians(700+ rotationAngle) * 0.04f) * radiusSaturno);
+
+        glm::vec3 positionUrano = glm::vec3(cos(glm::radians(800+ rotationAngle)*0.02) * radiusUrano,
+            0.0f,
+            sin(glm::radians(800+ rotationAngle) * 0.02) * radiusUrano);
+
+        glm::vec3 positionNettuno = glm::vec3(cos(glm::radians(900+rotationAngle)*0.01f) * radiusNettuno,
+            0.0f,
+            sin(glm::radians(900+rotationAngle) * 0.01f) * radiusNettuno);
+
         glm::vec3 cameraOffsetDisplay = distanceBehind * cameraFront + distanceAbove * cameraUp;
         //draw display
         // Calcola la posizione del display in base alla posizione della telecamera
@@ -546,57 +588,56 @@ void carica_universo(GLFWwindow* window) {
         sole.Draw(shaderGeometryPass);
 
         glm::mat4 modelMercurio = glm::mat4(1.0f);
-        modelMercurio = glm::translate(modelMercurio, glm::vec3(300.0f, 0.0f, 0.0f));
+        modelMercurio = glm::translate(modelMercurio, positionMercurio);
         modelMercurio = glm::rotate(modelMercurio, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelMercurio = glm::scale(modelMercurio, glm::vec3(3.4f / 1000.0f));
-        mercurioSphere = { glm::vec3(300.0f, 0.0f, 0.0f), 5.0f };
-        mercurioImpatto = { glm::vec3(300.0f, 0.0f, 0.0f), 3.0f };
+        mercurioSphere = { positionMercurio, 5.0f };
+        mercurioImpatto = { positionMercurio, 0.1f };
         shaderGeometryPass.setMat4("model", modelMercurio);
         mercurio.Draw(shaderGeometryPass);
 
         glm::mat4 modelVenere = glm::mat4(1.0f);
-        modelVenere = glm::translate(modelVenere, glm::vec3(0.0f, 0.0f, 400.0f));
+        modelVenere = glm::translate(modelVenere, positionVenere);
         modelVenere = glm::rotate(modelVenere, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelVenere = glm::scale(modelVenere, glm::vec3(8.6f / 1000.0f));
-        venereSphere = { glm::vec3(0.0f, 0.0f, 400.0f), 10.0f };
-        venereImpatto = { glm::vec3(0.0f, 0.0f, 400.0f), 7.0f };
+        venereSphere = { positionVenere, 10.0f };
+        venereImpatto = { positionVenere, 0.1f };
         shaderGeometryPass.setMat4("model", modelVenere);
         venere.Draw(shaderGeometryPass);
 
         // Definisci la distanza tra la Terra e la Luna
         float distanceFromEarth = 10.0f;
-        glm::vec3 positionTerra = glm::vec3(-500.0f, 0.0f, 0.0f);
 
         // Calcola la posizione della Luna rispetto alla Terra
-        glm::vec3 positionLuna = positionTerra + glm::vec3(cos(glm::radians(rotationAngle)) * distanceFromEarth,
+        glm::vec3 positionLuna = positionTerra + glm::vec3(cos(glm::radians(rotationAngle1)) * distanceFromEarth,
             0.0f,
             sin(glm::radians(rotationAngle)) * distanceFromEarth);
 
         glm::mat4 modelTerra = glm::mat4(1.0f);
         modelTerra = glm::translate(modelTerra, positionTerra);
-        modelTerra = glm::rotate(modelTerra, glm::radians(rotationAngle * 20), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelTerra = glm::rotate(modelTerra, glm::radians(rotationAngle1 * 10), glm::vec3(0.0f, 1.0f, 0.0f));
         modelTerra = glm::scale(modelTerra, glm::vec3(9.1f / 1000));
         terraSphere = { positionTerra, 3.0f };
-        terraImpatto = { positionTerra, 1.5f };
+        terraImpatto = { positionTerra, 0.1f };
 
         shaderGeometryPass.setMat4("model", modelTerra);
         terra.Draw(shaderGeometryPass);
 
         glm::mat4 modelLuna = glm::mat4(1.0f);
         modelLuna = glm::translate(modelLuna, positionLuna);
-        modelLuna = glm::rotate(modelLuna, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelLuna = glm::rotate(modelLuna, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelLuna = glm::scale(modelLuna, glm::vec3(2.0f / 1000));
         lunaSphere = { positionLuna, 1.0f };
-        lunaImpatto = { positionLuna, 0.01f };
+        lunaImpatto = { positionLuna, 0.001f };
         shaderGeometryPass.setMat4("model", modelLuna);
         luna.Draw(shaderGeometryPass);
 
         glm::mat4 modelMarte = glm::mat4(1.0f);
-        modelMarte = glm::translate(modelMarte, glm::vec3(0.0f, 0.0f, -500.0f));
-        modelMarte = glm::rotate(modelMarte, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelMarte = glm::translate(modelMarte, positionMarte);
+        modelMarte = glm::rotate(modelMarte, glm::radians(rotationAngle1 *10), glm::vec3(0.0f, 1.0f, 0.0f));
         modelMarte = glm::scale(modelMarte, glm::vec3(2.0f / 1000));
-        marteSphere = { glm::vec3(0.0f, 0.0f, -500.0f), 7.6f };
-        marteImpatto = { glm::vec3(0.0f, 0.0f, -500.0f), 5.0f };
+        marteSphere = { positionMarte, 7.6f };
+        marteImpatto = { positionMarte, 0.8f };
 
         shaderGeometryPass.setMat4("model", modelMarte);
         marte.Draw(shaderGeometryPass);
@@ -604,47 +645,46 @@ void carica_universo(GLFWwindow* window) {
         glm::mat4 modelAsteroids = glm::mat4(1.0f);
         //modelAsteroids = glm::rotate(modelAsteroids, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
         modelAsteroids = glm::scale(modelAsteroids, glm::vec3(1.0f));
-        modelAsteroids = glm::rotate(modelAsteroids, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelAsteroids = glm::rotate(modelAsteroids, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         shaderGeometryPass.setMat4("model", modelAsteroids);
         asteroids.Draw(shaderGeometryPass);
 
         glm::mat4 modelGiove = glm::mat4(1.0f);
-        modelGiove = glm::translate(modelGiove, glm::vec3(700.0f, 0.0f, 0.0f));
-        modelGiove = glm::rotate(modelGiove, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelGiove = glm::translate(modelGiove, positionGiove);
+        modelGiove = glm::rotate(modelGiove, glm::radians(rotationAngle1 * 20), glm::vec3(0.0f, 1.0f, 0.0f));
         modelGiove = glm::scale(modelGiove, glm::vec3(102.7f / 1000));
-
-        gioveSphere = { glm::vec3(700.0f, 0.0f, 0.0f), 100.0f };
-        gioveImpatto = { glm::vec3(700.0f, 0.0f, 0.0f), 70.0f };
+        gioveSphere = { positionGiove, 70.0f };
+        gioveImpatto = { positionGiove, 10.0f };
         shaderGeometryPass.setMat4("model", modelGiove);
         giove.Draw(shaderGeometryPass);
 
         glm::mat4 modelSaturno = glm::mat4(1.0f);
-        modelSaturno = glm::translate(modelSaturno, glm::vec3(0.0f, 0.0f, 800.0f));
+        modelSaturno = glm::translate(modelSaturno, positionSaturno);
         modelSaturno = glm::rotate(modelSaturno, 25.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-        modelSaturno = glm::rotate(modelSaturno, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelSaturno = glm::rotate(modelSaturno, glm::radians(rotationAngle1 * 20), glm::vec3(0.0f, 1.0f, 0.0f));
         modelSaturno = glm::scale(modelSaturno, glm::vec3(83.7f / 1000));
-        saturnoSphere = { glm::vec3(0.0f, 0.0f, 800.0f), 83.6f };
-        saturnoImpatto = { glm::vec3(0.0f, 0.0f, 800.0f), 67.9f };
+        saturnoSphere = { positionSaturno, 83.6f };
+        saturnoImpatto = { positionSaturno, 8.36f };
 
         shaderGeometryPass.setMat4("model", modelSaturno);
         saturno.Draw(shaderGeometryPass);
 
         glm::mat4 modelUrano = glm::mat4(1.0f);
-        modelUrano = glm::translate(modelUrano, glm::vec3(-900.0f, 0.0f, 0.0f));
-        modelUrano = glm::rotate(modelUrano, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelUrano = glm::translate(modelUrano, positionUrano);
+        modelUrano = glm::rotate(modelUrano, glm::radians(rotationAngle1 * 15), glm::vec3(0.0f, 1.0f, 0.0f));
         modelUrano = glm::scale(modelUrano, glm::vec3(33.7f / 1000));
-        uranoSphere = { glm::vec3(-900.0f, 0.0f, 0.0f), 30.0f };
-        uranoImpatto = { glm::vec3(-900.0f, 0.0f, 0.0f), 20.0f };
+        uranoSphere = { positionUrano, 30.0f };
+        uranoImpatto = { positionUrano, 3.0f };
 
         shaderGeometryPass.setMat4("model", modelUrano);
         urano.Draw(shaderGeometryPass);
 
         glm::mat4 modelNettuno = glm::mat4(1.0f);
-        modelNettuno = glm::translate(modelNettuno, glm::vec3(-950.0f, 0.0f, 0.0f));
-        modelNettuno = glm::rotate(modelNettuno, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelNettuno = glm::translate(modelNettuno, positionNettuno); 
+        modelNettuno = glm::rotate(modelNettuno, glm::radians(rotationAngle1 * 15), glm::vec3(0.0f, 1.0f, 0.0f));
         modelNettuno = glm::scale(modelNettuno, glm::vec3(32.7f / 1000));
-        nettunoSphere = { glm::vec3(-950.0f, 0.0f, 0.0f), 30.0f };
-        nettunoImpatto = { glm::vec3(-950.0f, 0.0f, 0.0f), 20.0f };
+        nettunoSphere = { positionNettuno, 30.0f };
+        nettunoImpatto = { positionNettuno, 3.0f };
 
         shaderGeometryPass.setMat4("model", modelNettuno);
         nettuno.Draw(shaderGeometryPass);
