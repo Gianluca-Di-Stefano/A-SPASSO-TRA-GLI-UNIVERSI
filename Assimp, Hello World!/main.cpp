@@ -50,7 +50,7 @@ bool interstellar_caricato = false;
 int startGame = 0;
 bool infoVisible = false;
 bool mapVisible = false;
-glm::vec3 initialPosition = glm::vec3(-510.0f, 0.0f, 0.0f);//terra
+glm::vec3 initialPosition = glm::vec3(510.0f, 0.0f, 0.0f);//terra
 float initialSpeed = 0.0;
 float rotationAngle = 0.0f;
 float rotationAngle1 = 0.0f;
@@ -581,7 +581,7 @@ void carica_universo(GLFWwindow* window) {
         // draw solar system
         glm::mat4 modelSole = glm::mat4(1.0f);
         modelSole = glm::scale(modelSole, glm::vec3(1.0f));
-        modelSole = glm::rotate(modelSole, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelSole = glm::rotate(modelSole, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         soleSphere = { glm::vec3(0.0f, 0.0f, 0.0f), 250.0f };
         soleImpatto = { glm::vec3(0.0f, 0.0f, 0.0f), 150.0f };
         shaderGeometryPass.setMat4("model", modelSole);
@@ -589,7 +589,7 @@ void carica_universo(GLFWwindow* window) {
 
         glm::mat4 modelMercurio = glm::mat4(1.0f);
         modelMercurio = glm::translate(modelMercurio, positionMercurio);
-        modelMercurio = glm::rotate(modelMercurio, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelMercurio = glm::rotate(modelMercurio, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelMercurio = glm::scale(modelMercurio, glm::vec3(3.4f / 1000.0f));
         mercurioSphere = { positionMercurio, 5.0f };
         mercurioImpatto = { positionMercurio, 0.1f };
@@ -598,7 +598,7 @@ void carica_universo(GLFWwindow* window) {
 
         glm::mat4 modelVenere = glm::mat4(1.0f);
         modelVenere = glm::translate(modelVenere, positionVenere);
-        modelVenere = glm::rotate(modelVenere, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelVenere = glm::rotate(modelVenere, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelVenere = glm::scale(modelVenere, glm::vec3(8.6f / 1000.0f));
         venereSphere = { positionVenere, 10.0f };
         venereImpatto = { positionVenere, 0.1f };
@@ -1172,8 +1172,6 @@ void carica_futurama(GLFWwindow* window) {
     shaderLightingPass.setInt("gPosition", 0);
     shaderLightingPass.setInt("gNormal", 1);
     shaderLightingPass.setInt("gAlbedoSpec", 2);
-
-    float rotationSpeed = 1.0f;
     
     camera.Position = initialPosition;
     camera.MovementSpeed = initialSpeed;
@@ -1195,6 +1193,7 @@ void carica_futurama(GLFWwindow* window) {
         // -----
         processInput(window);
         rotationAngle += rotationSpeed * deltaTime;
+        rotationAngle1 += deltaTime;
         // render
         // ------
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -1254,6 +1253,59 @@ void carica_futurama(GLFWwindow* window) {
             mappa.Draw(shaderGeometryPass);
         }
 
+        // Definisci i raggi delle orbite per i pianeti
+        float radiusBenderGod = 350.0f;
+        float radiusDecapod = 400.0f;
+        float radiusTerra = 500.0f;
+        float radiusMarte = 550.0f;
+        float radiusWormulon = 900.0f;
+        float radiusNeardeath = 1000.0f;
+        float radiusOmicron = 1050.0f;
+        float radiusSimian = 1080.0f;
+        float radiusThunban = 1120.0f;
+        float radiusTornadus = 1170.0f;
+
+        // Aggiorna la posizione degli oggetti in base all'angolo di orbita
+        glm::vec3 positionBenderGod = glm::vec3(cos(glm::radians(+rotationAngle) * 0.1f) * radiusBenderGod,
+            0.0f,
+            sin(glm::radians(+rotationAngle) * 0.1f) * radiusBenderGod);
+
+        glm::vec3 positionDecapod = glm::vec3(cos(glm::radians(200 + rotationAngle) * 0.08f) * radiusDecapod,
+            0.0f,
+            sin(glm::radians(200 + rotationAngle) * 0.08f) * radiusDecapod);
+
+        glm::vec3 positionTerra = glm::vec3(cos(glm::radians(400 + rotationAngle) * 0.07f) * radiusTerra,
+            0.0f,
+            sin(glm::radians(400 + rotationAngle) * 0.07f) * radiusTerra);
+
+        glm::vec3 positionMarte = glm::vec3(cos(glm::radians(500 + rotationAngle) * 0.06f) * radiusMarte,
+            0.0f,
+            sin(glm::radians(500 + rotationAngle) * 0.06f) * radiusMarte);
+
+        glm::vec3 positionWormulon = glm::vec3(cos(glm::radians(600 + rotationAngle) * 0.05f) * radiusWormulon,
+            0.0f,
+            sin(glm::radians(600 + rotationAngle) * 0.05f) * radiusWormulon);
+
+        glm::vec3 positionNeardeath = glm::vec3(cos(glm::radians(700 + rotationAngle) * 0.04f) * radiusNeardeath,
+            0.0f,
+            sin(glm::radians(700 + rotationAngle) * 0.04f) * radiusNeardeath);
+
+        glm::vec3 positionOmicron = glm::vec3(cos(glm::radians(800 + rotationAngle) * 0.02) * radiusOmicron,
+            0.0f,
+            sin(glm::radians(800 + rotationAngle) * 0.02) * radiusOmicron);
+
+        glm::vec3 positionSimian = glm::vec3(cos(glm::radians(900 + rotationAngle) * 0.01f) * radiusSimian,
+            0.0f,
+            sin(glm::radians(900 + rotationAngle) * 0.01f) * radiusSimian);
+
+        glm::vec3 positionThunban = glm::vec3(cos(glm::radians(900 + rotationAngle) * 0.01f) * radiusThunban,
+            0.0f,
+            sin(glm::radians(900 + rotationAngle) * 0.01f) * radiusThunban);
+
+        glm::vec3 positionTornadus = glm::vec3(cos(glm::radians(900 + rotationAngle) * 0.01f) * radiusTornadus,
+            0.0f,
+            sin(glm::radians(900 + rotationAngle) * 0.01f) * radiusTornadus);
+
         // draw solar system
         glm::mat4 modelSole = glm::mat4(1.0f);
         modelSole = glm::scale(modelSole, glm::vec3(1.0f));
@@ -1261,34 +1313,34 @@ void carica_futurama(GLFWwindow* window) {
         sole.Draw(shaderGeometryPass);
 
         glm::mat4 modelBenderGod = glm::mat4(1.0f);
-        modelBenderGod = glm::translate(modelBenderGod, glm::vec3(0.0f, 0.0f, 300.0f));
+        modelBenderGod = glm::translate(modelBenderGod, positionBenderGod);
         modelBenderGod = glm::rotate(modelBenderGod, 180.0f, glm::vec3(0.0f, -1.0f, 0.0f));
-        modelBenderGod = glm::rotate(modelBenderGod, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelBenderGod = glm::rotate(modelBenderGod, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelBenderGod = glm::scale(modelBenderGod, glm::vec3(1.0f / 10.0f));
-        benderGodSphere = {glm::vec3(0.0f, 0.0f, 300.0f), 5.0f };
+        benderGodSphere = { positionBenderGod, 5.0f };
         shaderGeometryPass.setMat4("model", modelBenderGod);
         bendergod.Draw(shaderGeometryPass);
 
         glm::mat4 modelDecapod = glm::mat4(1.0f);
-        modelDecapod = glm::translate(modelDecapod, glm::vec3(0.0f, 0.0f, 400.0f));
-        modelDecapod = glm::rotate(modelDecapod, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelDecapod = glm::translate(modelDecapod, positionDecapod);
+        modelDecapod = glm::rotate(modelDecapod, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelDecapod = glm::scale(modelDecapod, glm::vec3(8.6f / 1000.0f));
-        decapodSphere = {glm::vec3(0.0f, 0.0f, 400.0f), 10.0f };
+        decapodSphere = { positionDecapod, 10.0f };
         shaderGeometryPass.setMat4("model", modelDecapod);
         decapod.Draw(shaderGeometryPass);
 
         // Definisci la distanza tra la Terra e la Luna
         float distanceFromEarth = 8.0f;
-        glm::vec3 positionTerra = glm::vec3(-500.0f, 0.0f, 0.0f);
+
 
         // Calcola la posizione della Luna rispetto alla Terra
-        glm::vec3 positionLuna = positionTerra + glm::vec3(cos(glm::radians(rotationAngle)) * distanceFromEarth,
+        glm::vec3 positionLuna = positionTerra + glm::vec3(cos(glm::radians(rotationAngle1)) * distanceFromEarth,
             0.0f,
             sin(glm::radians(rotationAngle)) * distanceFromEarth);
 
         glm::mat4 modelTerra = glm::mat4(1.0f);
         modelTerra = glm::translate(modelTerra, positionTerra);
-        modelTerra = glm::rotate(modelTerra, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelTerra = glm::rotate(modelTerra, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelTerra = glm::scale(modelTerra, glm::vec3(9.1f / 1000));
         terraSphere = {positionTerra, 3.0f };
         shaderGeometryPass.setMat4("model", modelTerra);
@@ -1296,66 +1348,66 @@ void carica_futurama(GLFWwindow* window) {
 
         glm::mat4 modelLuna = glm::mat4(1.0f);
         modelLuna = glm::translate(modelLuna, positionLuna);
-        modelLuna = glm::rotate(modelLuna, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelLuna = glm::rotate(modelLuna, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelLuna = glm::scale(modelLuna, glm::vec3(2.0f / 1000));
         lunaSphere = { positionLuna, 1.0f};
         shaderGeometryPass.setMat4("model", modelLuna);
         luna.Draw(shaderGeometryPass);
 
         glm::mat4 modelMarte = glm::mat4(1.0f);
-        modelMarte = glm::translate(modelMarte, glm::vec3(0.0f, 0.0f, -600.0f));
-        modelMarte = glm::rotate(modelMarte, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelMarte = glm::translate(modelMarte, positionMarte);
+        modelMarte = glm::rotate(modelMarte, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelMarte = glm::scale(modelMarte, glm::vec3(2.0f / 1000));
-        marteSphere = {glm::vec3(0.0f, 0.0f, -600.0f), 5.0f};
+        marteSphere = { positionMarte, 5.0f};
         shaderGeometryPass.setMat4("model", modelMarte);
         marte.Draw(shaderGeometryPass);
 
         glm::mat4 modelWormulon = glm::mat4(1.0f);
-        modelWormulon = glm::translate(modelWormulon, glm::vec3(0.0f, 0.0f, -400.0f));
+        modelWormulon = glm::translate(modelWormulon, positionWormulon);
         modelWormulon = glm::rotate(modelWormulon, 25.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-        modelWormulon = glm::rotate(modelWormulon, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelWormulon = glm::rotate(modelWormulon, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelWormulon = glm::scale(modelWormulon, glm::vec3(100.0f / 1000));
-        wormulonSphere = { glm::vec3(0.0f, 0.0f, -400.0f), 100.0f };
+        wormulonSphere = { positionWormulon, 100.0f };
         shaderGeometryPass.setMat4("model", modelWormulon);
         wormulon.Draw(shaderGeometryPass);
 
         glm::mat4 modelNeardeath = glm::mat4(1.0f);
-        modelNeardeath = glm::translate(modelNeardeath, glm::vec3(700.0f, 0.0f, 0.0f));
-        modelNeardeath = glm::rotate(modelNeardeath, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelNeardeath = glm::translate(modelNeardeath,positionNeardeath);
+        modelNeardeath = glm::rotate(modelNeardeath, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelNeardeath = glm::scale(modelNeardeath, glm::vec3(102.7f / 1000));
-        neardeathSphere = { glm::vec3(700.0f, 0.0f, 0.0f), 100.0f };
+        neardeathSphere = { positionNeardeath, 100.0f };
         shaderGeometryPass.setMat4("model", modelNeardeath);
         neardeath.Draw(shaderGeometryPass);
 
         glm::mat4 modelOmicron = glm::mat4(1.0f);
-        modelOmicron = glm::translate(modelOmicron, glm::vec3(0.0f, 0.0f, 800.0f));
-        modelOmicron = glm::rotate(modelOmicron, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelOmicron = glm::translate(modelOmicron, positionOmicron);
+        modelOmicron = glm::rotate(modelOmicron, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelOmicron = glm::scale(modelOmicron, glm::vec3(83.7f / 1000));
-        omicronSphere = { glm::vec3(0.0f, 0.0f, 800.0f), 83.6f };
+        omicronSphere = { positionOmicron, 83.6f };
         shaderGeometryPass.setMat4("model", modelOmicron);
         omicron.Draw(shaderGeometryPass);
 
         glm::mat4 modelSimian = glm::mat4(1.0f);
-        modelSimian = glm::translate(modelSimian, glm::vec3(-900.0f, 0.0f, 0.0f));
-        modelSimian = glm::rotate(modelSimian, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelSimian = glm::translate(modelSimian, positionSimian);
+        modelSimian = glm::rotate(modelSimian, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelSimian = glm::scale(modelSimian, glm::vec3(33.7f / 1000));
-        simianSphere = { glm::vec3(-900.0f, 0.0f, 0.0f), 15.6f };
+        simianSphere = { positionSimian, 15.6f };
         shaderGeometryPass.setMat4("model", modelSimian);
         simian.Draw(shaderGeometryPass);
 
         glm::mat4 modelThunban = glm::mat4(1.0f);
-        modelThunban = glm::translate(modelThunban, glm::vec3(-950.0f, 0.0f, 0.0f));
-        modelThunban = glm::rotate(modelThunban, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelThunban = glm::translate(modelThunban, positionThunban);
+        modelThunban = glm::rotate(modelThunban, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelThunban = glm::scale(modelThunban, glm::vec3(32.7f / 1000));
-        thunbanSphere = { glm::vec3(-950.0f, 0.0f, 0.0f), 15.6f };
+        thunbanSphere = { positionThunban, 15.6f };
         shaderGeometryPass.setMat4("model", modelThunban);
         thunban.Draw(shaderGeometryPass);
 
         glm::mat4 modelTornadus = glm::mat4(1.0f);
-        modelTornadus = glm::translate(modelTornadus, glm::vec3(0.0f, 0.0f, 900.0f));
-        modelTornadus = glm::rotate(modelTornadus, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        modelTornadus = glm::translate(modelTornadus, positionTornadus);
+        modelTornadus = glm::rotate(modelTornadus, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelTornadus = glm::scale(modelTornadus, glm::vec3(32.7f / 1000));
-        tornadusSphere = { glm::vec3(0.0f, 0.0f, 900.0f), 30.6f };
+        tornadusSphere = { positionTornadus, 30.6f };
         shaderGeometryPass.setMat4("model", modelTornadus);
         tornadus.Draw(shaderGeometryPass);
 
