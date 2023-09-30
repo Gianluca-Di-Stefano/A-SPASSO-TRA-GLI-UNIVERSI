@@ -77,6 +77,17 @@ bool impattoSaturn = false;
 bool impattoUranus = false;
 bool impattoNeptune = false;
 
+bool impattoLuna = false;
+bool impattoBenderGod = false;
+bool impattoDecapod = false;
+bool impattoWormulon = false;
+bool impattoNearDeath = false;
+bool impattoOmicron = false;
+bool impattoSimian = false;
+bool impattoThunban = false;
+bool impattoTornadus = false;
+
+
 
 
 unsigned int loadTexture(char const* path)
@@ -122,10 +133,10 @@ struct SphereCollision
     float          radius;
 }
 spaceshipSphere, soleSphere, mercurioSphere, venereSphere, terraSphere, marteSphere, gioveSphere, saturnoSphere, uranoSphere, nettunoSphere,
-terraImpatto, soleImpatto, mercurioImpatto, venereImpatto, lunaImpatto, marteImpatto, gioveImpatto, saturnoImpatto, uranoImpatto, nettunoImpatto, 
+terraImpatto, soleImpatto, mercurioImpatto, venereImpatto, marteImpatto, gioveImpatto, saturnoImpatto, uranoImpatto, nettunoImpatto, 
 
 benderGodSphere, decapodSphere, lunaSphere, wormulonSphere, neardeathSphere, omicronSphere, simianSphere, thunbanSphere, tornadusSphere, 
-
+benderGodImpatto, decapodImpatto, lunaImpatto, wormulonImpatto, nearDeathImpatto, omicronImpatto, simianImpatto, thunbanImpatto, tornadusImpatto,
 
 gargantuaSphere, gargantuaInnerSphere, mannSphere,millerSphere, portalUniversoSphere, portalFuturamaSphere, portalInterstellarSphere, tesseractSphere;
 
@@ -1309,6 +1320,7 @@ void carica_futurama(GLFWwindow* window) {
         // draw solar system
         glm::mat4 modelSole = glm::mat4(1.0f);
         modelSole = glm::scale(modelSole, glm::vec3(1.0f));
+        
         shaderGeometryPass.setMat4("model", modelSole);
         sole.Draw(shaderGeometryPass);
 
@@ -1318,6 +1330,7 @@ void carica_futurama(GLFWwindow* window) {
         modelBenderGod = glm::rotate(modelBenderGod, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelBenderGod = glm::scale(modelBenderGod, glm::vec3(1.0f / 10.0f));
         benderGodSphere = { positionBenderGod, 5.0f };
+        benderGodImpatto = { positionBenderGod, 50.0f };
         shaderGeometryPass.setMat4("model", modelBenderGod);
         bendergod.Draw(shaderGeometryPass);
 
@@ -1326,6 +1339,7 @@ void carica_futurama(GLFWwindow* window) {
         modelDecapod = glm::rotate(modelDecapod, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelDecapod = glm::scale(modelDecapod, glm::vec3(8.6f / 1000.0f));
         decapodSphere = { positionDecapod, 10.0f };
+        decapodImpatto = { positionDecapod, 50.0f };
         shaderGeometryPass.setMat4("model", modelDecapod);
         decapod.Draw(shaderGeometryPass);
 
@@ -1343,6 +1357,7 @@ void carica_futurama(GLFWwindow* window) {
         modelTerra = glm::rotate(modelTerra, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelTerra = glm::scale(modelTerra, glm::vec3(9.1f / 1000));
         terraSphere = {positionTerra, 3.0f };
+        terraImpatto = { positionTerra, 1.0f };
         shaderGeometryPass.setMat4("model", modelTerra);
         terra.Draw(shaderGeometryPass);
 
@@ -1351,6 +1366,7 @@ void carica_futurama(GLFWwindow* window) {
         modelLuna = glm::rotate(modelLuna, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelLuna = glm::scale(modelLuna, glm::vec3(2.0f / 1000));
         lunaSphere = { positionLuna, 1.0f};
+        lunaImpatto = { positionLuna, 0.5f };
         shaderGeometryPass.setMat4("model", modelLuna);
         luna.Draw(shaderGeometryPass);
 
@@ -1359,6 +1375,7 @@ void carica_futurama(GLFWwindow* window) {
         modelMarte = glm::rotate(modelMarte, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelMarte = glm::scale(modelMarte, glm::vec3(2.0f / 1000));
         marteSphere = { positionMarte, 5.0f};
+        marteImpatto = { positionMarte, 5.0f };
         shaderGeometryPass.setMat4("model", modelMarte);
         marte.Draw(shaderGeometryPass);
 
@@ -1368,6 +1385,7 @@ void carica_futurama(GLFWwindow* window) {
         modelWormulon = glm::rotate(modelWormulon, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelWormulon = glm::scale(modelWormulon, glm::vec3(100.0f / 1000));
         wormulonSphere = { positionWormulon, 100.0f };
+        wormulonImpatto = { positionWormulon, 100.0f };
         shaderGeometryPass.setMat4("model", modelWormulon);
         wormulon.Draw(shaderGeometryPass);
 
@@ -1376,6 +1394,7 @@ void carica_futurama(GLFWwindow* window) {
         modelNeardeath = glm::rotate(modelNeardeath, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelNeardeath = glm::scale(modelNeardeath, glm::vec3(102.7f / 1000));
         neardeathSphere = { positionNeardeath, 100.0f };
+        nearDeathImpatto = { positionNeardeath, 100.0f };
         shaderGeometryPass.setMat4("model", modelNeardeath);
         neardeath.Draw(shaderGeometryPass);
 
@@ -1384,6 +1403,7 @@ void carica_futurama(GLFWwindow* window) {
         modelOmicron = glm::rotate(modelOmicron, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelOmicron = glm::scale(modelOmicron, glm::vec3(83.7f / 1000));
         omicronSphere = { positionOmicron, 83.6f };
+        omicronImpatto = { positionOmicron, 83.0f };
         shaderGeometryPass.setMat4("model", modelOmicron);
         omicron.Draw(shaderGeometryPass);
 
@@ -1392,6 +1412,7 @@ void carica_futurama(GLFWwindow* window) {
         modelSimian = glm::rotate(modelSimian, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelSimian = glm::scale(modelSimian, glm::vec3(33.7f / 1000));
         simianSphere = { positionSimian, 15.6f };
+        simianImpatto = { positionSimian, 15.0f };
         shaderGeometryPass.setMat4("model", modelSimian);
         simian.Draw(shaderGeometryPass);
 
@@ -1400,6 +1421,7 @@ void carica_futurama(GLFWwindow* window) {
         modelThunban = glm::rotate(modelThunban, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelThunban = glm::scale(modelThunban, glm::vec3(32.7f / 1000));
         thunbanSphere = { positionThunban, 15.6f };
+        thunbanImpatto = { positionThunban, 15.0f };
         shaderGeometryPass.setMat4("model", modelThunban);
         thunban.Draw(shaderGeometryPass);
 
@@ -1408,6 +1430,7 @@ void carica_futurama(GLFWwindow* window) {
         modelTornadus = glm::rotate(modelTornadus, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelTornadus = glm::scale(modelTornadus, glm::vec3(32.7f / 1000));
         tornadusSphere = { positionTornadus, 30.6f };
+        tornadusImpatto = { positionTornadus, 30.0f };
         shaderGeometryPass.setMat4("model", modelTornadus);
         tornadus.Draw(shaderGeometryPass);
 
@@ -1453,6 +1476,7 @@ void carica_futurama(GLFWwindow* window) {
         cameraCollided = false;
 
         bool collisioneSun = collisionTest(spaceshipSphere, soleSphere);
+        impattoSun = collisionTest(spaceshipSphere, soleImpatto);
         if (collisioneSun == true && infoVisible == true) {
             cameraCollided = true;
             std::string Title = "Sole";
@@ -1461,6 +1485,8 @@ void carica_futurama(GLFWwindow* window) {
 
         std::string nomePianeta = "BenderGod";
         bool collisioneBenderGod = collisionTest(spaceshipSphere, benderGodSphere);
+        impattoBenderGod = collisionTest(spaceshipSphere, benderGodImpatto);
+
         if (collisioneBenderGod == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
@@ -1480,6 +1506,8 @@ void carica_futurama(GLFWwindow* window) {
 
         nomePianeta = "Decapod";
         bool collisioneDecapod = collisionTest(spaceshipSphere, decapodSphere);
+        impattoDecapod = collisionTest(spaceshipSphere, decapodImpatto);
+
         if (collisioneDecapod == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
@@ -1499,6 +1527,8 @@ void carica_futurama(GLFWwindow* window) {
 
         nomePianeta = "Terra";
         bool collisioneEarth = collisionTest(spaceshipSphere, terraSphere);
+        impattoEarth = collisionTest(spaceshipSphere, terraImpatto);
+
         if (collisioneEarth == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
@@ -1519,6 +1549,8 @@ void carica_futurama(GLFWwindow* window) {
 
         nomePianeta = "Luna";
         bool collisioneLuna = collisionTest(spaceshipSphere, lunaSphere);
+        impattoLuna = collisionTest(spaceshipSphere, lunaImpatto);
+
         if (collisioneLuna == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
@@ -1538,6 +1570,8 @@ void carica_futurama(GLFWwindow* window) {
 
         nomePianeta = "Marte";
         bool collisioneMars = collisionTest(spaceshipSphere, marteSphere);
+        impattoMars = collisionTest(spaceshipSphere, marteImpatto);
+
         if (collisioneMars == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
@@ -1557,6 +1591,8 @@ void carica_futurama(GLFWwindow* window) {
 
         nomePianeta = "Wormulon";
         bool collisioneWormulon = collisionTest(spaceshipSphere, wormulonSphere);
+        impattoWormulon = collisionTest(spaceshipSphere, wormulonImpatto);
+
         if (collisioneWormulon == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
@@ -1576,6 +1612,8 @@ void carica_futurama(GLFWwindow* window) {
 
         nomePianeta = "Neardeath";
         bool collisioneNeardeath = collisionTest(spaceshipSphere, neardeathSphere);
+        impattoNearDeath = collisionTest(spaceshipSphere, nearDeathImpatto);
+
         if (collisioneNeardeath == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
@@ -1595,6 +1633,8 @@ void carica_futurama(GLFWwindow* window) {
 
         nomePianeta = "Omicron";
         bool collisioneOmicron = collisionTest(spaceshipSphere, omicronSphere);
+        impattoOmicron = collisionTest(spaceshipSphere, omicronImpatto);
+
         if (collisioneOmicron == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
@@ -1614,6 +1654,8 @@ void carica_futurama(GLFWwindow* window) {
 
         nomePianeta = "Simian";
         bool collisioneSimian = collisionTest(spaceshipSphere, simianSphere);
+        impattoSimian = collisionTest(spaceshipSphere, simianImpatto);
+
         if (collisioneSimian == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
@@ -1633,6 +1675,8 @@ void carica_futurama(GLFWwindow* window) {
 
         nomePianeta = "Thunban";
         bool collisioneThunban = collisionTest(spaceshipSphere, thunbanSphere);
+        impattoThunban = collisionTest(spaceshipSphere, thunbanImpatto);
+
         if (collisioneThunban == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
@@ -1652,6 +1696,8 @@ void carica_futurama(GLFWwindow* window) {
 
         nomePianeta = "Tornadus";
         bool collisioneTornadus = collisionTest(spaceshipSphere, tornadusSphere);
+        impattoTornadus = collisionTest(spaceshipSphere, tornadusImpatto);
+
         if (collisioneTornadus == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
