@@ -77,7 +77,7 @@ bool impattoSaturn = false;
 bool impattoUranus = false;
 bool impattoNeptune = false;
 
-bool impattoLuna = false;
+
 bool impattoBenderGod = false;
 bool impattoDecapod = false;
 bool impattoWormulon = false;
@@ -1549,7 +1549,7 @@ void carica_futurama(GLFWwindow* window) {
 
         nomePianeta = "Luna";
         bool collisioneLuna = collisionTest(spaceshipSphere, lunaSphere);
-        impattoLuna = collisionTest(spaceshipSphere, lunaImpatto);
+        impattoMoon = collisionTest(spaceshipSphere, lunaImpatto);
 
         if (collisioneLuna == true && infoVisible == true) {
             cameraCollided = true;
@@ -2595,6 +2595,31 @@ bool impatto() {
     if (impattoNeptune) {
         return true;
     }
+    if (impattoBenderGod) {
+        return true;
+    }
+    if (impattoDecapod) {
+        return true;
+    }
+    if (impattoWormulon) {
+        return true;
+    }
+    if (impattoNearDeath) {
+        return true;
+    }
+    if (impattoOmicron) {
+        return true;
+    }
+    if (impattoSimian){
+        return true;
+    }
+    if (impattoThunban) {
+        return true;
+    }
+    if (impattoTornadus) {
+        return true;
+    }
+
 
 }
 
