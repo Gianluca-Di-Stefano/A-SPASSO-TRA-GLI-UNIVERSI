@@ -481,7 +481,7 @@ void carica_universo(GLFWwindow* window) {
         glm::vec3 cameraUp = glm::normalize(camera.Up);
 
         // Definisci un vettore di offset dalla posizione della telecamera
-        float distanceBehind = 0.2f; // Sposta la telecamera dietro la navicella
+        float distanceBehind = 0.16f; // Sposta la telecamera dietro la navicella
         float distanceAbove = -0.03f;   // Sposta la telecamera sopra la navicella
         glm::vec3 cameraOffset = distanceBehind * cameraFront + distanceAbove * cameraUp;
 
@@ -497,7 +497,7 @@ void carica_universo(GLFWwindow* window) {
         modelSpaceShuttle = glm::translate(modelSpaceShuttle, newModelPosition);
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
-        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.0005f));
+        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.0004f));
         spaceshipSphere = { camera.Position + 2.0f * camera.Front, 1.0f };
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
         spaceShuttle.Draw(shaderGeometryPass);
@@ -1219,7 +1219,7 @@ void carica_futurama(GLFWwindow* window) {
         glm::mat4 view = camera.GetViewMatrix();
 
         // Definisci un vettore di offset dalla posizione della telecamera
-        float distanceBehind = 0.2f; // Sposta la telecamera dietro la navicella
+        float distanceBehind = 0.16f; // Sposta la telecamera dietro la navicella
         float distanceAbove = -0.03f;   // Sposta la telecamera sopra la navicella
         glm::vec3 cameraOffset = distanceBehind * camera.Front + distanceAbove * camera.Up;
 

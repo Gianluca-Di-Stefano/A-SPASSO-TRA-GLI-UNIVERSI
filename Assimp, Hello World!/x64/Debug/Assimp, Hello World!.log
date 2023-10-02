@@ -55,29 +55,5 @@ C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\mai
 C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2955,13): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
 C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\render_text.h(131): warning C4715: 'initRenderText': non tutti i percorsi di controllo restituiscono un valore
 C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2624): warning C4715: 'impatto': non tutti i percorsi di controllo restituiscono un valore
-freetype.lib(ftinit.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(ftinit.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(ftbase.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(ftbase.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(autofit.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(autofit.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(truetype.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(truetype.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(type1.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(type1.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(cff.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(cff.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(type1cid.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(type1cid.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(pfr.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(pfr.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(type42.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(type42.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(winfnt.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(winfnt.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(pcf.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(pcf.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(psaux.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(psaux.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(psmodule.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(psmodule.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(pshinter.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(pshinter.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(raster.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(raster.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(sfnt.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(sfnt.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(smooth.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(smooth.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(bdf.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(bdf.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(ftsystem.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(ftsystem.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(ftgzip.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(ftgzip.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(ftlzw.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(ftlzw.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(ftbitmap.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(ftbitmap.obj)' o in ''; oggetto collegato senza informazioni di debug
-freetype.lib(ftdebug.obj) : warning LNK4099: impossibile trovare il PDB '' con 'freetype.lib(ftdebug.obj)' o in ''; oggetto collegato senza informazioni di debug
-LINK : warning LNK4098: la libreria predefinita 'LIBCMT' è in conflitto con l'utilizzo di altre librerie; usare /NODEFAULTLIB:libreria
   Assimp, Hello World!.vcxproj -> C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\Deferred Shading Volumes.exe
           1 file copiati.
