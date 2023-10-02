@@ -21,7 +21,7 @@
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+//void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
 GLuint texture_id;
 unsigned int loadTexture(const char* path, bool gammaCorrection);
@@ -497,7 +497,7 @@ void carica_universo(GLFWwindow* window) {
         modelSpaceShuttle = glm::translate(modelSpaceShuttle, newModelPosition);
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
-        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.001f));
+        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.0005f));
         spaceshipSphere = { camera.Position + 2.0f * camera.Front, 1.0f };
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
         spaceShuttle.Draw(shaderGeometryPass);
@@ -1235,7 +1235,7 @@ void carica_futurama(GLFWwindow* window) {
         modelSpaceShuttle = glm::translate(modelSpaceShuttle, newModelPosition);
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
-        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.001f));
+        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.0005f));
         spaceshipSphere = { camera.Position + 2.0f * camera.Front, 5.0f };
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
         spaceShuttle.Draw(shaderGeometryPass);
@@ -2000,7 +2000,7 @@ void carica_interstellar(GLFWwindow* window) {
         modelSpaceShuttle = glm::translate(modelSpaceShuttle, newModelPosition);
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
-        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.001f));
+        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.0005f));
         spaceshipSphere = { camera.Position + 2.0f * camera.Front, 5.0f };
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
         spaceShuttle.Draw(shaderGeometryPass);
@@ -2660,7 +2660,7 @@ int main()
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetScrollCallback(window, scroll_callback);
+    //glfwSetScrollCallback(window, scroll_callback);
 
     // tell GLFW to capture our mouse
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -2959,12 +2959,14 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     
 }
 
+/*
 // glfw: whenever the mouse scroll wheel scrolls, this callback is called
 // ----------------------------------------------------------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     camera.ProcessMouseScroll(yoffset);
 }
+*/
 
 unsigned int loadCubemap(vector<std::string> faces)
 {
