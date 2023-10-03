@@ -481,7 +481,7 @@ void carica_universo(GLFWwindow* window) {
         glm::vec3 cameraUp = glm::normalize(camera.Up);
 
         // Definisci un vettore di offset dalla posizione della telecamera
-        float distanceBehind = 0.16f; // Sposta la telecamera dietro la navicella
+        float distanceBehind = 0.2f; // Sposta la telecamera dietro la navicella
         float distanceAbove = -0.03f;   // Sposta la telecamera sopra la navicella
         glm::vec3 cameraOffset = distanceBehind * cameraFront + distanceAbove * cameraUp;
 
@@ -1219,7 +1219,7 @@ void carica_futurama(GLFWwindow* window) {
         glm::mat4 view = camera.GetViewMatrix();
 
         // Definisci un vettore di offset dalla posizione della telecamera
-        float distanceBehind = 0.16f; // Sposta la telecamera dietro la navicella
+        float distanceBehind = 0.2f; // Sposta la telecamera dietro la navicella
         float distanceAbove = -0.03f;   // Sposta la telecamera sopra la navicella
         glm::vec3 cameraOffset = distanceBehind * camera.Front + distanceAbove * camera.Up;
 
