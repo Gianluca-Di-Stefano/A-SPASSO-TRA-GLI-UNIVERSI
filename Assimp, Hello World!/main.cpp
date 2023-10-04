@@ -1236,7 +1236,7 @@ void carica_futurama(GLFWwindow* window) {
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
         modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.0005f));
-        spaceshipSphere = { camera.Position + 2.0f * camera.Front, 5.0f };
+        spaceshipSphere = { camera.Position + 2.0f * camera.Front, 1.0f };
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
         spaceShuttle.Draw(shaderGeometryPass);
 
@@ -1329,8 +1329,8 @@ void carica_futurama(GLFWwindow* window) {
         modelBenderGod = glm::rotate(modelBenderGod, 180.0f, glm::vec3(0.0f, -1.0f, 0.0f));
         modelBenderGod = glm::rotate(modelBenderGod, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelBenderGod = glm::scale(modelBenderGod, glm::vec3(1.0f / 10.0f));
-        benderGodSphere = { positionBenderGod, 5.0f };
-        benderGodImpatto = { positionBenderGod, 3.0f };
+        benderGodSphere = { positionBenderGod, 20.0f };
+        benderGodImpatto = { positionBenderGod, 15.0f };
         shaderGeometryPass.setMat4("model", modelBenderGod);
         bendergod.Draw(shaderGeometryPass);
 
@@ -1344,7 +1344,7 @@ void carica_futurama(GLFWwindow* window) {
         decapod.Draw(shaderGeometryPass);
 
         // Definisci la distanza tra la Terra e la Luna
-        float distanceFromEarth = 8.0f;
+        float distanceFromEarth = 10.0f;
 
 
         // Calcola la posizione della Luna rispetto alla Terra
@@ -1355,9 +1355,9 @@ void carica_futurama(GLFWwindow* window) {
         glm::mat4 modelTerra = glm::mat4(1.0f);
         modelTerra = glm::translate(modelTerra, positionTerra);
         modelTerra = glm::rotate(modelTerra, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
-        modelTerra = glm::scale(modelTerra, glm::vec3(10.0f / 1000));
-        terraSphere = {positionTerra, 3.0f };
-        terraImpatto = { positionTerra, 0.1f };
+        modelTerra = glm::scale(modelTerra, glm::vec3(40.0f / 1000));
+        terraSphere = {positionTerra, 8.5f };
+        terraImpatto = { positionTerra, 5.0f };
         shaderGeometryPass.setMat4("model", modelTerra);
         terra.Draw(shaderGeometryPass);
 
@@ -1375,7 +1375,7 @@ void carica_futurama(GLFWwindow* window) {
         modelMarte = glm::rotate(modelMarte, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelMarte = glm::scale(modelMarte, glm::vec3(50.0f / 1000));
         marteSphere = { positionMarte, 5.0f};
-        marteImpatto = { positionMarte, 2.0f };
+        marteImpatto = { positionMarte, 4.0f };
         shaderGeometryPass.setMat4("model", modelMarte);
         marte.Draw(shaderGeometryPass);
 
@@ -1412,7 +1412,7 @@ void carica_futurama(GLFWwindow* window) {
         modelSimian = glm::rotate(modelSimian, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelSimian = glm::scale(modelSimian, glm::vec3(33.7f / 1000));
         simianSphere = { positionSimian, 15.6f };
-        simianImpatto = { positionSimian, 0.5f };
+        simianImpatto = { positionSimian, 3.0f };
         shaderGeometryPass.setMat4("model", modelSimian);
         simian.Draw(shaderGeometryPass);
 
@@ -1421,7 +1421,7 @@ void carica_futurama(GLFWwindow* window) {
         modelThunban = glm::rotate(modelThunban, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelThunban = glm::scale(modelThunban, glm::vec3(32.7f / 1000));
         thunbanSphere = { positionThunban, 15.6f };
-        thunbanImpatto = { positionThunban, 0.5f };
+        thunbanImpatto = { positionThunban, 3.0f };
         shaderGeometryPass.setMat4("model", modelThunban);
         thunban.Draw(shaderGeometryPass);
 
@@ -1430,7 +1430,7 @@ void carica_futurama(GLFWwindow* window) {
         modelTornadus = glm::rotate(modelTornadus, glm::radians(rotationAngle1), glm::vec3(0.0f, 1.0f, 0.0f));
         modelTornadus = glm::scale(modelTornadus, glm::vec3(32.7f / 1000));
         tornadusSphere = { positionTornadus, 30.6f };
-        tornadusImpatto = { positionTornadus, 1.0f };
+        tornadusImpatto = { positionTornadus, 3.0f };
         shaderGeometryPass.setMat4("model", modelTornadus);
         tornadus.Draw(shaderGeometryPass);
 
