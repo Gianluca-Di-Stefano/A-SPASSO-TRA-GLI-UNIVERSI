@@ -87,7 +87,8 @@ bool impattoSimian = false;
 bool impattoThunban = false;
 bool impattoTornadus = false;
 
-
+bool impattoMiller = false;
+bool impattoMann = false;
 
 
 unsigned int loadTexture(char const* path)
@@ -138,7 +139,8 @@ terraImpatto, soleImpatto, mercurioImpatto, venereImpatto, marteImpatto, gioveIm
 benderGodSphere, decapodSphere, lunaSphere, wormulonSphere, neardeathSphere, omicronSphere, simianSphere, thunbanSphere, tornadusSphere, 
 benderGodImpatto, decapodImpatto, lunaImpatto, wormulonImpatto, nearDeathImpatto, omicronImpatto, simianImpatto, thunbanImpatto, tornadusImpatto,
 
-gargantuaSphere, gargantuaInnerSphere, mannSphere,millerSphere, portalUniversoSphere, portalFuturamaSphere, portalInterstellarSphere, tesseractSphere;
+gargantuaSphere, gargantuaInnerSphere, mannSphere,millerSphere, portalUniversoSphere, portalFuturamaSphere, portalInterstellarSphere, tesseractSphere,
+mannImpatto, millerImpatto;
 
 bool collisionTest(SphereCollision& sfera1, const SphereCollision& sfera2) {
     glm::vec3 distanzaCentri(sfera2.centre - sfera1.centre);
@@ -553,9 +555,9 @@ void carica_universo(GLFWwindow* window) {
             0.0f,
             sin(glm::radians(600+ rotationAngle) * 0.05f) * radiusGiove);
 
-        glm::vec3 positionSaturno = glm::vec3(cos(glm::radians(700+ rotationAngle)*0.04f) * radiusSaturno,
+        glm::vec3 positionSaturno = glm::vec3(cos(glm::radians(1200+ rotationAngle)*0.04f) * radiusSaturno,
             0.0f,
-            sin(glm::radians(700+ rotationAngle) * 0.04f) * radiusSaturno);
+            sin(glm::radians(1200 + rotationAngle) * 0.04f) * radiusSaturno);
 
         glm::vec3 positionUrano = glm::vec3(cos(glm::radians(800+ rotationAngle)*0.02) * radiusUrano,
             0.0f,
@@ -734,13 +736,13 @@ void carica_universo(GLFWwindow* window) {
 
         bool collisioneSun = collisionTest(spaceshipSphere, soleSphere);
         impattoSun = collisionTest(spaceshipSphere, soleImpatto);
-
+        /*
         if (collisioneSun == true) {
             cameraCollided = true;
             std::string Title = "Sole";
             RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
         }
-
+    */
         bool collisioneMercury = collisionTest(spaceshipSphere, mercurioSphere);
         impattoMercury = collisionTest(spaceshipSphere, mercurioImpatto);
         std::string nomePianeta = "Mercurio";
@@ -1160,7 +1162,7 @@ void carica_futurama(GLFWwindow* window) {
     const unsigned int NR_LIGHTS = 64;
     std::vector<glm::vec3> lightPositions;
     std::vector<glm::vec3> lightColors;
-    float radius = 120.0;
+    float radius = 200.0;
     for (unsigned int i = 0; i < NR_LIGHTS; i++)
     {
         float phi = glm::acos(-1.0 + (2.0 * float(i)) / float(NR_LIGHTS - 1)); // Inclinazione sull'asse z
@@ -1272,9 +1274,9 @@ void carica_futurama(GLFWwindow* window) {
         float radiusWormulon = 900.0f;
         float radiusNeardeath = 1000.0f;
         float radiusOmicron = 1050.0f;
-        float radiusSimian = 1080.0f;
+        float radiusSimian = 1060.0f;
         float radiusThunban = 1120.0f;
-        float radiusTornadus = 1170.0f;
+        float radiusTornadus = 1300.0f;
 
         // Aggiorna la posizione degli oggetti in base all'angolo di orbita
         glm::vec3 positionBenderGod = glm::vec3(cos(glm::radians(+rotationAngle) * 0.1f) * radiusBenderGod,
@@ -1305,13 +1307,13 @@ void carica_futurama(GLFWwindow* window) {
             0.0f,
             sin(glm::radians(800 + rotationAngle) * 0.02) * radiusOmicron);
 
-        glm::vec3 positionSimian = glm::vec3(cos(glm::radians(900 + rotationAngle) * 0.01f) * radiusSimian,
+        glm::vec3 positionSimian = glm::vec3(cos(glm::radians(500 + rotationAngle) * 0.01f) * radiusSimian,
             0.0f,
-            sin(glm::radians(900 + rotationAngle) * 0.01f) * radiusSimian);
+            sin(glm::radians(500 + rotationAngle) * 0.01f) * radiusSimian);
 
-        glm::vec3 positionThunban = glm::vec3(cos(glm::radians(900 + rotationAngle) * 0.01f) * radiusThunban,
+        glm::vec3 positionThunban = glm::vec3(cos(glm::radians(1300 + rotationAngle) * 0.01f) * radiusThunban,
             0.0f,
-            sin(glm::radians(900 + rotationAngle) * 0.01f) * radiusThunban);
+            sin(glm::radians(1300 + rotationAngle) * 0.01f) * radiusThunban);
 
         glm::vec3 positionTornadus = glm::vec3(cos(glm::radians(900 + rotationAngle) * 0.01f) * radiusTornadus,
             0.0f,
@@ -1477,11 +1479,13 @@ void carica_futurama(GLFWwindow* window) {
 
         bool collisioneSun = collisionTest(spaceshipSphere, soleSphere);
         impattoSun = collisionTest(spaceshipSphere, soleImpatto);
+        /*
         if (collisioneSun == true && infoVisible == true) {
             cameraCollided = true;
             std::string Title = "Sole";
             RenderText(Title.c_str(), 900.0f, (float)SCR_HEIGHT / 5.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
         }
+        */
 
         std::string nomePianeta = "BenderGod";
         bool collisioneBenderGod = collisionTest(spaceshipSphere, benderGodSphere);
@@ -2042,7 +2046,8 @@ void carica_interstellar(GLFWwindow* window) {
         modelMann = glm::translate(modelMann, positionMann);
         modelMann = glm::rotate(modelMann, glm::radians(rotationAngle1 * 20), glm::vec3(0.0f, 1.0f, 0.0f));
         modelMann = glm::scale(modelMann, glm::vec3(9.4f / 100.0f));
-        mannSphere = {positionMann, 30.0f };
+        mannSphere = {positionMann, 35.0f };
+        mannImpatto = { positionMann, 30.0f };
         shaderGeometryPass.setMat4("model", modelMann);
         mann.Draw(shaderGeometryPass);
 
@@ -2050,19 +2055,22 @@ void carica_interstellar(GLFWwindow* window) {
         modelMiller = glm::translate(modelMiller, positionMiller);
         modelMiller = glm::rotate(modelMiller, glm::radians(rotationAngle1 * 20), glm::vec3(0.0f, 1.0f, 0.0f));
         modelMiller = glm::scale(modelMiller, glm::vec3(8.6f / 100.0f));
-        millerSphere = {positionMiller, 30.0f };
+        millerSphere = {positionMiller, 35.0f };
+        millerImpatto = { positionMiller, 30.0f };
+
         shaderGeometryPass.setMat4("model", modelMiller);
         miller.Draw(shaderGeometryPass);
-
+        /*
         glm::mat4 modelSaturno = glm::mat4(1.0f);
         modelSaturno = glm::translate(modelSaturno, positionSaturno);
         modelSaturno = glm::rotate(modelSaturno, 25.0f, glm::vec3(1.0f, 0.0f, 0.0f));
         modelSaturno = glm::rotate(modelSaturno, glm::radians(rotationAngle1 * 10), glm::vec3(0.0f, 1.0f, 0.0f));
         modelSaturno = glm::scale(modelSaturno, glm::vec3(83.7f / 1000));
         saturnoSphere = {positionSaturno, 20.6f };
+        saturno = { positionSaturno, 20.6f };
         shaderGeometryPass.setMat4("model", modelSaturno);
         saturno.Draw(shaderGeometryPass);
-
+        */
 
         glm::mat4 modelSkybox = glm::mat4(1.0f);
         modelSkybox = glm::scale(modelSkybox, glm::vec3(5000.2f));
@@ -2104,6 +2112,8 @@ void carica_interstellar(GLFWwindow* window) {
 
         nomePianeta = "Mann";
         bool collisioneMann = collisionTest(spaceshipSphere, mannSphere);
+        impattoMann = collisionTest(spaceshipSphere, mannImpatto);
+
         if (collisioneMann == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
@@ -2123,6 +2133,7 @@ void carica_interstellar(GLFWwindow* window) {
 
         nomePianeta = "Miller";
         bool collisioneMiller = collisionTest(spaceshipSphere, millerSphere);
+        impattoMiller = collisionTest(spaceshipSphere, millerImpatto);
         if (collisioneMiller == true && infoVisible == true) {
             cameraCollided = true;
             movementBlocked = true;
@@ -2139,7 +2150,7 @@ void carica_interstellar(GLFWwindow* window) {
                 pianetiVisitatiInterstellar[nomePianeta] = true;
             }
         }
-
+        /*
         nomePianeta = "Saturno";
         bool collisioneSaturn = collisionTest(spaceshipSphere, saturnoSphere);
         if (collisioneSaturn == true && infoVisible == true) {
@@ -2158,7 +2169,7 @@ void carica_interstellar(GLFWwindow* window) {
                 pianetiVisitatiInterstellar[nomePianeta] = true;
             }
         }
-
+        */
         //fine gioco
         if (camera.Position[0] > 10000.0f || camera.Position[0] < -10000.0f || camera.Position[1] > 10000.0f || camera.Position[1] < -10000.0f || camera.Position[2] > 10000.0f || camera.Position[2] < -10000.0f) {
             camera.MovementSpeed = initialSpeed;
@@ -2619,6 +2630,12 @@ bool impatto() {
     if (impattoTornadus) {
         return true;
     }
+    if (impattoMann) {
+        return true;
+    }
+    if (impattoMiller) {
+        return true;
+    }
 
 
 }
@@ -2879,8 +2896,8 @@ void processInput(GLFWwindow* window)
             camera.MovementSpeed = 0.0f;
         }
 
-        if (camera.MovementSpeed >= 15.0f) {
-            camera.MovementSpeed = 15.0f;
+        if (camera.MovementSpeed >= 5.0f) {
+            camera.MovementSpeed = 5.0f;
         }
     }
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
