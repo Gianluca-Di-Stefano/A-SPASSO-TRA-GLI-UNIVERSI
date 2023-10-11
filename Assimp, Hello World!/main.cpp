@@ -2896,8 +2896,8 @@ void processInput(GLFWwindow* window)
             camera.MovementSpeed = 0.0f;
         }
 
-        if (camera.MovementSpeed >= 5.0f) {
-            camera.MovementSpeed = 5.0f;
+        if (camera.MovementSpeed >= 15.0f) {
+            camera.MovementSpeed = 15.0f;
         }
     }
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
