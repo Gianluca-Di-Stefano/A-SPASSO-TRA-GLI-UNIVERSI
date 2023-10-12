@@ -1,59 +1,83 @@
 ﻿  main.cpp
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\shader_m.h(56,36): warning C4101: 'e': variabile locale senza riferimenti
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\mesh.h(90,46): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\bone.h(45,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\bone.h(56,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\bone.h(67,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\animation.h(34,25): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\animation.h(35,31): warning C4244: '=': conversione da 'double' a 'int'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\animation.h(59,44): warning C4244: 'return': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\animation.h(101,21): warning C4018: '<': errata corrispondenza tra signed e unsigned
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(168,13): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(169,13): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(244,26): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(281,34): warning C4267: '=': conversione da 'size_t' a 'unsigned int'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(340,22): warning C4244: 'argomento': conversione da 'double' a 'unsigned int'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(357,21): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(361,24): warning C4244: 'inizializzazione': conversione da 'int' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(427,19): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(433,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(459,28): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1025,34): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1026,37): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1168,19): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1174,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1201,28): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1788,34): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1789,37): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1917,19): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1923,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1951,28): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2229,34): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2230,37): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2356,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2357,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2358,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2378,22): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2379,22): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2380,22): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2418,28): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2526,34): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2527,37): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2860,55): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2862,60): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2867,56): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2869,59): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2874,53): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2876,56): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2882,52): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2884,57): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2963,17): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2964,17): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2968,19): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2969,19): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2971,13): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2972,13): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\render_text.h(131): warning C4715: 'initRenderText': non tutti i percorsi di controllo restituiscono un valore
-C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2641): warning C4715: 'impatto': non tutti i percorsi di controllo restituiscono un valore
-  Assimp, Hello World!.vcxproj -> C:\Users\rotun\Desktop\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\Deferred Shading Volumes.exe
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\shader_m.h(56,36): warning C4101: 'e': variabile locale senza riferimenti
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\mesh.h(90,1): warning C4267: 'argomento': conversione da 'size_t' a 'GLsizei'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\bone.h(45,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\bone.h(56,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\bone.h(67,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\animation.h(34,25): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\animation.h(35,31): warning C4244: '=': conversione da 'double' a 'int'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\animation.h(59,44): warning C4244: 'return': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\animation.h(101,21): warning C4018: '<': errata corrispondenza tra signed e unsigned
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(171,13): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(172,13): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(247,39): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(284,36): warning C4267: '=': conversione da 'size_t' a 'unsigned int'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(345,22): warning C4244: 'argomento': conversione da 'double' a 'unsigned int'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(362,21): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(366,24): warning C4244: 'inizializzazione': conversione da 'int' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(432,19): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(438,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(464,28): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1050,37): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1051,40): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1193,19): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1199,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1226,28): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1813,37): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1814,40): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1942,19): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1948,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(1976,28): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2254,37): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2255,40): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2381,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2382,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2383,20): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2403,22): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2404,22): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2405,22): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2443,28): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2551,37): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2552,40): warning C4305: 'inizializzazione': troncamento da 'double' a 'float'
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2885,55): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2887,60): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2892,56): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2894,59): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2899,53): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2901,56): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2907,52): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2909,57): warning C4244: 'argomento': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2988,17): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2989,17): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2993,19): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2994,19): warning C4244: 'inizializzazione': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2996,13): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2997,13): warning C4244: '=': conversione da 'double' a 'float'. Possibile perdita di dati.
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\render_text.h(131): warning C4715: 'initRenderText': non tutti i percorsi di controllo restituiscono un valore
+C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\Assimp, Hello World!\main.cpp(2666): warning C4715: 'impatto': non tutti i percorsi di controllo restituiscono un valore
+freetype.lib(ftinit.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(ftinit.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(ftbase.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(ftbase.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(autofit.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(autofit.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(truetype.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(truetype.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(type1.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(type1.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(cff.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(cff.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(type1cid.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(type1cid.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(pfr.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(pfr.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(type42.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(type42.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(winfnt.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(winfnt.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(pcf.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(pcf.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(psaux.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(psaux.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(psmodule.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(psmodule.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(pshinter.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(pshinter.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(raster.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(raster.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(sfnt.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(sfnt.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(smooth.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(smooth.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(bdf.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(bdf.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(ftsystem.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(ftsystem.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(ftgzip.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(ftgzip.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(ftlzw.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(ftlzw.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(ftbitmap.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(ftbitmap.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+freetype.lib(ftdebug.obj) : warning LNK4099: impossibile trovare il PDB 'freetype.pdb' con 'freetype.lib(ftdebug.obj)' o in 'C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\freetype.pdb'; oggetto collegato senza informazioni di debug
+LINK : warning LNK4098: la libreria predefinita 'LIBCMT' è in conflitto con l'utilizzo di altre librerie; usare /NODEFAULTLIB:libreria
+  Assimp, Hello World!.vcxproj -> C:\Users\lucar\Documents\GitHub\A-SPASSO-TRA-GLI-UNIVERSI\x64\Debug\Deferred Shading Volumes.exe
           1 file copiati.
