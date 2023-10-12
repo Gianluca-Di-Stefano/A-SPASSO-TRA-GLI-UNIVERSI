@@ -50,6 +50,7 @@ bool interstellar_caricato = false;
 int startGame = 0;
 bool infoVisible = false;
 bool mapVisible = false;
+bool firstPerson = false;
 glm::vec3 initialPosition = glm::vec3(510.0f, 0.0f, 0.0f);//terra
 float initialSpeed = 0.0;
 float rotationAngle = 0.0f;
@@ -306,6 +307,7 @@ void carica_universo(GLFWwindow* window) {
 
     // load models
     Model spaceShuttle("resources/objects/universo/spaceship/rocket.obj");
+    Model spaceShuttleFP("resources/objects/universo/spaceship/navicella_primapersona.obj");
     std::vector<glm::vec3> objectPositions;
     objectPositions.push_back(glm::vec3(-3.0, -0.5, -3.0));
     //COMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO(SOSTITUSCE IL SOLE)
@@ -494,8 +496,6 @@ void carica_universo(GLFWwindow* window) {
 
         // Calcola la nuova posizione del modello
         glm::vec3 newModelPosition = camera.Position + cameraOffset;
-
-        //draw space shuttle
         glm::mat4 modelSpaceShuttle = glm::mat4(1.0f);
         shaderGeometryPass.use();
         shaderGeometryPass.setMat4("projection", projection);
@@ -508,6 +508,20 @@ void carica_universo(GLFWwindow* window) {
         spaceshipSphere = { camera.Position + 2.0f * camera.Front, 1.0f };
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
         spaceShuttle.Draw(shaderGeometryPass);
+
+        //draw space shuttle
+        if (firstPerson) {
+            glm::mat4 modelPrimaPersona = glm::mat4(1.0f);
+            modelPrimaPersona = glm::translate(modelPrimaPersona, camera.Position + 0.15f * camera.Front);
+            modelPrimaPersona = glm::rotate(modelPrimaPersona, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+            modelPrimaPersona = glm::rotate(modelPrimaPersona, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+            modelPrimaPersona = glm::scale(modelPrimaPersona, glm::vec3(0.06f));
+            shaderGeometryPass.setMat4("model", modelPrimaPersona);
+            spaceShuttleFP.Draw(shaderGeometryPass);
+        }
+
+
+
 
         //draw schermata iniziale
         if (startGame == 0) {
@@ -2861,6 +2875,8 @@ bool mouseLeftPressed = false;
 bool mouseLeftReleased = false;
 bool keyMPressed = false;
 bool keyMReleased = false;
+bool keyVPressed = false;
+bool keyVReleased = false;
 bool enterPressed = false;
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
@@ -2967,6 +2983,26 @@ void processInput(GLFWwindow* window)
             mapVisible = true;
         }
         keyMPressed = false;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_V) == GLFW_RELEASE) {
+        keyVReleased = true;
+    }
+    else if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) {
+        if (keyVReleased) {
+            keyVPressed = true;
+            keyVReleased = false;
+        }
+    }
+
+    if (keyVPressed) {
+        if (firstPerson) {
+            firstPerson = false;
+        }
+        else {
+            firstPerson = true;
+        }
+        keyVPressed = false;
     }
 }
 
