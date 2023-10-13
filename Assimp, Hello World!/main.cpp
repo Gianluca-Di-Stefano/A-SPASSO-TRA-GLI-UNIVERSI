@@ -2663,69 +2663,16 @@ void carica_tesseract(GLFWwindow* window) {
 }
 
 
-bool impatto() {
-    if (impattoEarth) {
+bool impattoUniverso() {
+    if (impattoEarth || impattoSun || impattoMercury || impattoVenus || impattoMoon || impattoMars || impattoJupiter || impattoSaturn || impattoUranus || impattoNeptune) {
         return true;
     }
-    if (impattoSun) {
-        return true;
-    }
-    if (impattoMercury) {
-        return true;
-    }
-    if (impattoVenus) {
-        return true;
-    }
-    if (impattoMoon) {
-        return true;
-    }
-    if (impattoMars) {
-        return true;
-    }
-    if (impattoJupiter) {
-        return true;
-    }
-    if (impattoSaturn) {
-        return true;
-    }
-    if (impattoUranus) {
-        return true;
-    }
-    if (impattoNeptune) {
-        return true;
-    }
-    if (impattoBenderGod) {
-        return true;
-    }
-    if (impattoDecapod) {
-        return true;
-    }
-    if (impattoWormulon) {
-        return true;
-    }
-    if (impattoNearDeath) {
-        return true;
-    }
-    if (impattoOmicron) {
-        return true;
-    }
-    if (impattoSimian){
-        return true;
-    }
-    if (impattoThunban) {
-        return true;
-    }
-    if (impattoTornadus) {
-        return true;
-    }
-    if (impattoMann) {
-        return true;
-    }
-    if (impattoMiller) {
-        return true;
-    }
+}
 
-
+bool impattoFuturamaInterstellar() {
+    if (impattoBenderGod || impattoDecapod || impattoWormulon || impattoOmicron || impattoSimian || impattoThunban || impattoTornadus || impattoMann || impattoMiller) {
+        return true;
+    }
 }
 
 int main()
@@ -2948,21 +2895,21 @@ void processInput(GLFWwindow* window)
     if (!movementBlocked) {
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
             camera.ProcessKeyboard(FORWARD, deltaTime * 0.2);
-            if (impatto()) {
+            if (impattoUniverso() || impattoFuturamaInterstellar()) {
                 camera.ProcessKeyboard(BACKWARD, deltaTime * 0.2);
             }
         }
 
         if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
             camera.ProcessKeyboard(BACKWARD, deltaTime * 0.2);
-            if (impatto()) {
+            if (impattoUniverso() || impattoFuturamaInterstellar()) {
                 camera.ProcessKeyboard(FORWARD, deltaTime * 0.2);
             }
         }
 
         if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
             camera.ProcessKeyboard(RIGHT, deltaTime * 0.2);
-            if (impatto()) {
+            if (impattoUniverso() || impattoFuturamaInterstellar()) {
                 camera.ProcessKeyboard(LEFT, deltaTime * 0.2);
             }
 
@@ -2970,7 +2917,7 @@ void processInput(GLFWwindow* window)
 
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
             camera.ProcessKeyboard(LEFT, deltaTime * 0.2);
-            if (impatto()) {
+            if (impattoUniverso() || impattoFuturamaInterstellar()) {
                 camera.ProcessKeyboard(RIGHT, deltaTime * 0.2);
             }
 
