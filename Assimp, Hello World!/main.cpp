@@ -1120,6 +1120,7 @@ void carica_futurama(GLFWwindow* window) {
 
     // load models
     Model spaceShuttle("resources/objects/futurama/spaceship/rocket.obj");
+    Model spaceShuttleFP("resources/objects/futurama/spaceship/navicella_primapersona.obj");
     std::vector<glm::vec3> objectPositions;
     objectPositions.push_back(glm::vec3(-3.0, -0.5, -3.0));
     Model sole("resources/objects/futurama/planets/sole/sole.obj");
@@ -1263,7 +1264,7 @@ void carica_futurama(GLFWwindow* window) {
 
         // Definisci un vettore di offset dalla posizione della telecamera
         float distanceBehind = 0.2f; // Sposta la telecamera dietro la navicella
-        float distanceAbove = -0.03f;   // Sposta la telecamera sopra la navicella
+        float distanceAbove = -0.05f;   // Sposta la telecamera sopra la navicella
         glm::vec3 cameraOffset = distanceBehind * camera.Front + distanceAbove * camera.Up;
 
         // Calcola la nuova posizione del modello
@@ -1282,6 +1283,17 @@ void carica_futurama(GLFWwindow* window) {
         spaceshipSphere = { camera.Position + 2.0f * camera.Front, 1.0f };
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
         spaceShuttle.Draw(shaderGeometryPass);
+
+        if (firstPerson) {
+            glm::mat4 modelPrimaPersona = glm::mat4(1.0f);
+            modelPrimaPersona = glm::translate(modelPrimaPersona, camera.Position + 0.15f * camera.Front);
+            modelPrimaPersona = glm::rotate(modelPrimaPersona, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+            modelPrimaPersona = glm::rotate(modelPrimaPersona, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+            modelPrimaPersona = glm::scale(modelPrimaPersona, glm::vec3(0.06f));
+            shaderGeometryPass.setMat4("model", modelPrimaPersona);
+            spaceShuttleFP.Draw(shaderGeometryPass);
+        }
+
 
         glm::vec3 cameraOffsetDisplay = distanceBehind * camera.Front + distanceAbove * camera.Up;
         //draw display
@@ -1909,6 +1921,7 @@ void carica_interstellar(GLFWwindow* window) {
 
     // load models
     Model spaceShuttle("resources/objects/interstellar/spaceship/rocket.obj");
+    Model spaceShuttleFP("resources/objects/interstellar/spaceship/navicella_primapersona.obj");
     std::vector<glm::vec3> objectPositions;
     objectPositions.push_back(glm::vec3(-3.0, -0.5, -3.0));
     //COMMENTARE PER FARE PROVE SU UN OGGETTO APPENA CREATO(SOSTITUSCE IL SOLE)
@@ -2073,6 +2086,16 @@ void carica_interstellar(GLFWwindow* window) {
         spaceshipSphere = { camera.Position + 2.0f * camera.Front, 5.0f };
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
         spaceShuttle.Draw(shaderGeometryPass);
+
+        if (firstPerson) {
+            glm::mat4 modelPrimaPersona = glm::mat4(1.0f);
+            modelPrimaPersona = glm::translate(modelPrimaPersona, camera.Position + 0.15f * camera.Front);
+            modelPrimaPersona = glm::rotate(modelPrimaPersona, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+            modelPrimaPersona = glm::rotate(modelPrimaPersona, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+            modelPrimaPersona = glm::scale(modelPrimaPersona, glm::vec3(0.06f));
+            shaderGeometryPass.setMat4("model", modelPrimaPersona);
+            spaceShuttleFP.Draw(shaderGeometryPass);
+        }
 
         glm::vec3 cameraOffsetDisplay = distanceBehind * camera.Front + distanceAbove * camera.Up;
         //draw display
