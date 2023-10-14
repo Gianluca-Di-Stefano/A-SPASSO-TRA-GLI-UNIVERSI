@@ -52,7 +52,7 @@ bool infoVisible = false;
 bool mapVisible = false;
 bool firstPerson = false;
 glm::vec3 initialPosition = glm::vec3(510.0f, 0.0f, 0.0f);//terra
-float initialSpeed = 0.0;
+float initialSpeed = 0.0f;
 float rotationAngle = 0.0f;
 float rotationAngle1 = 0.0f;
 float rotationSpeed = 1.0f;
@@ -493,7 +493,6 @@ void carica_universo(GLFWwindow* window) {
         float distanceBehind = 0.2f; // Sposta la telecamera dietro la navicella
         float distanceAbove = -0.03f;   // Sposta la telecamera sopra la navicella
         glm::vec3 cameraOffset = distanceBehind * cameraFront + distanceAbove * cameraUp;
-
         // Calcola la nuova posizione del modello
         glm::vec3 newModelPosition = camera.Position + cameraOffset;
         glm::mat4 modelSpaceShuttle = glm::mat4(1.0f);
@@ -519,9 +518,6 @@ void carica_universo(GLFWwindow* window) {
             shaderGeometryPass.setMat4("model", modelPrimaPersona);
             spaceShuttleFP.Draw(shaderGeometryPass);
         }
-
-
-
 
         //draw schermata iniziale
         if (startGame == 0) {
@@ -2492,14 +2488,11 @@ void carica_tesseract(GLFWwindow* window) {
     shaderLightingPass.setInt("gPosition", 0);
     shaderLightingPass.setInt("gNormal", 1);
     shaderLightingPass.setInt("gAlbedoSpec", 2);
-
+    initialSpeed = 1.0f;
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
     {
-        std::string Velocity = "speed:" + std::to_string((int)camera.MovementSpeed * 1000) + " km/h";
-        RenderText(Velocity.c_str(), 15.0f, (float)SCR_HEIGHT / 10.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-
 
         // per-frame time logic
         // --------------------
@@ -2523,9 +2516,6 @@ void carica_tesseract(GLFWwindow* window) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100000.0f);
         glm::mat4 view = camera.GetViewMatrix();
-
-        animShader.setMat4("projection", projection);
-        animShader.setMat4("view", view);
 
         // Definisci un vettore di offset dalla posizione della telecamera
         float distanceBehind = 0.2f; // Sposta la telecamera dietro la navicella
@@ -2874,6 +2864,7 @@ bool keyMReleased = false;
 bool keyVPressed = false;
 bool keyVReleased = false;
 bool enterPressed = false;
+float rollAngle = 0.0f;
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
 void processInput(GLFWwindow* window)
@@ -2920,7 +2911,6 @@ void processInput(GLFWwindow* window)
             if (impattoUniverso() || impattoFuturamaInterstellar()) {
                 camera.ProcessKeyboard(RIGHT, deltaTime * 0.2);
             }
-
         }
 
         if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
