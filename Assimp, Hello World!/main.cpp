@@ -503,6 +503,9 @@ void carica_universo(GLFWwindow* window) {
         modelSpaceShuttle = glm::translate(modelSpaceShuttle, newModelPosition);
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
         modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+        // Aggiungi una rotazione costante per mantenere la navicella dritta
+        float constantRollAngle = 10.0f;  // Regola l'angolo del roll come desideri
+        modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(constantRollAngle), camera.Front);
         modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.0004f));
         spaceshipSphere = { camera.Position + 2.0f * camera.Front, 1.0f };
         shaderGeometryPass.setMat4("model", modelSpaceShuttle);
