@@ -1,12 +1,52 @@
 # Blender 3.5.0 MTL File: 'None'
 # www.blender.org
 
-newmtl Material.002
+newmtl Monitor_glass_transparent
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 0.238462
+illum 1
+map_Kd sinonatrix_screen_diff.png
+
+newmtl Screen_material_transparent
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.006951 0.006323 0.010957
+Ks 0.000000 0.000000 0.000000
+Ke 0.011122 0.010117 0.017531
+Ni 1.450000
+d 0.192188
+illum 1
+
+newmtl Sinonatrix.Cockpit
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
-illum 2
-map_Kd interstellar cockpit.png
+illum 1
+map_Kd sinonatrix_cockpit_diff.png
+map_Ks sinonatrix_cockpit_spec.png
+
+newmtl Sinonatrix.Screens
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+
+newmtl Sinonatrix.Transp
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
