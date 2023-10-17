@@ -517,6 +517,9 @@ void carica_universo(GLFWwindow* window) {
             modelPrimaPersona = glm::translate(modelPrimaPersona, camera.Position + 0.15f * camera.Front);
             modelPrimaPersona = glm::rotate(modelPrimaPersona, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
             modelPrimaPersona = glm::rotate(modelPrimaPersona, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+            // Aggiungi una rotazione costante per mantenere la navicella dritta
+            float constantRollAngle = 10.0f;  // Regola l'angolo del roll come desideri
+            modelPrimaPersona = glm::rotate(modelPrimaPersona, glm::radians(constantRollAngle), camera.Front);
             modelPrimaPersona = glm::scale(modelPrimaPersona, glm::vec3(0.06f));
             shaderGeometryPass.setMat4("model", modelPrimaPersona);
             spaceShuttleFP.Draw(shaderGeometryPass);
@@ -1290,9 +1293,14 @@ void carica_futurama(GLFWwindow* window) {
             modelPrimaPersona = glm::translate(modelPrimaPersona, camera.Position + 0.15f * camera.Front);
             modelPrimaPersona = glm::rotate(modelPrimaPersona, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
             modelPrimaPersona = glm::rotate(modelPrimaPersona, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+            float constantRollAngle = 10.0f;  // Regola l'angolo del roll come desideri
+            modelPrimaPersona = glm::rotate(modelPrimaPersona, glm::radians(constantRollAngle), camera.Front);
             modelPrimaPersona = glm::scale(modelPrimaPersona, glm::vec3(0.06f));
             shaderGeometryPass.setMat4("model", modelPrimaPersona);
             spaceShuttleFP.Draw(shaderGeometryPass);
+            modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.000f));
+            shaderGeometryPass.setMat4("model", modelSpaceShuttle);
+            spaceShuttle.Draw(shaderGeometryPass);
         }
 
 

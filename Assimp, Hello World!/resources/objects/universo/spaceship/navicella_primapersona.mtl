@@ -1,12 +1,43 @@
-# Blender 3.5.0 MTL File: 'navicella_primapersona.blend'
+# Blender 3.5.1 MTL File: 'None'
 # www.blender.org
 
-newmtl Material.001
-Ns 250.000000
+newmtl 08_-_Default
+Ns 20.000006
 Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
+Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
-illum 2
-map_Kd universo_cockpit.png
+illum 1
+map_Kd 08_-_Default_albedo.jpg
+
+newmtl center.001
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd center_albedo.jpg
+map_Ns center_roughness.jpg
+map_refl center_metallic.jpg
+
+newmtl cockpit.001
+Ns 20.000006
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd cockpit_albedo.jpg
+
+newmtl displ.001
+Ns 20.000006
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd displ_albedo.jpg
