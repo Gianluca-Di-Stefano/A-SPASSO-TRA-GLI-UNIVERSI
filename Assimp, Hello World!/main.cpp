@@ -729,7 +729,7 @@ void carica_universo(GLFWwindow* window) {
         //modelPortalFuturama = glm::rotate(modelPortalFuturama, 90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
         modelPortalFuturama = glm::scale(modelPortalFuturama, glm::vec3(2.0f));
         portalFuturamaSphere = { glm::vec3(500.0f, 0.0f, 200.0f), 5.0f };
-        futuramaCaricamentoSphere = { glm::vec3(500.0f, 0.0f, 200.0f), 7.0f};
+        futuramaCaricamentoSphere = { glm::vec3(500.0f, 0.0f, 200.0f), 8.0f};
         shaderGeometryPass.setMat4("model", modelPortalFuturama);
         portalFuturama.Draw(shaderGeometryPass);
    
@@ -739,7 +739,7 @@ void carica_universo(GLFWwindow* window) {
         //modelPortalInterstellar = glm::rotate(modelPortalInterstellar, 90.0f, glm::vec3(0.0f, 0.0f, 1.0f));
         modelPortalInterstellar = glm::scale(modelPortalInterstellar, glm::vec3(15.7f));
         portalInterstellarSphere = { glm::vec3(-300.0f, 0.0f, 0.0f), 10.0f };
-        interstellarCaricamentoSphere = { glm::vec3(-300.0f, 0.0f, 0.0f), 14.0f };
+        interstellarCaricamentoSphere = { glm::vec3(-300.0f, 0.0f, 0.0f), 15.0f };
         shaderGeometryPass.setMat4("model", modelPortalInterstellar);
         portalInterstellar.Draw(shaderGeometryPass);
 
@@ -958,6 +958,7 @@ void carica_universo(GLFWwindow* window) {
         bool collisionePortalFuturama = collisionTest(spaceshipSphere, portalFuturamaSphere);
         caricamentoFuturama = collisionTest(spaceshipSphere, futuramaCaricamentoSphere);
         if (caricamentoFuturama == true) {
+            firstPerson = false;
             glm::mat4 modelSchermataFuturama = glm::mat4(1.0f);
             modelSchermataFuturama = glm::translate(modelSchermataFuturama, camera.Position + 0.13f * camera.Front);
             modelSchermataFuturama = glm::rotate(modelSchermataFuturama, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
@@ -974,6 +975,7 @@ void carica_universo(GLFWwindow* window) {
         bool collisionePortalInterstellar = collisionTest(spaceshipSphere, portalInterstellarSphere);
         caricamentoInterstellar = collisionTest(spaceshipSphere, interstellarCaricamentoSphere);
         if (caricamentoInterstellar == true) {
+            firstPerson = false;
             glm::mat4 modelSchermataInterstellar = glm::mat4(1.0f);
             modelSchermataInterstellar = glm::translate(modelSchermataInterstellar, camera.Position + 0.13f * camera.Front);
             modelSchermataInterstellar = glm::rotate(modelSchermataInterstellar, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
@@ -1266,7 +1268,7 @@ void carica_futurama(GLFWwindow* window) {
 
         // Definisci un vettore di offset dalla posizione della telecamera
         float distanceBehind = 0.2f; // Sposta la telecamera dietro la navicella
-        float distanceAbove = -0.05f;   // Sposta la telecamera sopra la navicella
+        float distanceAbove = -0.03f;   // Sposta la telecamera sopra la navicella
         glm::vec3 cameraOffset = distanceBehind * camera.Front + distanceAbove * camera.Up;
 
         // Calcola la nuova posizione del modello
