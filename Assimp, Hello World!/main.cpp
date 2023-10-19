@@ -495,32 +495,34 @@ void carica_universo(GLFWwindow* window) {
         glm::vec3 cameraOffset = distanceBehind * cameraFront + distanceAbove * cameraUp;
         // Calcola la nuova posizione del modello
         glm::vec3 newModelPosition = camera.Position + cameraOffset;
-        glm::mat4 modelSpaceShuttle = glm::mat4(1.0f);
         shaderGeometryPass.use();
         shaderGeometryPass.setMat4("projection", projection);
         shaderGeometryPass.setMat4("view", view);
-        modelSpaceShuttle = glm::mat4(1.0f);
-        modelSpaceShuttle = glm::translate(modelSpaceShuttle, newModelPosition);
-        modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
-        modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
-        // Aggiungi una rotazione costante per mantenere la navicella dritta
-        float constantRollAngle = 10.0f;  // Regola l'angolo del roll come desideri
-        modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(constantRollAngle), camera.Front);
-        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.0004f));
-        spaceshipSphere = { camera.Position + 2.0f * camera.Front, 1.0f };
-        shaderGeometryPass.setMat4("model", modelSpaceShuttle);
-        spaceShuttle.Draw(shaderGeometryPass);
 
-        //draw space shuttle
+
+        if (!firstPerson) {
+            glm::mat4 modelSpaceShuttle = glm::mat4(1.0f);
+            modelSpaceShuttle = glm::translate(modelSpaceShuttle, newModelPosition);
+            modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Pitch), camera.Right);
+            modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+            float constantRollAngle = 10.0f;
+            modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(constantRollAngle), camera.Front);
+            modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.0004f));
+            spaceshipSphere = { camera.Position + 2.0f * camera.Front, 1.0f };
+            shaderGeometryPass.setMat4("model", modelSpaceShuttle);
+            spaceShuttle.Draw(shaderGeometryPass);
+        }
+
+        //draw space shuttle in first person
         if (firstPerson) {
             glm::mat4 modelPrimaPersona = glm::mat4(1.0f);
             modelPrimaPersona = glm::translate(modelPrimaPersona, camera.Position + 0.15f * camera.Front);
-            modelPrimaPersona = glm::rotate(modelPrimaPersona, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+            modelPrimaPersona = glm::rotate(modelPrimaPersona, glm::radians(camera.Pitch), camera.Right);
             modelPrimaPersona = glm::rotate(modelPrimaPersona, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
-            // Aggiungi una rotazione costante per mantenere la navicella dritta
-            float constantRollAngle = 10.0f;  // Regola l'angolo del roll come desideri
+            float constantRollAngle = 10.0f;
             modelPrimaPersona = glm::rotate(modelPrimaPersona, glm::radians(constantRollAngle), camera.Front);
             modelPrimaPersona = glm::scale(modelPrimaPersona, glm::vec3(0.06f));
+            spaceshipSphere = { camera.Position + 2.0f * camera.Front, 1.0f };
             shaderGeometryPass.setMat4("model", modelPrimaPersona);
             spaceShuttleFP.Draw(shaderGeometryPass);
         }
@@ -1275,20 +1277,24 @@ void carica_futurama(GLFWwindow* window) {
         glm::vec3 newModelPosition = camera.Position + cameraOffset;
 
         //draw space shuttle
-        glm::mat4 modelSpaceShuttle = glm::mat4(1.0f);
+        
         shaderGeometryPass.use();
         shaderGeometryPass.setMat4("projection", projection);
         shaderGeometryPass.setMat4("view", view);
-        modelSpaceShuttle = glm::mat4(1.0f);
-        modelSpaceShuttle = glm::translate(modelSpaceShuttle, newModelPosition);
-        modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
-        modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
-        float constantRollAngle = 10.0f;  // Regola l'angolo del roll come desideri
-        modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(constantRollAngle), camera.Front);
-        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.0005f));
-        spaceshipSphere = { camera.Position + 2.0f * camera.Front, 1.0f };
-        shaderGeometryPass.setMat4("model", modelSpaceShuttle);
-        spaceShuttle.Draw(shaderGeometryPass);
+
+        if (!firstPerson) {
+            glm::mat4 modelSpaceShuttle = glm::mat4(1.0f);
+            modelSpaceShuttle = glm::translate(modelSpaceShuttle, newModelPosition);
+            modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+            modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+            float constantRollAngle = 10.0f;  // Regola l'angolo del roll come desideri
+            modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(constantRollAngle), camera.Front);
+            modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.0005f));
+            spaceshipSphere = { camera.Position + 2.0f * camera.Front, 1.0f };
+            shaderGeometryPass.setMat4("model", modelSpaceShuttle);
+            spaceShuttle.Draw(shaderGeometryPass);
+        }
+
 
         if (firstPerson) {
             glm::mat4 modelPrimaPersona = glm::mat4(1.0f);
@@ -1298,11 +1304,9 @@ void carica_futurama(GLFWwindow* window) {
             float constantRollAngle = 10.0f;  // Regola l'angolo del roll come desideri
             modelPrimaPersona = glm::rotate(modelPrimaPersona, glm::radians(constantRollAngle), camera.Front);
             modelPrimaPersona = glm::scale(modelPrimaPersona, glm::vec3(0.06f));
+            spaceshipSphere = { camera.Position + 2.0f * camera.Front, 1.0f };
             shaderGeometryPass.setMat4("model", modelPrimaPersona);
             spaceShuttleFP.Draw(shaderGeometryPass);
-            modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.000f));
-            shaderGeometryPass.setMat4("model", modelSpaceShuttle);
-            spaceShuttle.Draw(shaderGeometryPass);
         }
 
 
@@ -2085,20 +2089,24 @@ void carica_interstellar(GLFWwindow* window) {
         glm::vec3 newModelPosition = camera.Position + cameraOffset;
 
         //draw space shuttle
-        glm::mat4 modelSpaceShuttle = glm::mat4(1.0f);
+        
         shaderGeometryPass.use();
         shaderGeometryPass.setMat4("projection", projection);
         shaderGeometryPass.setMat4("view", view);
-        modelSpaceShuttle = glm::mat4(1.0f);
-        modelSpaceShuttle = glm::translate(modelSpaceShuttle, newModelPosition);
-        modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
-        modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
-        float constantRollAngle = 10.0f;  // Regola l'angolo del roll come desideri
-        modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(constantRollAngle), camera.Front);
-        modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.0005f));
-        spaceshipSphere = { camera.Position + 2.0f * camera.Front, 5.0f };
-        shaderGeometryPass.setMat4("model", modelSpaceShuttle);
-        spaceShuttle.Draw(shaderGeometryPass);
+
+        if (!firstPerson) {
+            glm::mat4 modelSpaceShuttle = glm::mat4(1.0f);
+            modelSpaceShuttle = glm::translate(modelSpaceShuttle, newModelPosition);
+            modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+            modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+            float constantRollAngle = 10.0f;  // Regola l'angolo del roll come desideri
+            modelSpaceShuttle = glm::rotate(modelSpaceShuttle, glm::radians(constantRollAngle), camera.Front);
+            modelSpaceShuttle = glm::scale(modelSpaceShuttle, glm::vec3(0.0005f));
+            spaceshipSphere = { camera.Position + 2.0f * camera.Front, 5.0f };
+            shaderGeometryPass.setMat4("model", modelSpaceShuttle);
+            spaceShuttle.Draw(shaderGeometryPass);
+        }
+
 
         if (firstPerson) {
             glm::mat4 modelPrimaPersona = glm::mat4(1.0f);
@@ -2108,6 +2116,7 @@ void carica_interstellar(GLFWwindow* window) {
             float constantRollAngle = 10.0f;  // Regola l'angolo del roll come desideri
             modelPrimaPersona = glm::rotate(modelPrimaPersona, glm::radians(constantRollAngle), camera.Front);
             modelPrimaPersona = glm::scale(modelPrimaPersona, glm::vec3(0.06f));
+            spaceshipSphere = { camera.Position + 2.0f * camera.Front, 5.0f };
             shaderGeometryPass.setMat4("model", modelPrimaPersona);
             spaceShuttleFP.Draw(shaderGeometryPass);
         }
