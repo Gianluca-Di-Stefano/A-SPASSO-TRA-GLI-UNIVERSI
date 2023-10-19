@@ -1,8 +1,8 @@
-
 #pragma once
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
+#include "camera.h"
 class Particle {
 public:
     // our new particle class
@@ -28,4 +28,9 @@ public:
 
     // define a vector containing our new particle class objects
     std::vector<Particle> particles;
+    int hue;
+    Camera cam;
+    glm::vec3 lightPosition;
+    glm::vec3 lightColor;
+    int maxParticles;
 };
