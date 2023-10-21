@@ -16,7 +16,6 @@
 #include <unordered_map>
 #include <chrono>
 #include <thread>
-#include "Particle.h"
 #pragma comment(lib, "irrKlang.lib") 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -44,6 +43,79 @@ void carica_universo(GLFWwindow* window);
 void carica_futurama(GLFWwindow* window);
 void carica_interstellar(GLFWwindow* window);
 void carica_tesseract(GLFWwindow* window);
+
+void renderSphere(int SphereNumber)
+{
+    static unsigned int sphereVAO = 0;
+    static unsigned int indexCount = 0;
+
+    if (sphereVAO == 0)
+    {
+        glGenVertexArrays(1, &sphereVAO);
+
+        unsigned int vbo, ebo;
+        glGenBuffers(1, &vbo);
+        glGenBuffers(1, &ebo);
+
+        std::vector<glm::vec3> positions;
+        std::vector<unsigned int> indices;
+
+        const unsigned int X_SEGMENTS = 64;
+        const unsigned int Y_SEGMENTS = 64;
+        const float PI = 3.14159265359;
+
+        for (unsigned int y = 0; y <= Y_SEGMENTS; ++y)
+        {
+            for (unsigned int x = 0; x <= X_SEGMENTS; ++x)
+            {
+                float xSegment = (float)x / (float)X_SEGMENTS;
+                float ySegment = (float)y / (float)Y_SEGMENTS;
+                float xPos = std::cos(xSegment * 2.0f * PI) * std::sin(ySegment * PI);
+                float yPos = std::cos(ySegment * PI);
+                float zPos = std::sin(xSegment * 2.0f * PI) * std::sin(ySegment * PI);
+
+                positions.push_back(glm::vec3(xPos, yPos, zPos));
+            }
+        }
+
+        bool oddRow = false;
+        for (unsigned int y = 0; y < Y_SEGMENTS; ++y)
+        {
+            if (!oddRow) // even rows: y == 0, y == 2; and so on
+            {
+                for (unsigned int x = 0; x <= X_SEGMENTS; ++x)
+                {
+                    indices.push_back(y * (X_SEGMENTS + 1) + x);
+                    indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
+                }
+            }
+            else
+            {
+                for (int x = X_SEGMENTS; x >= 0; --x)
+                {
+                    indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
+                    indices.push_back(y * (X_SEGMENTS + 1) + x);
+                }
+            }
+            oddRow = !oddRow;
+        }
+        indexCount = indices.size();
+
+        glBindVertexArray(sphereVAO);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(glm::vec3), &positions[0], GL_STATIC_DRAW);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    }
+
+    glBindVertexArray(sphereVAO);
+    for (int i = 0; i < SphereNumber; i++) {
+        glDrawElements(GL_TRIANGLE_STRIP, indexCount, GL_UNSIGNED_INT, 0);
+    }
+    
+}
 
 bool futurama_caricato = false;
 bool interstellar_caricato = false;
@@ -226,52 +298,92 @@ float cubeVertices[] = {
     -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 };
 
-/*
-//sistema particellare struttura e funzioni varie
+// Definizione della struttura delle particelle
 struct Particle {
-    glm::vec3 Position, Velocity;
-    glm::vec4 Color;
-    float     Life;
+    glm::vec3 position;
+    glm::vec3 velocity;
+    float life;
 
-    Particle()
-        : Position(0.0f), Velocity(0.0f), Color(1.0f), Life(0.0f) { }
+    Particle() : position(0.0f), velocity(0.0f), life(0.0f) {}
 };
 
-unsigned int lastUsedParticle = 0;
+const int MaxParticles = 100000;
+std::vector<Particle> particles(MaxParticles);
+GLuint particleVAO, particleVBO;
 
-unsigned int FirstUnusedParticle(int nr_particles, std::vector<Particle> particles)
-{
-    // search from last used particle, this will usually return almost instantly
-    for (unsigned int i = lastUsedParticle; i < nr_particles; ++i) {
-        if (particles[i].Life <= 0.0f) {
-            lastUsedParticle = i;
-            return i;
-        }
+// Altri parametri del sistema di particelle
+float elapsedTime = 0.0f;
+const float spawnInterval = 0.001f; // Genera una nuova particella ogni 0.05 secondi (20 particelle al secondo)
+const float maxVelocity = 1000.0f; // Velocità massima delle particelle
+const float maxRandomOffset = 0.5f; // Massima variazione casuale della posizione
+
+// Funzione per inizializzare il sistema di particelle
+void InitializeParticles(glm::vec3 position) {
+    particles.clear();
+    particles.resize(MaxParticles);
+
+    for (int i = 0; i < MaxParticles; ++i) {
+        particles[i].position = position;  // Posizione iniziale dietro la navicella
+        particles[i].velocity = glm::vec3(0.0f, 1.0f, 0.0f); // Velocità iniziale verso l'alto
+        particles[i].life = 1.15f; // Vita iniziale massima
     }
-    // otherwise, do a linear search
-    for (unsigned int i = 0; i < lastUsedParticle; ++i) {
-        if (particles[i].Life <= 0.0f) {
-            lastUsedParticle = i;
-            return i;
-        }
-    }
-    // override first particle if all others are alive
-    lastUsedParticle = 0;
-    return 0;
 }
 
-void RespawnParticle(Particle& particle, glm::vec3& position, glm::vec3& velocity,  glm::vec3 offset)
-{
-    float random = ((rand() % 100) - 50) / 10.0f;
-    float rColor = 0.5f + ((rand() % 100) / 100.0f);
-    particle.Position = position + random + offset;
-    particle.Color = glm::vec4(rColor, rColor, rColor, 1.0f);
-    particle.Life = 1.0f;
-    particle.Velocity = velocity * 0.1f;
+// Funzione per generare continuamente nuove particelle
+void GenerateParticles(float deltaTime, glm::vec3 position) {
+    elapsedTime += deltaTime;
+    while (elapsedTime >= spawnInterval) {
+        for (int i = 0; i < MaxParticles; ++i) {
+            if (particles[i].life <= 0.0f) {
+                // Reimposta la particella con nuova posizione e vita massima
+                particles[i].position = position + glm::vec3(
+                    (rand() % 2000 / 1000.0f - 1.0f) * maxRandomOffset, // Variazione casuale su X
+                    (rand() % 2000 / 1000.0f - 1.0f) * maxRandomOffset, // Variazione casuale su Y
+                    (rand() % 2000 / 1000.0f - 1.0f) * maxRandomOffset  // Variazione casuale su Z
+                );
+                particles[i].velocity = glm::vec3(
+                    (rand() % 2000 / 1000.0f - 1.0f) * maxVelocity, // Velocità casuale su X
+                    (rand() % 2000 / 1000.0f - 1.0f) * maxVelocity, // Velocità casuale su Y
+                    (rand() % 2000 / 1000.0f - 1.0f) * maxVelocity  // Velocità casuale su Z
+                );
+                particles[i].life = 1.0f;
+                break;
+            }
+        }
+        elapsedTime -= spawnInterval;
+    }
 }
 
-// fine sistema particellare
-*/
+// Funzione per aggiornare il sistema di particelle
+void UpdateParticles(float deltaTime, glm::vec3 position) {
+    for (int i = 0; i < MaxParticles; ++i) {
+        particles[i].position += particles[i].velocity * deltaTime;
+        particles[i].life -= deltaTime;
+    }
+}
+
+// Funzione per renderizzare il sistema di particelle
+void RenderParticles() {
+    glBindVertexArray(particleVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, particleVBO);
+    glBufferData(GL_ARRAY_BUFFER, MaxParticles * sizeof(Particle), &particles[0], GL_STATIC_DRAW);
+
+    // Configura gli attributi del vertice per i dati delle particelle
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)0);
+
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)sizeof(glm::vec3));
+
+    // Disegna le particelle
+    glDrawArrays(GL_POINTS, 0, MaxParticles);
+
+    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
+}
+
+
 void carica_universo(GLFWwindow* window) {
     // build and compile shaders
     Shader shaderGeometryPass("g_buffer.vs", "g_buffer.fs");
@@ -430,38 +542,13 @@ void carica_universo(GLFWwindow* window) {
 
     camera.Position = initialPosition;
     camera.MovementSpeed = initialSpeed;
-    /*
-    // prove sistema particellare
 
-    unsigned int nr_particles = 500;
-    std::vector<Particle> particles;
-    glm::vec3 velocity = glm::vec3(0.0f, 1.0f, 0.0f);
-    glm::vec3 offset = glm::vec3(0.0f, 0.0f, 0.0f);
-    float dt = 1.0f;
-    for (unsigned int i = 0; i < nr_particles; ++i)
-        particles.push_back(Particle());
-    unsigned int nr_new_particles = 2;
-    // add new particles
-    for (unsigned int i = 0; i < nr_new_particles; ++i)
-    {
-        int unusedParticle = FirstUnusedParticle(nr_particles, particles);
-        RespawnParticle(particles[unusedParticle], initialPosition, velocity, offset);
-    }
-    // update all particles
-    for (unsigned int i = 0; i < nr_particles; ++i)
-    {
-        Particle& p = particles[i];
-        p.Life -= dt; // reduce life
-        if (p.Life > 0.0f)
-        {	// particle is alive, thus update
-            p.Position -= p.Velocity * dt;
-            p.Color.a -= dt * 2.5f;
-        }
-    }
-    */
+    InitializeParticles(initialPosition);
+    // Crea il buffer e il vao per le particelle
+    glGenVertexArrays(1, &particleVAO);
+    glGenBuffers(1, &particleVBO);
+
     // render loop
-   // -----------
-
     while (!glfwWindowShouldClose(window))
     {
 
@@ -476,6 +563,8 @@ void carica_universo(GLFWwindow* window) {
 
         rotationAngle += rotationSpeed * deltaTime;
         rotationAngle1 += deltaTime;
+
+
         // render
         // ------
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -486,12 +575,17 @@ void carica_universo(GLFWwindow* window) {
         // -----------------------------------------------------------------
         glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 2000000000.0f);
         glm::mat4 view = camera.GetViewMatrix();
 
         // Calcola la direzione in cui la telecamera dovrebbe guardare
         glm::vec3 cameraFront = glm::normalize(camera.Front);
         glm::vec3 cameraUp = glm::normalize(camera.Up);
+
+
 
         // Definisci un vettore di offset dalla posizione della telecamera
         float distanceBehind = 0.2f; // Sposta la telecamera dietro la navicella
@@ -503,25 +597,6 @@ void carica_universo(GLFWwindow* window) {
         shaderGeometryPass.setMat4("projection", projection);
         shaderGeometryPass.setMat4("view", view);
 
-        //render delle particelle
-        /*
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-        particleShader.use();
-        for (Particle particle : particles)
-        {
-            if (particle.Life > 0.0f)
-            {
-                particleShader.setVec3("offset", particle.Position);
-                particleShader.setVec4("color", particle.Color);
-                unsigned int particleTexture = loadTexture("resources/objects/universo/info/mercurio.png");
-                glBindTexture(GL_TEXTURE_2D, particleTexture);
-                glBindVertexArray(cubeVAO);
-                glDrawArrays(GL_TRIANGLES, 0, 6);
-                glBindVertexArray(0);
-            }
-        }
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        */
         if (!firstPerson) {
             glm::mat4 modelSpaceShuttle = glm::mat4(1.0f);
             modelSpaceShuttle = glm::translate(modelSpaceShuttle, newModelPosition);
@@ -1061,8 +1136,14 @@ void carica_universo(GLFWwindow* window) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         */
+        // Inizializza il sistema di particelle
 
-
+        GenerateParticles(deltaTime, newModelPosition);
+        // Aggiorna il sistema di particelle
+        UpdateParticles(deltaTime, newModelPosition);
+        // Renderizza le particelle
+        
+        RenderParticles();
 
         // Genera i mipmap
         glGenerateMipmap(GL_TEXTURE_2D);
