@@ -324,7 +324,7 @@ void InitializeParticles(glm::vec3 position) {
 
     for (int i = 0; i < MaxParticles; ++i) {
         particles[i].position = position;  // Posizione iniziale dietro la navicella
-        particles[i].velocity = glm::vec3(0.0f, 1.0f, 0.0f); // Velocità iniziale verso l'alto
+        particles[i].velocity = glm::vec3(0.0f, 0.0f, -1.0f); // Velocità iniziale verso l'alto
         particles[i].life = 1.15f; // Vita iniziale massima
     }
 }
@@ -337,14 +337,14 @@ void GenerateParticles(float deltaTime, glm::vec3 position) {
             if (particles[i].life <= 0.0f) {
                 // Reimposta la particella con nuova posizione e vita massima
                 particles[i].position = position + glm::vec3(
-                    (rand() % 2000 / 1000.0f - 1.0f) * maxRandomOffset, // Variazione casuale su X
+                    (rand() % 2000 / 1000.0f - 1.0f) * maxRandomOffset * 0.02, // Variazione casuale su X
                     (rand() % 2000 / 1000.0f - 1.0f) * maxRandomOffset, // Variazione casuale su Y
-                    (rand() % 2000 / 1000.0f - 1.0f) * maxRandomOffset  // Variazione casuale su Z
+                    (rand() % 2000 / 1000.0f - 1.0f) * maxRandomOffset*0.5  // Variazione casuale su Z
                 );
                 particles[i].velocity = glm::vec3(
-                    (rand() % 2000 / 1000.0f - 1.0f) * maxVelocity, // Velocità casuale su X
+                    (rand() % 2000 / 1000.0f - 1.0f) * maxVelocity * 0.02, // Velocità casuale su X
                     (rand() % 2000 / 1000.0f - 1.0f) * maxVelocity, // Velocità casuale su Y
-                    (rand() % 2000 / 1000.0f - 1.0f) * maxVelocity  // Velocità casuale su Z
+                    (rand() % 2000 / 1000.0f - 1.0f) * maxVelocity*0.5  // Velocità casuale su Z
                 );
                 particles[i].life = 1.0f;
                 break;
@@ -1138,12 +1138,14 @@ void carica_universo(GLFWwindow* window) {
         */
         // Inizializza il sistema di particelle
 
-        GenerateParticles(deltaTime, newModelPosition);
-        // Aggiorna il sistema di particelle
-        UpdateParticles(deltaTime, newModelPosition);
-        // Renderizza le particelle
-        
-        RenderParticles();
+        if (!firstPerson) {
+            GenerateParticles(deltaTime, newModelPosition);
+            // Aggiorna il sistema di particelle
+            UpdateParticles(deltaTime, newModelPosition);
+            // Renderizza le particelle
+
+            RenderParticles();
+        }
 
         // Genera i mipmap
         glGenerateMipmap(GL_TEXTURE_2D);
