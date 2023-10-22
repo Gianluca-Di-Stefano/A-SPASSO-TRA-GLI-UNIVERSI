@@ -314,8 +314,8 @@ GLuint particleVAO, particleVBO;
 // Altri parametri del sistema di particelle
 float elapsedTime = 0.0f;
 const float spawnInterval = 0.001f; // Genera una nuova particella ogni 0.05 secondi (20 particelle al secondo)
-const float maxVelocity = 1000.0f; // Velocità massima delle particelle
-const float maxRandomOffset = 0.5f; // Massima variazione casuale della posizione
+const float maxVelocity = -1000.0f; // Velocità massima delle particelle
+const float maxRandomOffset = 10.0f; // Massima variazione casuale della posizione
 
 // Funzione per inizializzare il sistema di particelle
 void InitializeParticles(glm::vec3 position) {
@@ -324,27 +324,30 @@ void InitializeParticles(glm::vec3 position) {
 
     for (int i = 0; i < MaxParticles; ++i) {
         particles[i].position = position;  // Posizione iniziale dietro la navicella
-        particles[i].velocity = glm::vec3(0.0f, 0.0f, -1.0f); // Velocità iniziale verso l'alto
+        particles[i].velocity = glm::vec3(0.0f, 0.0f, 0.0f); // Velocità iniziale verso l'alto
         particles[i].life = 1.15f; // Vita iniziale massima
     }
 }
 
-// Funzione per generare continuamente nuove particelle
-void GenerateParticles(float deltaTime, glm::vec3 position) {
+// Funzione per generare continuamente nuove particelle con le trasformazioni date
+void GenerateParticles(float deltaTime, glm::mat4 particleModel, glm::vec3 pos) {
     elapsedTime += deltaTime;
     while (elapsedTime >= spawnInterval) {
         for (int i = 0; i < MaxParticles; ++i) {
             if (particles[i].life <= 0.0f) {
                 // Reimposta la particella con nuova posizione e vita massima
-                particles[i].position = position + glm::vec3(
-                    (rand() % 2000 / 1000.0f - 1.0f) * maxRandomOffset * 0.02, // Variazione casuale su X
-                    (rand() % 2000 / 1000.0f - 1.0f) * maxRandomOffset, // Variazione casuale su Y
-                    (rand() % 2000 / 1000.0f - 1.0f) * maxRandomOffset*0.5  // Variazione casuale su Z
-                );
+                // Applica le trasformazioni alla posizione delle particelle
+                particles[i].position = pos + glm::vec3(particleModel * glm::vec4(
+                    -((rand() % 2000) / 1000.0f) * maxRandomOffset, // Variazione casuale su X
+                    -((rand() % 2000) / 1000.0f) * maxRandomOffset, // Variazione casuale su Y
+                    -((rand() % 2000) / 1000.0f) * maxRandomOffset, // Variazione casuale su Z
+                    1.0f
+                ));
+
                 particles[i].velocity = glm::vec3(
-                    (rand() % 2000 / 1000.0f - 1.0f) * maxVelocity * 0.02, // Velocità casuale su X
-                    (rand() % 2000 / 1000.0f - 1.0f) * maxVelocity, // Velocità casuale su Y
-                    (rand() % 2000 / 1000.0f - 1.0f) * maxVelocity*0.5  // Velocità casuale su Z
+                    ((rand() % 2000) / 1000.0f) * maxVelocity * 0.02, // Velocità casuale su X
+                    ((rand() % 2000) / 1000.0f) * maxVelocity, // Velocità casuale su Y
+                    ((rand() % 2000) / 1000.0f) * maxVelocity * 0.5  // Velocità casuale su Z
                 );
                 particles[i].life = 1.0f;
                 break;
@@ -355,7 +358,7 @@ void GenerateParticles(float deltaTime, glm::vec3 position) {
 }
 
 // Funzione per aggiornare il sistema di particelle
-void UpdateParticles(float deltaTime, glm::vec3 position) {
+void UpdateParticles(float deltaTime) {
     for (int i = 0; i < MaxParticles; ++i) {
         particles[i].position += particles[i].velocity * deltaTime;
         particles[i].life -= deltaTime;
@@ -1138,10 +1141,19 @@ void carica_universo(GLFWwindow* window) {
         */
         // Inizializza il sistema di particelle
 
+        glm::vec3 posizioneParticelle = glm::vec3(newModelPosition[0], newModelPosition[1] , newModelPosition[2] );
+        // Applica le trasformazioni simili a quelle della navicella
+        glm::mat4 particleModel = glm::mat4(1.0f);
+        particleModel = glm::translate(particleModel, posizioneParticelle); // Posizione
+        particleModel = glm::rotate(particleModel, glm::radians(camera.Pitch), camera.Right); // Rotazione rispetto all'asse di roll
+        particleModel = glm::rotate(particleModel, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f)); // Rotazione rispetto all'asse di yaw
+
+        // Adesso puoi generare le particelle e applicare le trasformazioni
+        
         if (!firstPerson) {
-            GenerateParticles(deltaTime, newModelPosition);
+            GenerateParticles(deltaTime, particleModel, posizioneParticelle);
             // Aggiorna il sistema di particelle
-            UpdateParticles(deltaTime, newModelPosition);
+            UpdateParticles(deltaTime);
             // Renderizza le particelle
 
             RenderParticles();
