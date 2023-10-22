@@ -313,7 +313,7 @@ GLuint particleVAO, particleVBO;
 
 // Altri parametri del sistema di particelle
 float elapsedTime = 0.0f;
-const float spawnInterval = 0.001f; // Genera una nuova particella ogni 0.05 secondi (20 particelle al secondo)
+float spawnInterval = 0.001f; // Genera una nuova particella ogni 0.05 secondi (20 particelle al secondo)
 const float maxVelocity = -1000.0f; // Velocità massima delle particelle
 const float maxRandomOffset = 10.0f; // Massima variazione casuale della posizione
 
@@ -345,9 +345,9 @@ void GenerateParticles(float deltaTime, glm::mat4 particleModel, glm::vec3 pos) 
                 ));
 
                 particles[i].velocity = glm::vec3(
-                    ((rand() % 2000) / 1000.0f) * maxVelocity * 0.02, // Velocità casuale su X
-                    ((rand() % 2000) / 1000.0f) * maxVelocity, // Velocità casuale su Y
-                    ((rand() % 2000) / 1000.0f) * maxVelocity * 0.5  // Velocità casuale su Z
+                    ((rand() % 2000) / 1000.0f) * maxVelocity * 0.2f, // Velocità casuale su X
+                    ((rand() % 2000) / 1000.0f) * maxVelocity *1.2f, // Velocità casuale su Y
+                    ((rand() % 2000) / 1000.0f) * maxVelocity *1.2f  // Velocità casuale su Z
                 );
                 particles[i].life = 1.0f;
                 break;
@@ -1141,12 +1141,14 @@ void carica_universo(GLFWwindow* window) {
         */
         // Inizializza il sistema di particelle
 
-        glm::vec3 posizioneParticelle = glm::vec3(newModelPosition[0], newModelPosition[1] , newModelPosition[2] );
+        glm::vec3 posizioneParticelle = glm::vec3(420.0f, 150.0f, 1000.0f);
         // Applica le trasformazioni simili a quelle della navicella
         glm::mat4 particleModel = glm::mat4(1.0f);
         particleModel = glm::translate(particleModel, posizioneParticelle); // Posizione
         particleModel = glm::rotate(particleModel, glm::radians(camera.Pitch), camera.Right); // Rotazione rispetto all'asse di roll
         particleModel = glm::rotate(particleModel, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f)); // Rotazione rispetto all'asse di yaw
+        float constantRollAngle =100.0f;
+        particleModel = glm::rotate(particleModel, glm::radians(constantRollAngle), camera.Front);
 
         // Adesso puoi generare le particelle e applicare le trasformazioni
         
@@ -3062,7 +3064,7 @@ void processInput(GLFWwindow* window)
 
         if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
             camera.MovementSpeed += 0.1f; // incrementa la velocità della camera
-            
+
         if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
             camera.MovementSpeed -= 0.1f;
 
