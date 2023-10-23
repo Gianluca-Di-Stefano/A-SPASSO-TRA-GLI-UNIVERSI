@@ -315,7 +315,7 @@ GLuint particleVAO, particleVBO;
 float elapsedTime = 0.0f;
 float spawnInterval = 0.001f; // Genera una nuova particella ogni 0.05 secondi (20 particelle al secondo)
 const float maxVelocity = -1000.0f; // Velocità massima delle particelle
-const float maxRandomOffset = 10.0f; // Massima variazione casuale della posizione
+const float maxRandomOffset = 1.0f; // Massima variazione casuale della posizione
 
 // Funzione per inizializzare il sistema di particelle
 void InitializeParticles(glm::vec3 position) {
@@ -343,11 +343,10 @@ void GenerateParticles(float deltaTime, glm::mat4 particleModel, glm::vec3 pos) 
                     -((rand() % 2000) / 1000.0f) * maxRandomOffset, // Variazione casuale su Z
                     1.0f
                 ));
-
                 particles[i].velocity = glm::vec3(
-                    ((rand() % 2000) / 1000.0f) * maxVelocity * 0.2f, // Velocità casuale su X
-                    ((rand() % 2000) / 1000.0f) * maxVelocity *1.2f, // Velocità casuale su Y
-                    ((rand() % 2000) / 1000.0f) * maxVelocity *1.2f  // Velocità casuale su Z
+                    ((rand() % 2000) / 1000.0f) * maxVelocity * 0.0f, // Velocità casuale su X
+                    ((rand() % 2000) / 1000.0f) * maxVelocity *0.2f, // Velocità casuale su Y
+                    ((rand() % 2000) / 1000.0f) * maxVelocity *1.0f  // Velocità casuale su Z
                 );
                 particles[i].life = 1.0f;
                 break;
@@ -380,7 +379,7 @@ void RenderParticles() {
     glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)sizeof(glm::vec3));
 
     // Disegna le particelle
-    glDrawArrays(GL_POINTS, 0, MaxParticles);
+    glDrawArrays(GL_LINE_LOOP, 0, MaxParticles);
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
@@ -595,7 +594,7 @@ void carica_universo(GLFWwindow* window) {
         float distanceAbove = -0.03f;   // Sposta la telecamera sopra la navicella
         glm::vec3 cameraOffset = distanceBehind * cameraFront + distanceAbove * cameraUp;
         // Calcola la nuova posizione del modello
-        glm::vec3 newModelPosition = camera.Position + cameraOffset;
+        glm::vec3 newModelPosition = glm::vec3(camera.Position[0] + cameraOffset[0], camera.Position[1] + cameraOffset[1], camera.Position[2] + cameraOffset[2] + 0.05f);
         shaderGeometryPass.use();
         shaderGeometryPass.setMat4("projection", projection);
         shaderGeometryPass.setMat4("view", view);
@@ -1141,13 +1140,13 @@ void carica_universo(GLFWwindow* window) {
         */
         // Inizializza il sistema di particelle
 
-        glm::vec3 posizioneParticelle = glm::vec3(420.0f, 150.0f, 1000.0f);
+        glm::vec3 posizioneParticelle = glm::vec3(420.0f, 150.0f, 0.0f);
         // Applica le trasformazioni simili a quelle della navicella
         glm::mat4 particleModel = glm::mat4(1.0f);
         particleModel = glm::translate(particleModel, posizioneParticelle); // Posizione
         particleModel = glm::rotate(particleModel, glm::radians(camera.Pitch), camera.Right); // Rotazione rispetto all'asse di roll
         particleModel = glm::rotate(particleModel, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f)); // Rotazione rispetto all'asse di yaw
-        float constantRollAngle =100.0f;
+        float constantRollAngle =10.0f;
         particleModel = glm::rotate(particleModel, glm::radians(constantRollAngle), camera.Front);
 
         // Adesso puoi generare le particelle e applicare le trasformazioni
