@@ -44,6 +44,81 @@ void carica_futurama(GLFWwindow* window);
 void carica_interstellar(GLFWwindow* window);
 void carica_tesseract(GLFWwindow* window);
 
+// renderCube() renders a 1x1 3D cube in NDC.
+// -------------------------------------------------
+unsigned int cubeVAO = 0;
+unsigned int cubeVBO = 0;
+void renderCube()
+{
+    // initialize (if necessary)
+    if (cubeVAO == 0)
+    {
+        float vertices[] = {
+            // back face
+            -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f, // bottom-left
+             1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f, // top-right
+             1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 0.0f, // bottom-right         
+             1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f, // top-right
+            -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f, // bottom-left
+            -1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 1.0f, // top-left
+            // front face
+            -1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f, // bottom-left
+             1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 0.0f, // bottom-right
+             1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f, // top-right
+             1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f, // top-right
+            -1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 1.0f, // top-left
+            -1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f, // bottom-left
+            // left face
+            -1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-right
+            -1.0f,  1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 1.0f, // top-left
+            -1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-left
+            -1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-left
+            -1.0f, -1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 0.0f, // bottom-right
+            -1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-right
+            // right face
+             1.0f,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-left
+             1.0f, -1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-right
+             1.0f,  1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 1.0f, // top-right         
+             1.0f, -1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-right
+             1.0f,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-left
+             1.0f, -1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 0.0f, // bottom-left     
+             // bottom face
+             -1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f, // top-right
+              1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 1.0f, // top-left
+              1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f, // bottom-left
+              1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f, // bottom-left
+             -1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 0.0f, // bottom-right
+             -1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f, // top-right
+             // top face
+             -1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f, // top-left
+              1.0f,  1.0f , 1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f, // bottom-right
+              1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 1.0f, // top-right     
+              1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f, // bottom-right
+             -1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f, // top-left
+             -1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 0.0f  // bottom-left        
+        };
+        glGenVertexArrays(1, &cubeVAO);
+        glGenBuffers(1, &cubeVBO);
+        // fill buffer
+        glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+        // link vertex attributes
+        glBindVertexArray(cubeVAO);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindVertexArray(0);
+    }
+    // render Cube
+    glBindVertexArray(cubeVAO);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+    glBindVertexArray(0);
+}
+
 void renderSphere(int SphereNumber)
 {
     static unsigned int sphereVAO = 0;
@@ -300,7 +375,7 @@ float cubeVertices[] = {
 
 //###################################################################################################################
 //###################################################################################################################
-/* INIZIO SISTEMA PARTICELLARE
+// INIZIO SISTEMA PARTICELLARE
 // Definizione della struttura delle particelle
 struct Particle {
     glm::vec3 position;
@@ -310,7 +385,7 @@ struct Particle {
     Particle() : position(0.0f), velocity(0.0f), life(0.0f) {}
 };
 
-const int MaxParticles = 100000;
+const int MaxParticles = 10000;
 std::vector<Particle> particles(MaxParticles);
 GLuint particleVAO, particleVBO;
 
@@ -386,9 +461,11 @@ void RenderParticles() {
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
+
+
 }
 
-FINE SISTEMA PARTICELLARE */
+//FINE SISTEMA PARTICELLARE */
 
 //###################################################################################################################
 //###################################################################################################################
@@ -552,12 +629,12 @@ void carica_universo(GLFWwindow* window) {
     camera.Position = initialPosition;
     camera.MovementSpeed = initialSpeed;
 
-    /* INIZIALIZZAZIONE SISTEMA PARTICELLARE
+    // INIZIALIZZAZIONE SISTEMA PARTICELLARE
     InitializeParticles(initialPosition);
     // Crea il buffer e il vao per le particelle
     glGenVertexArrays(1, &particleVAO);
     glGenBuffers(1, &particleVBO);
-    */
+    
 
     // render loop
     while (!glfwWindowShouldClose(window))
@@ -1148,11 +1225,11 @@ void carica_universo(GLFWwindow* window) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         */
 
-        /*RENDERING SISTEMA PARTICELLARE
+        //RENDERING SISTEMA PARTICELLARE
         
        
 
-        glm::vec3 posizioneParticelle = glm::vec3(420.0f, 150.0f, 0.0f);
+        glm::vec3 posizioneParticelle = glm::vec3(425.0f, 150.0, 0.0f);
         // Applica le trasformazioni simili a quelle della navicella
         glm::mat4 particleModel = glm::mat4(1.0f);
         particleModel = glm::translate(particleModel, posizioneParticelle); // Posizione
@@ -1161,10 +1238,27 @@ void carica_universo(GLFWwindow* window) {
         float constantRollAngle =10.0f;
         particleModel = glm::rotate(particleModel, glm::radians(constantRollAngle), camera.Front);
 
+        glm::vec3 posizioneParticelle_sx = glm::vec3(415.0f, 150.0f, 0.0f);
+        // Applica le trasformazioni simili a quelle della navicella
+        glm::mat4 particleModel_sx = glm::mat4(1.0f);
+        particleModel_sx = glm::translate(particleModel_sx, posizioneParticelle_sx); // Posizione
+        particleModel_sx = glm::rotate(particleModel_sx, glm::radians(camera.Pitch), camera.Right); // Rotazione rispetto all'asse di roll
+        particleModel_sx = glm::rotate(particleModel_sx, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f)); // Rotazione rispetto all'asse di yaw
+        particleModel_sx = glm::rotate(particleModel_sx, glm::radians(constantRollAngle), camera.Front);
+
+        glm::vec3 posizioneParticelle_up = glm::vec3(420.0f, 160.0f, 0.0f);
+        // Applica le trasformazioni simili a quelle della navicella
+        glm::mat4 particleModel_up = glm::mat4(1.0f);
+        particleModel_up = glm::translate(particleModel_up, posizioneParticelle_up); // Posizione
+        particleModel_up = glm::rotate(particleModel_up, glm::radians(camera.Pitch), camera.Right); // Rotazione rispetto all'asse di roll
+        particleModel_up = glm::rotate(particleModel_up, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f)); // Rotazione rispetto all'asse di yaw
+        particleModel_up = glm::rotate(particleModel_up, glm::radians(constantRollAngle), camera.Front);
         // Adesso puoi generare le particelle e applicare le trasformazioni
         
         if (!firstPerson) {
             GenerateParticles(deltaTime, particleModel, posizioneParticelle);
+            GenerateParticles(deltaTime, particleModel_sx, posizioneParticelle_sx);
+            GenerateParticles(deltaTime, particleModel_up, posizioneParticelle_up);
             // Aggiorna il sistema di particelle
             UpdateParticles(deltaTime);
             // Renderizza le particelle
@@ -1172,10 +1266,9 @@ void carica_universo(GLFWwindow* window) {
             RenderParticles();
         }
 
-        FINE RENDERING SISTEMA PARTICELLARE
+        //FINE RENDERING SISTEMA PARTICELLARE
 
-        */
-
+     
         // Genera i mipmap
         glGenerateMipmap(GL_TEXTURE_2D);
         glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -1227,21 +1320,21 @@ void carica_universo(GLFWwindow* window) {
 
         // 3. render lights on top of scene eliminare questa parte per togliere i cubi luminosi e lasciare solo la luce
         // --------------------------------
-        /*
+        
         shaderLightBox.use();
         shaderLightBox.setMat4("projection", projection);
         shaderLightBox.setMat4("view", view);
         for (unsigned int i = 0; i < lightPositions.size(); i++)
         {
             glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, lightPositions[i]);
+            model = glm::translate(model, lightPositions[i] + 100.0f);
             model = glm::scale(model, glm::vec3(1.125f));
             shaderLightBox.setMat4("model", model);
             shaderLightBox.setVec3("lightColor", lightColors[i]);
             renderCube();
             //renderSphere();
         }
-        */
+        
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -2912,81 +3005,6 @@ int main()
     
 
     return 0;
-}
-
-// renderCube() renders a 1x1 3D cube in NDC.
-// -------------------------------------------------
-unsigned int cubeVAO = 0;
-unsigned int cubeVBO = 0;
-void renderCube()
-{
-    // initialize (if necessary)
-    if (cubeVAO == 0)
-    {
-        float vertices[] = {
-            // back face
-            -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f, // bottom-left
-             1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f, // top-right
-             1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 0.0f, // bottom-right         
-             1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f, // top-right
-            -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f, // bottom-left
-            -1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 1.0f, // top-left
-            // front face
-            -1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f, // bottom-left
-             1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 0.0f, // bottom-right
-             1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f, // top-right
-             1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f, // top-right
-            -1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 1.0f, // top-left
-            -1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f, // bottom-left
-            // left face
-            -1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-right
-            -1.0f,  1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 1.0f, // top-left
-            -1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-left
-            -1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-left
-            -1.0f, -1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 0.0f, // bottom-right
-            -1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-right
-            // right face
-             1.0f,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-left
-             1.0f, -1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-right
-             1.0f,  1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 1.0f, // top-right         
-             1.0f, -1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-right
-             1.0f,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-left
-             1.0f, -1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 0.0f, // bottom-left     
-            // bottom face
-            -1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f, // top-right
-             1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 1.0f, // top-left
-             1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f, // bottom-left
-             1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f, // bottom-left
-            -1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 0.0f, // bottom-right
-            -1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f, // top-right
-            // top face
-            -1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f, // top-left
-             1.0f,  1.0f , 1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f, // bottom-right
-             1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 1.0f, // top-right     
-             1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f, // bottom-right
-            -1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f, // top-left
-            -1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 0.0f  // bottom-left        
-        };
-        glGenVertexArrays(1, &cubeVAO);
-        glGenBuffers(1, &cubeVBO);
-        // fill buffer
-        glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-        // link vertex attributes
-        glBindVertexArray(cubeVAO);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
-    }
-    // render Cube
-    glBindVertexArray(cubeVAO);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
-    glBindVertexArray(0);
 }
 
 
