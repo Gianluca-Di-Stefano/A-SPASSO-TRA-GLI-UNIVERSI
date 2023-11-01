@@ -377,14 +377,49 @@ float cubeVertices[] = {
 //###################################################################################################################
 // INIZIO SISTEMA PARTICELLARE
 // Definizione della struttura delle particelle
+
 struct Particle {
     glm::vec3 position;
     glm::vec3 velocity;
     float life;
-
-    Particle() : position(0.0f), velocity(0.0f), life(0.0f) {}
+    glm::vec4 color;
+    Particle() : position(0.0f), velocity(0.0f), life(0.0f), color(1.0f, 0.0f, 0.0f, 1.0f) {}
 };
 
+unsigned int nr_particles = 5;
+std::vector<Particle> particles;
+
+unsigned int lastUsedParticle = 0;
+unsigned int FirstUnusedParticle()
+{
+    // search from last used particle, this will usually return almost instantly
+    for (unsigned int i = lastUsedParticle; i < nr_particles; ++i) {
+        if (particles[i].life <= 0.0f) {
+            lastUsedParticle = i;
+            return i;
+        }
+    }
+    // otherwise, do a linear search
+    for (unsigned int i = 0; i < lastUsedParticle; ++i) {
+        if (particles[i].life <= 0.0f) {
+            lastUsedParticle = i;
+            return i;
+        }
+    }
+    // override first particle if all others are alive
+    lastUsedParticle = 0;
+    return 0;
+}
+void RespawnParticle(Particle& particle, Camera& object, glm::vec3 offset)
+{
+    float random = ((rand() % 100) - 50) / 10.0f;
+    float rColor = 0.5f + ((rand() % 100) / 100.0f);
+    particle.position = object.Position + random + offset;
+    particle.color = glm::vec4(rColor, rColor, rColor, 1.0f);
+    particle.life = 1.0f;
+    particle.velocity = object.Velocity * 0.1f;
+}
+/*
 const int MaxParticles = 10000;
 std::vector<Particle> particles(MaxParticles);
 GLuint particleVAO, particleVBO;
@@ -399,11 +434,11 @@ const float maxRandomOffset = 1.0f; // Massima variazione casuale della posizion
 void InitializeParticles(glm::vec3 position) {
     particles.clear();
     particles.resize(MaxParticles);
-
     for (int i = 0; i < MaxParticles; ++i) {
         particles[i].position = position;  // Posizione iniziale dietro la navicella
         particles[i].velocity = glm::vec3(0.0f, 0.0f, 0.0f); // Velocità iniziale verso l'alto
         particles[i].life = 1.15f; // Vita iniziale massima
+        particles[i].color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
     }
 }
 
@@ -426,6 +461,12 @@ void GenerateParticles(float deltaTime, glm::mat4 particleModel, glm::vec3 pos) 
                     -((rand() % 2000) / 1000.0f -0.0f) * maxVelocity *0.02f, // Velocità casuale su Y
                     -((rand() % 2000) / 1000.0f) * maxVelocity *0.5f  // Velocità casuale su Z
                 );
+                particles[i].color = glm::vec4(
+                    (rand() % 1000) / 1000.0f, // Componente R casuale
+                    (rand() % 1000) / 1000.0f, // Componente G casuale
+                    (rand() % 1000) / 1000.0f, // Componente B casuale
+                    1.0f // Alpha fisso a 1.0 per renderizzare completamente la particella
+                );
                 particles[i].life = 1.0f;
                 break;
             }
@@ -439,6 +480,13 @@ void UpdateParticles(float deltaTime) {
     for (int i = 0; i < MaxParticles; ++i) {
         particles[i].position += particles[i].velocity * deltaTime;
         particles[i].life -= deltaTime;
+
+        // Aggiorna il colore in base alla vita
+        particles[i].color.a = particles[i].life; // Imposta l'alpha in base alla vita
+        // Puoi anche aggiornare il colore in base alla vita, ad esempio, sfumando il colore da bianco a rosso:
+        particles[i].color.r = 1.0f - particles[i].life; // Colore rosso
+        particles[i].color.g = particles[i].life; // Colore verde
+        particles[i].color.b = 0.0f; // Colore blu fisso
     }
 }
 
@@ -456,14 +504,18 @@ void RenderParticles() {
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)sizeof(glm::vec3));
 
+    // Aggiungi un nuovo attributo per il colore
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)(sizeof(glm::vec3) + sizeof(float)));
+
     // Disegna le particelle
     glDrawArrays(GL_POINTS, 0, MaxParticles);
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
+    glDisableVertexAttribArray(2);
 
 }
-
 //FINE SISTEMA PARTICELLARE */
 
 //###################################################################################################################
@@ -629,11 +681,14 @@ void carica_universo(GLFWwindow* window) {
     camera.MovementSpeed = initialSpeed;
 
     // INIZIALIZZAZIONE SISTEMA PARTICELLARE
-    InitializeParticles(initialPosition);
+    /*InitializeParticles(initialPosition);
     // Crea il buffer e il vao per le particelle
     glGenVertexArrays(1, &particleVAO);
     glGenBuffers(1, &particleVBO);
-    
+    */
+
+    for (unsigned int i = 0; i < nr_particles; ++i)
+        particles.push_back(Particle());
 
     // render loop
     while (!glfwWindowShouldClose(window))
@@ -675,11 +730,11 @@ void carica_universo(GLFWwindow* window) {
 
 
         // Definisci un vettore di offset dalla posizione della telecamera
-        float distanceBehind = 0.25f; // Sposta la telecamera dietro la navicella
+        float distanceBehind = 0.2f; // Sposta la telecamera dietro la navicella
         float distanceAbove = -0.03f;   // Sposta la telecamera sopra la navicella
         glm::vec3 cameraOffset = distanceBehind * cameraFront + distanceAbove * cameraUp;
         // Calcola la nuova posizione del modello
-        glm::vec3 newModelPosition = glm::vec3(camera.Position[0] + cameraOffset[0], camera.Position[1] + cameraOffset[1], camera.Position[2] + cameraOffset[2] + 0.005f);
+        glm::vec3 newModelPosition = glm::vec3(camera.Position[0] + cameraOffset[0], camera.Position[1] + cameraOffset[1], camera.Position[2] + cameraOffset[2] + 0.02f);
         shaderGeometryPass.use();
         shaderGeometryPass.setMat4("projection", projection);
         shaderGeometryPass.setMat4("view", view);
@@ -1225,9 +1280,43 @@ void carica_universo(GLFWwindow* window) {
         */
 
         //RENDERING SISTEMA PARTICELLARE
-        
-       
+        unsigned int nr_new_particles = 2;
+        // add new particles
+        for (unsigned int i = 0; i < nr_new_particles; ++i)
+        {
+            int unusedParticle = FirstUnusedParticle();
+            RespawnParticle(particles[unusedParticle], camera, cameraOffset);
+        }
+        // update all particles
+        for (unsigned int i = 0; i < nr_particles; ++i)
+        {
+            Particle& p = particles[i];
+            p.life -= deltaTime; // reduce life
+            if (p.life > 0.0f)
+            {	// particle is alive, thus update
+                p.position -= p.velocity * deltaTime;
+                p.color.a -= deltaTime * 2.5f;
+            }
+        }
 
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+        particleShader.use();
+        for (Particle particle : particles)
+        {
+            if (particle.life > 0.0f)
+            {
+                particleShader.setVec3("offset", particle.position);
+                particleShader.setVec4("color", particle.color);
+                unsigned int image = loadTexture("resources/objects/futurama/info/bender_god.png");
+                glBindTexture(GL_TEXTURE_2D, image);
+                glBindVertexArray(cubeVAO);
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+                glBindVertexArray(0);
+            }
+        }
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+       
+        /*
         glm::vec3 posizioneParticelle = glm::vec3(camera.Position[0] -85.0f, camera.Position[1] + 140.0, 0.0f);
         // Applica le trasformazioni simili a quelle della navicella
         glm::mat4 particleModel = glm::mat4(1.0f);
@@ -1267,7 +1356,7 @@ void carica_universo(GLFWwindow* window) {
 
             RenderParticles();
         }
-
+        */
         //FINE RENDERING SISTEMA PARTICELLARE
 
      
