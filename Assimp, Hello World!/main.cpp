@@ -393,8 +393,8 @@ GLuint particleVAO, particleVBO;
 // Altri parametri del sistema di particelle
 float elapsedTime = 0.0f;
 float spawnInterval = 0.001f; // Genera una nuova particella ogni 0.05 secondi (20 particelle al secondo)
-const float maxVelocity = 1000.0f; // Velocità massima delle particelle
-const float maxRandomOffset = 1.0f; // Massima variazione casuale della posizione
+const float maxVelocity = 2000.0f; // Velocità massima delle particelle
+const float maxRandomOffset = 2.0f; // Massima variazione casuale della posizione
 
 // Funzione per inizializzare il sistema di particelle
 void InitializeParticles(glm::vec3 position) {
@@ -423,9 +423,9 @@ void GenerateParticles(float deltaTime, glm::mat4 particleModel, glm::vec3 pos) 
                     1.0f
                 ));
                 particles[i].velocity = glm::vec3(
-                    -((rand() % 2000) / 1000.0f -1.0f) * maxVelocity *0.01f, // Velocità casuale su X
-                    -((rand() % 2000) / 1000.0f -0.0f) * maxVelocity *0.02f, // Velocità casuale su Y
-                    -((rand() % 2000) / 1000.0f) * maxVelocity *0.5f  // Velocità casuale su Z
+                    -((rand() % 2000) / 1000.0f -1.0f) * maxVelocity *0.04f, // Velocità casuale su X
+                    -((rand() % 2000) / 1000.0f -0.0f) * maxVelocity *0.1f, // Velocità casuale su Y
+                    -((rand() % 2000) / 1000.0f) * maxVelocity  // Velocità casuale su Z
                 );
                 particles[i].color = glm::vec4(
                     (rand() % 1000) / 1000.0f, // Componente R casuale
@@ -476,6 +476,33 @@ void RenderParticles() {
 
     // Disegna le particelle
     glDrawArrays(GL_POINTS, 0, MaxParticles);
+
+    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
+    glDisableVertexAttribArray(2);
+
+}
+
+// Funzione per renderizzare il sistema di particelle
+void RenderParticlesFasci() {
+    glBindVertexArray(particleVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, particleVBO);
+    glBufferData(GL_ARRAY_BUFFER, MaxParticles * sizeof(Particle), &particles[0], GL_STATIC_DRAW);
+
+    // Configura gli attributi del vertice per i dati delle particelle
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)0);
+
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)sizeof(glm::vec3));
+
+    // Aggiungi un nuovo attributo per il colore
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)(sizeof(glm::vec3) + sizeof(float)));
+
+    // Disegna le particelle
+    glDrawArrays(GL_LINES, 0, MaxParticles);
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
@@ -1242,36 +1269,36 @@ void carica_universo(GLFWwindow* window) {
         */
 
         //RENDERING SISTEMA PARTICELLARE
-        glm::vec3 posizioneParticelle = glm::vec3(camera.Position[0] -85.0f, camera.Position[1] + 140.0, 0.0f);
+        glm::vec3 posizioneParticelle = glm::vec3(glm::clamp(newModelPosition[0] -85.0f, 400.0f, 450.0f), glm::clamp(newModelPosition[1] + 140.0f, 125.0f, 180.0f), 0.0f);
+        
         // Applica le trasformazioni simili a quelle della navicella
         glm::mat4 particleModel = glm::mat4(1.0f);
         particleModel = glm::translate(particleModel, posizioneParticelle); // Posizione
-        particleModel = glm::rotate(particleModel, glm::radians(camera.Pitch), camera.Right); // Rotazione rispetto all'asse di roll
-        particleModel = glm::rotate(particleModel, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f)); // Rotazione rispetto all'asse di yaw
-        float constantRollAngle = 10.0f;
+        particleModel = glm::rotate(particleModel, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+        particleModel = glm::rotate(particleModel, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+        float constantRollAngle = 10.0f;  // Regola l'angolo del roll come desideri
         particleModel = glm::rotate(particleModel, glm::radians(constantRollAngle), camera.Front);
-        particleModel = glm::scale(particleModel, glm::vec3(0.0005f));
+        particleModel = glm::scale(particleModel, glm::vec3(10.0f));
 
-        glm::vec3 posizioneParticelle_sx = glm::vec3(camera.Position[0] - 95.0f, camera.Position[1] + 140.0, 0.0f);
+        glm::vec3 posizioneParticelle_sx = glm::vec3(glm::clamp(newModelPosition[0] - 95.0f, 405.0f, 455.0f), glm::clamp(newModelPosition[1] + 140.0f, 125.0f, 180.0f), 0.0f);
         // Applica le trasformazioni simili a quelle della navicella
         glm::mat4 particleModel_sx = glm::mat4(1.0f);
         particleModel_sx = glm::translate(particleModel_sx, posizioneParticelle_sx); // Posizione
-        particleModel_sx = glm::rotate(particleModel_sx, glm::radians(camera.Pitch), camera.Right); // Rotazione rispetto all'asse di roll
-        particleModel_sx = glm::rotate(particleModel_sx, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f)); // Rotazione rispetto all'asse di yaw
+        particleModel_sx = glm::rotate(particleModel_sx, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+        particleModel_sx = glm::rotate(particleModel_sx, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
         particleModel_sx = glm::rotate(particleModel_sx, glm::radians(constantRollAngle), camera.Front);
-        particleModel_sx = glm::scale(particleModel_sx, glm::vec3(0.0005f));
+        particleModel_sx = glm::scale(particleModel_sx, glm::vec3(10.0f));
 
-        glm::vec3 posizioneParticelle_up = glm::vec3(camera.Position[0] - 90.0f, camera.Position[1] + 150.0f, 0.0f);
+        glm::vec3 posizioneParticelle_up = glm::vec3(glm::clamp(newModelPosition[0] - 90.0f, 402.5f, 452.5f), glm::clamp(newModelPosition[1] + 150.0f, 135.0f, 190.0f), 0.0f);
         // Applica le trasformazioni simili a quelle della navicella
         glm::mat4 particleModel_up = glm::mat4(1.0f);
         particleModel_up = glm::translate(particleModel_up, posizioneParticelle_up); // Posizione
-        particleModel_up = glm::rotate(particleModel_up, glm::radians(camera.Pitch), camera.Right); // Rotazione rispetto all'asse di roll
-        particleModel_up = glm::rotate(particleModel_up, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f)); // Rotazione rispetto all'asse di yaw
+        particleModel_up = glm::rotate(particleModel_up, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+        particleModel_up = glm::rotate(particleModel_up, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
         particleModel_up = glm::rotate(particleModel_up, glm::radians(constantRollAngle), camera.Front);
-        particleModel_up = glm::scale(particleModel_up, glm::vec3(0.0005f));
-        // Adesso puoi generare le particelle e applicare le trasformazioni
+        particleModel_up = glm::scale(particleModel_up, glm::vec3(10.0f));
         
-        if (!firstPerson) {
+        if (!firstPerson && camera.MovementSpeed >= 1.0f) {
             GenerateParticles(deltaTime, particleModel, posizioneParticelle);
             GenerateParticles(deltaTime, particleModel_sx, posizioneParticelle_sx);
             GenerateParticles(deltaTime, particleModel_up, posizioneParticelle_up);
@@ -2640,6 +2667,10 @@ void carica_tesseract(GLFWwindow* window) {
     Shader skyboxShader("skybox.vs", "skybox.fs");
     Shader animShader("anim_model.vs", "anim_model.fs");
 
+
+
+
+
     // load models
     Model spaceShuttle("resources/objects/interstellar/astronaut/astronaut.obj");
     std::vector<glm::vec3> objectPositions;
@@ -2761,6 +2792,7 @@ void carica_tesseract(GLFWwindow* window) {
     initialSpeed = 1.0f;
     // render loop
     // -----------
+
     while (!glfwWindowShouldClose(window))
     {
 
@@ -2915,7 +2947,9 @@ void carica_tesseract(GLFWwindow* window) {
         }
         */
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        // -------------------------------------------------------------------------------
+        // 
+        // ------------------------------------------------------------------------------
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
