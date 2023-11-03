@@ -198,6 +198,7 @@ int startGame = 0;
 bool infoVisible = false;
 bool mapVisible = false;
 bool firstPerson = false;
+bool accendiScia = false;
 glm::vec3 initialPosition = glm::vec3(510.0f, 0.0f, 0.0f);//terra
 float initialSpeed = 0.0f;
 float rotationAngle = 0.0f;
@@ -441,6 +442,33 @@ void GenerateParticles(float deltaTime, glm::mat4 particleModel, glm::vec3 pos) 
     }
 }
 
+// Funzione per generare continuamente nuove particelle con le trasformazioni date
+void GenerateParticlesInterstellar(float deltaTime, glm::mat4 particleModel, glm::vec3 pos) {
+    elapsedTime += deltaTime;
+    while (elapsedTime >= spawnInterval) {
+        for (int i = 0; i < MaxParticles; ++i) {
+            if (particles[i].life <= 0.0f) {
+                // Reimposta la particella con nuova posizione e vita massima
+                // Applica le trasformazioni alla posizione delle particelle
+                particles[i].position = pos + glm::vec3(particleModel * glm::vec4(
+                    -((rand() % 2000) / 1000.0f - 1.0f) * maxRandomOffset *1000.0f, // Variazione casuale su X
+                    -((rand() % 2000) / 1000.0f - 1.0f) * maxRandomOffset * 1000.0f, // Variazione casuale su Y
+                    -((rand() % 2000) / 1000.0f -1.0f) * maxRandomOffset * 1000.0f, // Variazione casuale su Z
+                    1.0f
+                ));
+                particles[i].velocity = glm::vec3(
+                    -((rand() % 2000) / 1000.0f - 1.0f) * maxVelocity * 0.1f, // Velocità casuale su X
+                    -((rand() % 2000) / 1000.0f - 1.0f) * maxVelocity * 0.1f, // Velocità casuale su Y
+                    -((rand() % 2000) / 1000.0f - 1.0f) * maxVelocity * 0.1f // Velocità casuale su Z
+                );
+                particles[i].life = 1.0f;
+                break;
+            }
+        }
+        elapsedTime -= spawnInterval;
+    }
+}
+
 // Funzione per aggiornare il sistema di particelle
 void UpdateParticles(float deltaTime) {
     for (int i = 0; i < MaxParticles; ++i) {
@@ -476,33 +504,6 @@ void RenderParticles() {
 
     // Disegna le particelle
     glDrawArrays(GL_POINTS, 0, MaxParticles);
-
-    glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
-    glDisableVertexAttribArray(2);
-
-}
-
-// Funzione per renderizzare il sistema di particelle
-void RenderParticlesFasci() {
-    glBindVertexArray(particleVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, particleVBO);
-    glBufferData(GL_ARRAY_BUFFER, MaxParticles * sizeof(Particle), &particles[0], GL_STATIC_DRAW);
-
-    // Configura gli attributi del vertice per i dati delle particelle
-
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)0);
-
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)sizeof(glm::vec3));
-
-    // Aggiungi un nuovo attributo per il colore
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)(sizeof(glm::vec3) + sizeof(float)));
-
-    // Disegna le particelle
-    glDrawArrays(GL_LINES, 0, MaxParticles);
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
@@ -1298,7 +1299,7 @@ void carica_universo(GLFWwindow* window) {
         particleModel_up = glm::rotate(particleModel_up, glm::radians(constantRollAngle), camera.Front);
         particleModel_up = glm::scale(particleModel_up, glm::vec3(10.0f));
         
-        if (!firstPerson && camera.MovementSpeed >= 1.0f) {
+        if (!firstPerson && accendiScia == true && camera.MovementSpeed >= 1.0f) {
             GenerateParticles(deltaTime, particleModel, posizioneParticelle);
             GenerateParticles(deltaTime, particleModel_sx, posizioneParticelle_sx);
             GenerateParticles(deltaTime, particleModel_up, posizioneParticelle_up);
@@ -1506,6 +1507,12 @@ void carica_futurama(GLFWwindow* window) {
     camera.Position = initialPosition;
     camera.MovementSpeed = initialSpeed;
 
+    // INIZIALIZZAZIONE SISTEMA PARTICELLARE
+    InitializeParticles(initialPosition);
+    // Crea il buffer e il vao per le particelle
+    glGenVertexArrays(1, &particleVAO);
+    glGenBuffers(1, &particleVBO);
+
 
     // render loop
     // -----------
@@ -1538,12 +1545,13 @@ void carica_futurama(GLFWwindow* window) {
         glm::mat4 view = camera.GetViewMatrix();
 
         // Definisci un vettore di offset dalla posizione della telecamera
-        float distanceBehind = 0.2f; // Sposta la telecamera dietro la navicella
+        float distanceBehind = 0.25f; // Sposta la telecamera dietro la navicella
         float distanceAbove = -0.03f;   // Sposta la telecamera sopra la navicella
         glm::vec3 cameraOffset = distanceBehind * camera.Front + distanceAbove * camera.Up;
 
         // Calcola la nuova posizione del modello
-        glm::vec3 newModelPosition = glm::vec3(camera.Position[0] + cameraOffset[0], camera.Position[1] + cameraOffset[1], camera.Position[2] + cameraOffset[2] + 0.02f);
+        glm::vec3 newModelPosition = glm::vec3(camera.Position[0] + cameraOffset[0], camera.Position[1] + cameraOffset[1], camera.Position[2] + cameraOffset[2] + 0.01f);
+
 
         //draw space shuttle
         
@@ -2116,6 +2124,49 @@ void carica_futurama(GLFWwindow* window) {
         std::string Velocity = "velocita':" + std::to_string((int)camera.MovementSpeed * 1000) + " km/h";
         RenderText(Velocity.c_str(), 15.0f, (float)SCR_HEIGHT / 10.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
 
+
+        //RENDERING SISTEMA PARTICELLARE
+        glm::vec3 posizioneParticelle = glm::vec3(glm::clamp(newModelPosition[0] - 85.0f, 400.0f, 450.0f), glm::clamp(newModelPosition[1] + 140.0f, 125.0f, 180.0f), 0.0f);
+
+        // Applica le trasformazioni simili a quelle della navicella
+        glm::mat4 particleModel = glm::mat4(1.0f);
+        particleModel = glm::translate(particleModel, posizioneParticelle); // Posizione
+        particleModel = glm::rotate(particleModel, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+        particleModel = glm::rotate(particleModel, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+        float constantRollAngle = 10.0f;  // Regola l'angolo del roll come desideri
+        particleModel = glm::rotate(particleModel, glm::radians(constantRollAngle), camera.Front);
+        particleModel = glm::scale(particleModel, glm::vec3(10.0f));
+
+        glm::vec3 posizioneParticelle_sx = glm::vec3(glm::clamp(newModelPosition[0] - 95.0f, 405.0f, 455.0f), glm::clamp(newModelPosition[1] + 140.0f, 125.0f, 180.0f), 0.0f);
+        // Applica le trasformazioni simili a quelle della navicella
+        glm::mat4 particleModel_sx = glm::mat4(1.0f);
+        particleModel_sx = glm::translate(particleModel_sx, posizioneParticelle_sx); // Posizione
+        particleModel_sx = glm::rotate(particleModel_sx, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+        particleModel_sx = glm::rotate(particleModel_sx, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+        particleModel_sx = glm::rotate(particleModel_sx, glm::radians(constantRollAngle), camera.Front);
+        particleModel_sx = glm::scale(particleModel_sx, glm::vec3(10.0f));
+
+        glm::vec3 posizioneParticelle_up = glm::vec3(glm::clamp(newModelPosition[0] - 90.0f, 402.5f, 452.5f), glm::clamp(newModelPosition[1] + 150.0f, 135.0f, 190.0f), 0.0f);
+        // Applica le trasformazioni simili a quelle della navicella
+        glm::mat4 particleModel_up = glm::mat4(1.0f);
+        particleModel_up = glm::translate(particleModel_up, posizioneParticelle_up); // Posizione
+        particleModel_up = glm::rotate(particleModel_up, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+        particleModel_up = glm::rotate(particleModel_up, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+        particleModel_up = glm::rotate(particleModel_up, glm::radians(constantRollAngle), camera.Front);
+        particleModel_up = glm::scale(particleModel_up, glm::vec3(10.0f));
+
+        if (!firstPerson && accendiScia == true && camera.MovementSpeed >= 1.0f) {
+            GenerateParticles(deltaTime, particleModel, posizioneParticelle);
+            GenerateParticles(deltaTime, particleModel_sx, posizioneParticelle_sx);
+            GenerateParticles(deltaTime, particleModel_up, posizioneParticelle_up);
+            // Aggiorna il sistema di particelle
+            UpdateParticles(deltaTime);
+            // Renderizza le particelle
+
+            RenderParticles();
+        }
+        //FINE RENDERING SISTEMA PARTICELLARE
+
         // Abilita il mipmapping
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -2302,6 +2353,12 @@ void carica_interstellar(GLFWwindow* window) {
     camera.Position = initialPosition;
     camera.MovementSpeed = initialSpeed;
 
+    // INIZIALIZZAZIONE SISTEMA PARTICELLARE
+    InitializeParticles(initialPosition);
+    // Crea il buffer e il vao per le particelle
+    glGenVertexArrays(1, &particleVAO);
+    glGenBuffers(1, &particleVBO);
+
 
     // render loop
     // -----------
@@ -2350,12 +2407,12 @@ void carica_interstellar(GLFWwindow* window) {
             sin(glm::radians(rotationAngle)) * radiusSaturno);
 
         // Definisci un vettore di offset dalla posizione della telecamera
-        float distanceBehind = 0.2f; // Sposta la telecamera dietro la navicella
+        float distanceBehind = 0.25f; // Sposta la telecamera dietro la navicella
         float distanceAbove = -0.03f;   // Sposta la telecamera sopra la navicella
         glm::vec3 cameraOffset = distanceBehind * camera.Front + distanceAbove * camera.Up;
 
         // Calcola la nuova posizione del modello
-        glm::vec3 newModelPosition = glm::vec3(camera.Position[0] + cameraOffset[0], camera.Position[1] + cameraOffset[1], camera.Position[2] + cameraOffset[2] + 0.02f);
+        glm::vec3 newModelPosition = glm::vec3(camera.Position[0] + cameraOffset[0], camera.Position[1] + cameraOffset[1], camera.Position[2] + cameraOffset[2] + 0.01f);
 
         //draw space shuttle
         
@@ -2571,17 +2628,39 @@ void carica_interstellar(GLFWwindow* window) {
         }
 
         std::string Pianeti = "pianeti scoperti':" + std::to_string(pianetiScopertiInterstellar) + "/4";
-        if (pianetiScopertiInterstellar < 4)
+        if (pianetiScopertiInterstellar < 3)
             RenderText(Pianeti.c_str(), 15.0f, (float)SCR_HEIGHT / 8.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
 
 
-        if (pianetiScopertiInterstellar == 4) {
+        if (pianetiScopertiInterstellar == 3) {
             Pianeti = "universo INTERSTELLAR esplorato";
             RenderText(Pianeti.c_str(), 15.0f, (float)SCR_HEIGHT / 8.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
         }
 
         std::string Velocity = "velocita':" + std::to_string((int)camera.MovementSpeed * 1000) + " km/h";
         RenderText(Velocity.c_str(), 15.0f, (float)SCR_HEIGHT / 10.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+
+        //RENDERING SISTEMA PARTICELLARE
+        glm::vec3 posizioneParticelle = glm::vec3(newModelPosition[0] - 85.0f, newModelPosition[1] + 140.0f, 0.0f);
+
+        // Applica le trasformazioni simili a quelle della navicella
+        glm::mat4 particleModel = glm::mat4(1.0f);
+        particleModel = glm::translate(particleModel, posizioneParticelle); // Posizione
+        particleModel = glm::rotate(particleModel, glm::radians(camera.Pitch), camera.Right); // Applica la rotazione rispetto all'asse Right della telecamera
+        particleModel = glm::rotate(particleModel, glm::radians(camera.Yaw), glm::vec3(0.0f, -1.0f, 0.0f));
+        float constantRollAngle = 10.0f;  // Regola l'angolo del roll come desideri
+        particleModel = glm::rotate(particleModel, glm::radians(constantRollAngle), camera.Front);
+        particleModel = glm::scale(particleModel, glm::vec3(1.0f));
+
+        if (!firstPerson) {
+            GenerateParticlesInterstellar(deltaTime, particleModel, posizioneParticelle);
+            // Aggiorna il sistema di particelle
+            UpdateParticles(deltaTime);
+            // Renderizza le particelle
+
+            RenderParticles();
+        }
+        //FINE RENDERING SISTEMA PARTICELLARE
 
         // Genera i mipmap
         glGenerateMipmap(GL_TEXTURE_2D);
@@ -2651,6 +2730,7 @@ void carica_interstellar(GLFWwindow* window) {
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -2666,10 +2746,6 @@ void carica_tesseract(GLFWwindow* window) {
     Shader shaderLightBox("deferred_light_box.vs", "deferred_light_box.fs");
     Shader skyboxShader("skybox.vs", "skybox.fs");
     Shader animShader("anim_model.vs", "anim_model.fs");
-
-
-
-
 
     // load models
     Model spaceShuttle("resources/objects/interstellar/astronaut/astronaut.obj");
@@ -3097,6 +3173,8 @@ bool keyMPressed = false;
 bool keyMReleased = false;
 bool keyVPressed = false;
 bool keyVReleased = false;
+bool isWKeyPressed = false;
+bool isSKeyPressed = false;
 bool enterPressed = false;
 float rollAngle = 0.0f;
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
@@ -3119,11 +3197,20 @@ void processInput(GLFWwindow* window)
 
     if (!movementBlocked) {
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+            isWKeyPressed = true;
+            if (isWKeyPressed) {
+                accendiScia = true;
+            }
             camera.ProcessKeyboard(FORWARD, deltaTime * 0.2);
             if (impattoUniverso() || impattoFuturamaInterstellar()) {
                 camera.ProcessKeyboard(BACKWARD, deltaTime * 0.2);
             }
         }
+        else {
+                isWKeyPressed = false;
+                accendiScia = false;
+            }
+
 
         if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
             camera.ProcessKeyboard(BACKWARD, deltaTime * 0.2);
