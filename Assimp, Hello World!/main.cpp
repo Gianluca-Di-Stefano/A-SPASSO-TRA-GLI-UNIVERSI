@@ -1270,7 +1270,7 @@ void carica_universo(GLFWwindow* window) {
         */
 
         //RENDERING SISTEMA PARTICELLARE
-        glm::vec3 posizioneParticelle = glm::vec3(glm::clamp(newModelPosition[0] -85.0f, 400.0f, 450.0f), glm::clamp(newModelPosition[1] + 140.0f, 125.0f, 180.0f), 0.0f);
+        glm::vec3 posizioneParticelle = glm::vec3(glm::clamp(newModelPosition[0]  -85.0f, 650.0f, 700.0f), glm::clamp(newModelPosition[1] + 140.0f, 125.0f, 190.0f), 0.0f);
         
         // Applica le trasformazioni simili a quelle della navicella
         glm::mat4 particleModel = glm::mat4(1.0f);
@@ -1281,7 +1281,7 @@ void carica_universo(GLFWwindow* window) {
         particleModel = glm::rotate(particleModel, glm::radians(constantRollAngle), camera.Front);
         particleModel = glm::scale(particleModel, glm::vec3(10.0f));
 
-        glm::vec3 posizioneParticelle_sx = glm::vec3(glm::clamp(newModelPosition[0] - 95.0f, 405.0f, 455.0f), glm::clamp(newModelPosition[1] + 140.0f, 125.0f, 180.0f), 0.0f);
+        glm::vec3 posizioneParticelle_sx = glm::vec3(glm::clamp(newModelPosition[0] - 95.0f, 650.0f, 700.0f), glm::clamp(newModelPosition[1] + 140.0f, 125.0f, 190.0f), 0.0f);
         // Applica le trasformazioni simili a quelle della navicella
         glm::mat4 particleModel_sx = glm::mat4(1.0f);
         particleModel_sx = glm::translate(particleModel_sx, posizioneParticelle_sx); // Posizione
@@ -1290,7 +1290,7 @@ void carica_universo(GLFWwindow* window) {
         particleModel_sx = glm::rotate(particleModel_sx, glm::radians(constantRollAngle), camera.Front);
         particleModel_sx = glm::scale(particleModel_sx, glm::vec3(10.0f));
 
-        glm::vec3 posizioneParticelle_up = glm::vec3(glm::clamp(newModelPosition[0] - 90.0f, 402.5f, 452.5f), glm::clamp(newModelPosition[1] + 150.0f, 135.0f, 190.0f), 0.0f);
+        glm::vec3 posizioneParticelle_up = glm::vec3(glm::clamp(newModelPosition[0] - 90.0f, 652.5f, 702.5f), glm::clamp(newModelPosition[1] + 150.0f, 135.0f, 200.0f), 0.0f);
         // Applica le trasformazioni simili a quelle della navicella
         glm::mat4 particleModel_up = glm::mat4(1.0f);
         particleModel_up = glm::translate(particleModel_up, posizioneParticelle_up); // Posizione
@@ -2126,7 +2126,7 @@ void carica_futurama(GLFWwindow* window) {
 
 
         //RENDERING SISTEMA PARTICELLARE
-        glm::vec3 posizioneParticelle = glm::vec3(glm::clamp(newModelPosition[0] - 85.0f, 400.0f, 450.0f), glm::clamp(newModelPosition[1] + 140.0f, 125.0f, 180.0f), 0.0f);
+        glm::vec3 posizioneParticelle = glm::vec3(glm::clamp(newModelPosition[0] - 85.0f, 650.0f, 700.0f), glm::clamp(newModelPosition[1] + 140.0f, 125.0f, 190.0f), 0.0f);
 
         // Applica le trasformazioni simili a quelle della navicella
         glm::mat4 particleModel = glm::mat4(1.0f);
@@ -2137,7 +2137,7 @@ void carica_futurama(GLFWwindow* window) {
         particleModel = glm::rotate(particleModel, glm::radians(constantRollAngle), camera.Front);
         particleModel = glm::scale(particleModel, glm::vec3(10.0f));
 
-        glm::vec3 posizioneParticelle_sx = glm::vec3(glm::clamp(newModelPosition[0] - 95.0f, 405.0f, 455.0f), glm::clamp(newModelPosition[1] + 140.0f, 125.0f, 180.0f), 0.0f);
+        glm::vec3 posizioneParticelle_sx = glm::vec3(glm::clamp(newModelPosition[0] - 95.0f, 650.0f, 700.0f), glm::clamp(newModelPosition[1] + 140.0f, 125.0f, 190.0f), 0.0f);
         // Applica le trasformazioni simili a quelle della navicella
         glm::mat4 particleModel_sx = glm::mat4(1.0f);
         particleModel_sx = glm::translate(particleModel_sx, posizioneParticelle_sx); // Posizione
@@ -2146,7 +2146,7 @@ void carica_futurama(GLFWwindow* window) {
         particleModel_sx = glm::rotate(particleModel_sx, glm::radians(constantRollAngle), camera.Front);
         particleModel_sx = glm::scale(particleModel_sx, glm::vec3(10.0f));
 
-        glm::vec3 posizioneParticelle_up = glm::vec3(glm::clamp(newModelPosition[0] - 90.0f, 402.5f, 452.5f), glm::clamp(newModelPosition[1] + 150.0f, 135.0f, 190.0f), 0.0f);
+        glm::vec3 posizioneParticelle_up = glm::vec3(glm::clamp(newModelPosition[0] - 90.0f, 652.5f, 702.5f), glm::clamp(newModelPosition[1] + 150.0f, 135.0f, 200.0f), 0.0f);
         // Applica le trasformazioni simili a quelle della navicella
         glm::mat4 particleModel_up = glm::mat4(1.0f);
         particleModel_up = glm::translate(particleModel_up, posizioneParticelle_up); // Posizione
