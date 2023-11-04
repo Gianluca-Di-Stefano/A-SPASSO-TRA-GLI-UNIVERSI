@@ -2627,7 +2627,7 @@ void carica_interstellar(GLFWwindow* window) {
             RenderText(Info.c_str(), 15.0f, (float)SCR_HEIGHT / 6.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
         }
 
-        std::string Pianeti = "pianeti scoperti':" + std::to_string(pianetiScopertiInterstellar) + "/4";
+        std::string Pianeti = "pianeti scoperti':" + std::to_string(pianetiScopertiInterstellar) + "/3";
         if (pianetiScopertiInterstellar < 3)
             RenderText(Pianeti.c_str(), 15.0f, (float)SCR_HEIGHT / 8.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
 
@@ -2951,7 +2951,7 @@ void carica_tesseract(GLFWwindow* window) {
         }
 
         //fine gioco
-        if (camera.Position[0] > 5000.0f || camera.Position[0] < -5000.0f || camera.Position[1] > 5000.0f || camera.Position[1] < -5000.0f || camera.Position[2] > 5000.0f || camera.Position[2] < -5000.0f) {
+        if (camera.Position[0] > 3000.0f || camera.Position[0] < -3000.0f || camera.Position[1] > 3000.0f || camera.Position[1] < -3000.0f || camera.Position[2] > 3000.0f || camera.Position[2] < -3000.0f) {
             camera.MovementSpeed = 0.0f;
             glm::mat4 modelFine = glm::mat4(1.0f);
             modelFine = glm::translate(modelFine, camera.Position + 0.13f * camera.Front);
